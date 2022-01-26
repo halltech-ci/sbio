@@ -28,6 +28,9 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        #views
+        'views/barcode_rule_views.xml',
+        'views/menu.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
