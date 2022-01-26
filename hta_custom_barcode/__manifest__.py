@@ -21,8 +21,6 @@
 
     # any module necessary for this one to work correctly
     'depends': ['barcodes',
-               'product',
-               'mrp',
                ],
 
     # always loaded
@@ -36,4 +34,5 @@
         'demo/demo.xml',
     ],
     'license': 'LGPL-3',
+    "external_dependencies": {"python": ["python-barcode"]},
 }
