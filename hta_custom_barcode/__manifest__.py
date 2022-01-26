@@ -20,7 +20,10 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['barcodes',
+               'product',
+               'mrp',
+               ],
 
     # always loaded
     'data': [
@@ -32,4 +35,5 @@
     'demo': [
         'demo/demo.xml',
     ],
+    'license': 'LGPL-3',
 }
