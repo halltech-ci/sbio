@@ -100,7 +100,7 @@
 								user_name = "props.user_name"
                                                  
                                 partner_name = "props.partner_name"	
-								partner_phone = "props.partner_phone"	
+								phone = "props.partner_phone"	
 								delivery = "props.delivery"	
 							/>
 						</div>
@@ -114,7 +114,7 @@
 				<img class="pos-receipt-logo" t-att-src='env.pos.company_logo_base64' alt="Logo"/>
 				<br/>
 				<div class="pos-receipt-contact">
-					<!--<t t-if='env.pos.company.contact_address'>
+					<t t-if='env.pos.company.contact_address'>
 						<div><t t-esc='env.pos.company.contact_address' /></div>
 					</t>
 					<t t-if='env.pos.company.phone'>
@@ -128,24 +128,23 @@
 					</t>
 					<t t-if='env.pos.company.website'>
 						<div><t t-esc='env.pos.company.website' /></div>
-					</t>-->
-					<br/>
-					<t>
-						<div class='cashier'>
-							<div>--------------------------------</div>
-							<div>Client: <t t-esc='props.partner_name' /></div>
-                            <div>Phone: <t t-esc='props.partner_phone' /></div>
-                            <div>Lieu Livraison: <t t-esc='props.delivery' /></div>
-						</div>
 					</t>
-                    <br/>
+					<br/>
+					
 					<t t-if='props.user_name'>
 						<div class='cashier'>
 							<div>--------------------------------</div>
 							<div>Served by <t t-esc='props.user_name' /></div>
 						</div>
 					</t>
-                
+                    <t>
+						<div class='cashier'>
+							<div>--------------------------------</div>
+							<div>Client <t t-esc='props.partner_name' /></div>
+                            <div>Phone <t t-esc='props.partner_phone' /></div>
+                            <div>Lieu Livraison <t t-esc='props.delivery' /></div>
+						</div>
+					</t>
 				</div>
 				<br /><br />
 				<div class='orderlines'>
