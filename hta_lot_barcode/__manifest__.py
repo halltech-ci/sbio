@@ -29,6 +29,9 @@
         'views/templates.xml',
         #views
         'views/product_product_views.xml',
+        'views/product_conversion_views.xml',
+        #data
+        'data/product_conversion_sequence.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
