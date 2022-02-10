@@ -3,9 +3,9 @@
 # from odoo import models, fields, api
 
 
-# class hta_lot_barcode(models.Model):
-#     _name = 'hta_lot_barcode.hta_lot_barcode'
-#     _description = 'hta_lot_barcode.hta_lot_barcode'
+# class hta_product_conversion(models.Model):
+#     _name = 'hta_product_conversion.hta_product_conversion'
+#     _description = 'hta_product_conversion.hta_product_conversion'
 
 #     name = fields.Char()
 #     value = fields.Integer()

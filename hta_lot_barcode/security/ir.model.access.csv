@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-conversion_manager,product_conversion_manager,model_product_conversion,stock.group_stock_manager,1,1,1,1
-product_conversion_user,Product_Conversion_User,model_product_conversion,stock.group_stock_user,1,1,1,0
-product_conversion_line_manager,Product_Conversion_Line_Manager,model_product_conversion_line,stock.group_stock_manager,1,1,1,1
-product_conversion_line_user,Product_Conversion_Line_User,model_product_conversion_line,stock.group_stock_user,1,1,1,1
-product_line_manager,Product_Line_Manager,model_product_line,stock.group_stock_manager,1,1,1,1
-product_line_user,Product_Line_Uer,model_product_line,stock.group_stock_user,1,0,0,0

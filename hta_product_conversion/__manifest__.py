@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "hta_lot_barcode",
+    'name': "hta_product_conversion",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,7 +20,7 @@
     'version': '15.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['mrp', 'stock', 'barcodes'],
+    'depends': ['base', 'stock', 'product'],
 
     # always loaded
     'data': [
@@ -28,10 +28,7 @@
         'views/views.xml',
         'views/templates.xml',
         #views
-        'views/product_product_views.xml',
         'views/product_conversion_views.xml',
-        #data
-        'data/product_conversion_sequence.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
