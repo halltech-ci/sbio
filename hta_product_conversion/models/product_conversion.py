@@ -16,23 +16,42 @@ class ProductConversion(models.Model):
     src_lot = fields.Many2one('stock.production.lot', string='Source Lot')
     src_product_tracking = fields.Selection(related='src_product_id.tracking', readonly=True)
     from_location = fields.Many2one('stock.location', string='Source Location')
-    qty_to_convert = fields.Float(string="Quantity To Convert", digits='Product Unit of Measure')
+    qty_to_convert = fields.Float(string="Quantity To Convert", digits='Product Price')
     conversion_line = fields.One2many('product.conversion.line', 'conversion_id', string='Conversion Line')
     product_ids = fields.Many2many('product.product', string='product ids', 
-                                   compute="_compute_store_convertible_products"
+                                   #compute="_compute_store_convertible_products"
                                   )
     user_id = fields.Many2one('res.users', string='User', default=lambda self: self.env.user)
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env['res.company']._company_default_get('product.conversion'))
     date = fields.Date(string='Date', index=True, default=time.strftime('%Y-%m-%d'))
     
+    """
+    @api.onchange('src_product_id', 'qty_to_convert', 'src_lot', 'from_location')
+    def onchange_product_uom(self):
+        if self.src_product_id:
+            self.src_uom = self.src_product_id.uom_id.id
+            for ratio in self.src_product_id.conversion_line:
+                if not ratio.convertible_product.id:
+                    raise UserError(str(self.src_product_id.name) + ' has no convertible product. Kindly map a Convertible Product')
+        if not self.src_product_id:
+            self.src_uom = False
+        if self.src_lot:
+            check_lot_qty = self.env['stock.quant']._get_available_quantity(self.src_product_id, self.from_location, self.src_lot)
+            if check_lot_qty < self.qty_to_convert:
+                raise UserError(_('Given Quantity to convert for the product ' + str(self.src_product_id.name) + ' is not available in the lot ' + str(self.src_lot.name)))
+        else:
+            check_product_qty = self.env['stock.quant']._get_available_quantity(self.src_product_id, self.from_location)
+            if check_product_qty < self.qty_to_convert:
+                raise UserError(_('Given Quantity to convert for the product ' + str(self.src_product_id.name) + ' is not available in the source location'))
+        return {}
+    """
     
     @api.depends('src_product_id')
     def _compute_store_convertible_products(self):
         lst = []
         if self.src_product_id:
-            for prod in self.src_product_id.conversion_line:
-                lst.append(prod.convertible_product.id)
-                self.product_ids = [(6, 0, [i for i in lst])]
+            product_ids = self.env["product.line"].search([('prod_id', '=', self.src_product_id.id)]).mapped('convertible_product')
+            self.product_ids = product_ids
     
     def validate(self):
         if not self.conversion_line:
@@ -93,6 +112,27 @@ class ProductConversion(models.Model):
         self.write({'state': 'done'})
         return True
     
+    def cancel(self):
+        self.write({'state': 'cancel'})
+        return True
+
+    def set_to_draft(self):
+        self.write({'state': 'draft'})
+        return True
+
+    @api.model
+    def create(self, vals):
+        if vals.get('name', '/') == '/':
+            vals['name'] = self.env['ir.sequence'].next_by_code('product.conversion') or '/'
+        res = super(ProductConversion, self).create(vals)
+        return res
+
+    def unlink(self):
+        for conversion in self:
+            if conversion.state == 'done':
+                raise UserError(_('Warning! You cannot delete a validated Conversion'))
+        return super(ProductConversion, self).unlink()
+    
 class ProductConversionLinem(models.Model):
     _name = "product.conversion.line"
     _description = "Line for product conversion"
@@ -105,7 +145,7 @@ class ProductConversionLinem(models.Model):
     to_location = fields.Many2one('stock.location', string='Destination Location')
     converted_qty = fields.Float(string='Converted Quantity')
     dest_product_tracking = fields.Selection(related='dest_product_id.tracking', readonly=True)
-    allocate_quantity = fields.Float(string='Allocate Quantity', digits='Product Unit of Measure')
+    allocate_quantity = fields.Float(string='Allocate Quantity', digits='Product Price')
     company_id = fields.Many2one(related='conversion_id.company_id', string='Company', store=True, readonly=True)
     
     
@@ -142,4 +182,5 @@ class ProductLine(models.Model):
         if self.convertible_product:
             self.uom_id = self.convertible_product.uom_id.id
         return {}
+    
     
