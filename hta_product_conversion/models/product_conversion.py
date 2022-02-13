@@ -18,33 +18,11 @@ class ProductConversion(models.Model):
     from_location = fields.Many2one('stock.location', string='Source Location')
     qty_to_convert = fields.Float(string="Quantity To Convert", digits='Product Price')
     conversion_line = fields.One2many('product.conversion.line', 'conversion_id', string='Conversion Line')
-    product_ids = fields.Many2many('product.product', string='product ids', 
-                                   #compute="_compute_store_convertible_products"
-                                  )
+    product_ids = fields.Many2many('product.product', string='product ids')
     user_id = fields.Many2one('res.users', string='User', default=lambda self: self.env.user)
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env['res.company']._company_default_get('product.conversion'))
     date = fields.Date(string='Date', index=True, default=time.strftime('%Y-%m-%d'))
     
-    """
-    @api.onchange('src_product_id', 'qty_to_convert', 'src_lot', 'from_location')
-    def onchange_product_uom(self):
-        if self.src_product_id:
-            self.src_uom = self.src_product_id.uom_id.id
-            for ratio in self.src_product_id.conversion_line:
-                if not ratio.convertible_product.id:
-                    raise UserError(str(self.src_product_id.name) + ' has no convertible product. Kindly map a Convertible Product')
-        if not self.src_product_id:
-            self.src_uom = False
-        if self.src_lot:
-            check_lot_qty = self.env['stock.quant']._get_available_quantity(self.src_product_id, self.from_location, self.src_lot)
-            if check_lot_qty < self.qty_to_convert:
-                raise UserError(_('Given Quantity to convert for the product ' + str(self.src_product_id.name) + ' is not available in the lot ' + str(self.src_lot.name)))
-        else:
-            check_product_qty = self.env['stock.quant']._get_available_quantity(self.src_product_id, self.from_location)
-            if check_product_qty < self.qty_to_convert:
-                raise UserError(_('Given Quantity to convert for the product ' + str(self.src_product_id.name) + ' is not available in the source location'))
-        return {}
-    """
     
     @api.depends('src_product_id')
     def _compute_store_convertible_products(self):

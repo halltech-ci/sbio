@@ -36,9 +36,9 @@
                     </group>
                 <notebook>
                     <page string="Conversion Line">   
-                        <field name="conversion_line" context="{'default_to_location': from_location}">
+                        <field name="conversion_line" widget="one2many_list">
                             <tree editable="bottom">
-                                <field name="dest_product_id" required="1" attrs="{'readonly':[('parent.state','in',('done','cancel'))]}" domain="[('type', '=', 'product'),('id','in', parent.product_ids)]" force_save='1'/>
+                                <field name="dest_product_id" required="1" force_save='1'/>
                                 <field name="dest_uom" readonly="1" force_save="1" required="1"/>
                                 <field name="conversion_ratio" readonly="1" force_save="1" required="1"/>
                                 <field name="allocate_quantity" attrs="{'readonly':[('parent.state','in',('done','cancel'))]}" required="1"/>
