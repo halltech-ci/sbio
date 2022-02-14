@@ -8,7 +8,7 @@ class HtaPos(models.Model):
 
     delivery_person = fields.Many2one(
         comodel_name="res.partner",
-        string="Delivery Person",
+        string="Livreur",
     )
 
     date_delivery = fields.Datetime()

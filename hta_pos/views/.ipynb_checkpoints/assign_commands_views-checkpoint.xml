@@ -10,6 +10,22 @@
             <field name="person_delivery" widget="boolean_button" string="Livreur?" attrs="{'invisible': ['|', '&amp;', ('is_company','=', True),('parent_id', '=', False),('company_name', '!=', False),('company_name', '!=', '')]}"/>
 
           </xpath>
+          <xpath expr="//sheet//notebook/page[@name='internal_notes']" position="after">
+                <page name="commandes_pos" string="Commandes">
+                    <field name="pos_orders">
+                          <tree editable="bottom">
+                              <field name='name'/>
+                              <field name='date_delivery'/>
+                              <field name='pos_reference'/>
+                              <field name="partner_id" options="{'no_create_edit': True}"/>
+                              <field name='amount_total'/>
+                              <!--<field name='payment_mode'/>-->
+                              <field name='state'/>
+        
+                          </tree>
+                      </field>
+                </page>
+          </xpath>
           
       </field>
     </record>
