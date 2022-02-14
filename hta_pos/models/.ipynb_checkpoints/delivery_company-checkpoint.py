@@ -9,6 +9,8 @@ class DeliveryCompany(models.Model):
     company_delivery = fields.Boolean()
     person_delivery = fields.Boolean()
     
+    pos_orders = fields.One2many('pos.order', 'delivery_person', string='Commandes',readonly=True, copy=False)
+    
     
     
 
