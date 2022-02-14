@@ -1,0 +1,35 @@
+<odoo>
+    <record id="assign_command_wizard" model="ir.ui.view" >
+        <field name="name">Assign Commands</field>
+        <field name="model">pos.assign.commands.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Assign Commands">
+                <p>
+                Vous voulez assigner ces commandes au livrieurs ...
+                </p>
+                <group>
+                    <group>
+                        <field name="delivery_person"/>
+                    </group>
+                    <group>
+                        <field name="date_delivery"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="assign_delivery_orders" string="Valider" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+        <act_window name="Assigner Commande"
+        id="assign_cmmd_delivery_action"
+        res_model="pos.assign.commands.wizard"
+        binding_model="pos.order"
+        binding_views="list"
+        view_mode="form"
+        target="new"
+    />
+
+</odoo>
