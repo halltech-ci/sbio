@@ -13,13 +13,14 @@ class PosPaymentCommands(models.TransientModel):
         string="Payment Method",
         required=True,
     )
-    #amount = fields.Float(compute="get_amount_due")
+    amount = fields.Float()
     
 
-#     def get_amount_due(self):
-#         for record in self._context.get('active_ids'):
-#             order = self.env[self._context.get('active_model')].browse(record)
-#             self.amount = self.amount + order.amount_total
+    @api.onchange('payment_method')
+    def _onchange_partner(self):
+        for record in self._context.get('active_ids'):
+            order = self.env[self._context.get('active_model')].browse(record)
+            self.amount = self.amount + order.amount_total
     
     def payment_after_orders(self):
         init_data = self.read()[0]
