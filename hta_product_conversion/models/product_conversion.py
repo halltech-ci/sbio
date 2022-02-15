@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_round
 import time
 
@@ -29,9 +29,6 @@ class ProductConversion(models.Model):
         
     def _get_default_qty_to_convert(self):
         qty = 0
-        
-        
-        
     
     def _compute_qty_done(self):
         for prod in self:
@@ -41,6 +38,12 @@ class ProductConversion(models.Model):
                     qty_done += line.converted_qty * line.conversion_ratio
                 self.qty_done = qty_done
     
+    @api.constrains('qty_to_convert')
+    def _check_qty_to_convert(self):
+        for rec in self:
+            if rec.src_lot.product_qty < rec.qty_to_convert:
+                raise ValidationError(_('La quantité à convertir est supérieure à la quantité disponible en stock'))
+            
     
     @api.depends('src_product_id')
     def _compute_store_convertible_products(self):
@@ -77,7 +80,7 @@ class ProductConversion(models.Model):
                 'lot_id': self.src_lot.id or '',
                 'product_uom_qty': 0,
                 'product_uom_id': self.src_uom.id,
-                'qty_done': self.qty_to_convert,
+                'qty_done': self.qty_done,
                 'location_id': self.from_location.id,
                 'location_dest_id': inventory_loss.id,
             })]
