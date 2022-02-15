@@ -18,18 +18,18 @@ class ProductConversion(models.Model):
     from_location = fields.Many2one('stock.location', string='Source Location')
     qty_to_convert = fields.Float(string="Quantity To Convert", digits='Product Price')
     conversion_line = fields.One2many('product.conversion.line', 'conversion_id', string='Conversion Line')
-    product_ids = fields.Many2many('product.product', string='product ids')
+    product_ids = fields.Many2many('product.product', string='product ids', compute="_compute_store_convertible_products", store=True)
     user_id = fields.Many2one('res.users', string='User', default=lambda self: self.env.user)
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env['res.company']._company_default_get('product.conversion'))
     date = fields.Date(string='Date', index=True, default=time.strftime('%Y-%m-%d'))
-    
     
     @api.depends('src_product_id')
     def _compute_store_convertible_products(self):
         lst = []
         if self.src_product_id:
-            product_ids = self.env["product.line"].search([('prod_id', '=', self.src_product_id.id)]).mapped('convertible_product')
-            self.product_ids = product_ids
+            lst = self.env["product.line"].search([('prod_id', '=', self.src_product_id.id)]).mapped('convertible_product')
+            self.product_ids = lst
+        
     
     def validate(self):
         if not self.conversion_line:
@@ -116,7 +116,7 @@ class ProductConversionLinem(models.Model):
     _description = "Line for product conversion"
     
     conversion_id = fields.Many2one('product.conversion', string='Conversion id')
-    conversion_ratio = fields.Float(string='Conversion Ratio')
+    conversion_ratio = fields.Float(string='Conversion Ratio', compute='_get_conversion_ration')
     dest_product_id = fields.Many2one('product.product', string="Product")
     dest_uom = fields.Many2one('uom.uom', string="Unit of measure", related="dest_product_id.uom_id")
     dest_lot = fields.Many2one('stock.production.lot', string='Destination Lot')
@@ -126,6 +126,17 @@ class ProductConversionLinem(models.Model):
     allocate_quantity = fields.Float(string='Allocate Quantity', digits='Product Price')
     company_id = fields.Many2one(related='conversion_id.company_id', string='Company', store=True, readonly=True)
     
+    @api.depends('conversion_id.src_product_id')
+    def _get_conversion_ration(self):
+        for line in self:
+            line.conversion_ratio = self.env['product.line'].search([('convertible_product', "=", line.dest_product_id.id), ('prod_id', '=', self.conversion_id.src_product_id.id)]).conversion_ratio
+            
+    @api.onchange('dest_product_id')
+    @api.depends('conversion_id.src_product_id')
+    def _onchange_product_id(self):
+        for line in self:
+            line.conversion_ratio = self.env['product.line'].search([('convertible_product', "=", line.dest_product_id.id), ('prod_id', '=', self.conversion_id.src_product_id.id)]).conversion_ratio
+        
     
 class ProductProduct(models.Model):
     _inherit = "product.product"
