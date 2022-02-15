@@ -21,16 +21,19 @@
                     <group>
                         <group>
                             <field name="src_product_id" attrs="{'readonly':[('state','in',('done','cancel'))]}" domain="[('type', '=', 'product')]" required="1"/>
-                            <field name="src_uom" readonly="1" force_save="1" required="1"/>
+                            <field name="src_lot" attrs="{'readonly':['|',('state','in',('done','cancel')),('src_product_tracking', '!=', 'lot')]}" domain="[('product_id', '=', src_product_id)]"/>
+                            <field name="qty_to_convert" required="1" attrs="{'readonly':['|',('state','in',('done','cancel')),('src_lot','=',False)]}"/>
+                            
                             <field name="src_product_tracking" invisible="1"/>
-                            <field name="qty_to_convert" required="1" attrs="{'readonly':['|',('state','in',('done','cancel')),('from_location','=',False)]}"/>
-                            <field name="date" attrs="{'readonly':[('state','in',('done','cancel'))]}" required="1"/>
+                            
+                            <field name="date" readonly='1' required="1"/>
                         </group>
                         <group>
                             <field name="from_location" required="1" attrs="{'readonly':[('state','in',('done','cancel'))]}" domain="[('usage', '=', 'internal')]"/>
-                            <field name="src_lot" attrs="{'readonly':['|',('state','in',('done','cancel')),('src_product_tracking', '!=', 'lot')]}" domain="[('product_id', '=', src_product_id)]"/>
-                            <field name="product_ids" force_save="1" widget="many2many_tags" invisible="1"/>
                             <field name="user_id" force_save="1" readonly="1" />
+                            <field name="src_uom" readonly="1" force_save="1" required="1"/>
+                            <field name="product_ids" force_save="1" widget="many2many_tags" invisible="1"/>
+                            
                             <field name="company_id" force_save="1" readonly="1" />
                         </group>
                     </group>
