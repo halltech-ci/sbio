@@ -24,15 +24,21 @@ class ProductConversion(models.Model):
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env['res.company']._company_default_get('product.conversion'))
     date = fields.Date(string='Date', index=True, default=time.strftime('%Y-%m-%d'))
     
-    def check_availlable_qty(self):
+    def _check_availlable_qty(self):
         qty = 0
+        
+    def _get_default_qty_to_convert(self):
+        qty = 0
+        
+        
+        
     
     def _compute_qty_done(self):
         for prod in self:
             qty_done = 0
             if len(prod.conversion_line.ids) > 0:
                 for line in prod.conversion_line:
-                    qty_done += line.converted_qty * line.conversion_ration
+                    qty_done += line.converted_qty * line.conversion_ratio
                 self.qty_done = qty_done
     
     
