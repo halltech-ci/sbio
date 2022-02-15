@@ -17,6 +17,7 @@ class ProductConversion(models.Model):
     src_product_tracking = fields.Selection(related='src_product_id.tracking', readonly=True)
     from_location = fields.Many2one('stock.location', string='Source Location')
     qty_to_convert = fields.Float(string="Quantity To Convert", digits='Product Price')
+    qty_done = fields.Float(string="Quantity Done", digits='Product Price', compute='_compute_qty_done')
     conversion_line = fields.One2many('product.conversion.line', 'conversion_id', string='Conversion Line')
     product_ids = fields.Many2many('product.product', string='product ids', compute="_compute_store_convertible_products", store=True)
     user_id = fields.Many2one('res.users', string='User', default=lambda self: self.env.user)
@@ -25,7 +26,15 @@ class ProductConversion(models.Model):
     
     def check_availlable_qty(self):
         qty = 0
-        
+    
+    def _compute_qty_done(self):
+        for prod in self:
+            qty_done = 0
+            if len(prod.conversion_line.ids) > 0:
+                for line in prod.conversion_line:
+                    qty_done += line.converted_qty * line.conversion_ration
+                self.qty_done = qty_done
+    
     
     @api.depends('src_product_id')
     def _compute_store_convertible_products(self):
@@ -145,7 +154,8 @@ class ProductConversionLinem(models.Model):
     @api.depends('conversion_ratio')
     def _onchange_allocate_quantity(self):
         for line in self:
-            line.converted_qty = int(line.allocate_quantity / line.conversion_ratio)
+            if line.conversion_ratio != 0:
+                line.converted_qty = int(line.allocate_quantity / line.conversion_ratio)
         
         
     
