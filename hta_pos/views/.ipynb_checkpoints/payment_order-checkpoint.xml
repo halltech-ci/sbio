@@ -12,6 +12,9 @@
                     <group>
                         <field name="payment_method"/>
                     </group>
+                    <group>
+                        <field name="amount"/>
+                    </group>
                 </group>
                 <footer>
                     <button name="payment_after_orders" string="Valider" type="object" class="oe_highlight"/>

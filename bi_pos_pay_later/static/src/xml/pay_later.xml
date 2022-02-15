@@ -80,7 +80,7 @@
 				<t t-if="env.pos.config.allow_partical_payment">
 					<div class="button pay-partial" t-on-click="clickPayLater"
 						t-att-class="{ highlight: !currentOrder.is_paid() }">
-						<span class="next_text">Livraisont</span>
+						<span class="next_text">Livraison</span>
 						<i class="fa fa-angle-double-right fa-fw"></i>
 					</div>
 				</t>
