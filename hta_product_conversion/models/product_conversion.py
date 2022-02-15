@@ -23,6 +23,10 @@ class ProductConversion(models.Model):
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env['res.company']._company_default_get('product.conversion'))
     date = fields.Date(string='Date', index=True, default=time.strftime('%Y-%m-%d'))
     
+    def check_availlable_qty(self):
+        qty = 0
+        
+    
     @api.depends('src_product_id')
     def _compute_store_convertible_products(self):
         lst = []
@@ -136,6 +140,13 @@ class ProductConversionLinem(models.Model):
     def _onchange_product_id(self):
         for line in self:
             line.conversion_ratio = self.env['product.line'].search([('convertible_product', "=", line.dest_product_id.id), ('prod_id', '=', self.conversion_id.src_product_id.id)]).conversion_ratio
+            
+    @api.onchange('allocate_quantity')
+    @api.depends('conversion_ratio')
+    def _onchange_allocate_quantity(self):
+        for line in self:
+            line.converted_qty = int(line.allocate_quantity / line.conversion_ratio)
+        
         
     
 class ProductProduct(models.Model):
