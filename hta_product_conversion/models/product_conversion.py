@@ -16,7 +16,7 @@ class ProductConversion(models.Model):
     src_lot = fields.Many2one('stock.production.lot', string='Source Lot')
     src_product_tracking = fields.Selection(related='src_product_id.tracking', readonly=True)
     from_location = fields.Many2one('stock.location', string='Source Location')
-    qty_to_convert = fields.Float(string="Quantity To Convert", digits='Product Price')
+    qty_to_convert = fields.Float(string="Quantity To Convert", digits='Product Price',)
     qty_done = fields.Float(string="Quantity Done", digits='Product Price', compute='_compute_qty_done')
     conversion_line = fields.One2many('product.conversion.line', 'conversion_id', string='Conversion Line')
     product_ids = fields.Many2many('product.product', string='product ids', compute="_compute_store_convertible_products", store=True)
@@ -29,6 +29,28 @@ class ProductConversion(models.Model):
         
     def _get_default_qty_to_convert(self):
         qty = 0
+        
+    @api.onchange('src_product_id')
+    def _onchange_src_product_id(self):
+        if self.src_product_id:
+            if self.src_product_tracking != 'lot':
+                raise ValidationError(_('Le suivi par lot n\'est pas activé pour cet article'))
+    
+    @api.onchange('src_lot')
+    def _onchange_src_lot(self):
+        for rec in self:
+            if rec.src_product_id and rec.from_location:
+                rec.qty_to_convert = rec.src_lot.product_qty
+    
+    """                
+    def _get_default_qt_to_convert(self):
+        for prod in self:
+            if prod.src_product_id.src_product_tracking == 'lot':
+                prod.qty_to_convert = prod.src_lot.product_qty
+            else:
+              raise ValidationError(_('Le suivi par lot n\'est pas activé pour cet article'))
+    """                                  
+                                      
     
     def _compute_qty_done(self):
         for prod in self:
@@ -42,7 +64,7 @@ class ProductConversion(models.Model):
     def _check_qty_to_convert(self):
         for rec in self:
             if rec.src_lot.product_qty < rec.qty_to_convert:
-                raise ValidationError(_('La quantité à convertir est supérieure à la quantité disponible en stock'))
+                raise ValidationError(_('La quantité à convertir est supérieure à la quantité disponible en stock pour ce lot'))
             
     
     @api.depends('src_product_id')
@@ -166,7 +188,15 @@ class ProductConversionLinem(models.Model):
             if line.conversion_ratio != 0:
                 line.converted_qty = int(line.allocate_quantity / line.conversion_ratio)
         
-        
+    
+    @api.onchange('dest_product_id')
+    def _onchange_dest_product_id(self):
+        for line in self:
+            if line.dest_product_id:
+                if line.dest_product_id.tracking == 'lot':
+                    line.dest_lot = line.conversion_id.src_lot.id
+                else:
+                    raise UserError(_('Veuillez activer le suivi par lot sur l\'article:' + str(line.dest_product_id.name)))
     
 class ProductProduct(models.Model):
     _inherit = "product.product"
