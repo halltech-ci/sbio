@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_round
 import time
 
@@ -24,7 +24,10 @@ class ProductConversion(models.Model):
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env['res.company']._company_default_get('product.conversion'))
     date = fields.Date(string='Date', index=True, default=time.strftime('%Y-%m-%d'))
     
-    def check_availlable_qty(self):
+    def _check_availlable_qty(self):
+        qty = 0
+        
+    def _get_default_qty_to_convert(self):
         qty = 0
     
     def _compute_qty_done(self):
@@ -32,9 +35,15 @@ class ProductConversion(models.Model):
             qty_done = 0
             if len(prod.conversion_line.ids) > 0:
                 for line in prod.conversion_line:
-                    qty_done += line.converted_qty * line.conversion_ration
+                    qty_done += line.converted_qty * line.conversion_ratio
                 self.qty_done = qty_done
     
+    @api.constrains('qty_to_convert')
+    def _check_qty_to_convert(self):
+        for rec in self:
+            if rec.src_lot.product_qty < rec.qty_to_convert:
+                raise ValidationError(_('La quantité à convertir est supérieure à la quantité disponible en stock'))
+            
     
     @api.depends('src_product_id')
     def _compute_store_convertible_products(self):
@@ -71,7 +80,7 @@ class ProductConversion(models.Model):
                 'lot_id': self.src_lot.id or '',
                 'product_uom_qty': 0,
                 'product_uom_id': self.src_uom.id,
-                'qty_done': self.qty_to_convert,
+                'qty_done': self.qty_done,
                 'location_id': self.from_location.id,
                 'location_dest_id': inventory_loss.id,
             })]
