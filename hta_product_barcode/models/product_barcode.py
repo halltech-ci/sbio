@@ -9,10 +9,7 @@ class ProductBarcode(models.Model):
     _description = "Individual item in a product's barcode list"
     _order = "sequence, id"
 
-    name = fields.Char(
-        string="Barcode",
-        required=True,
-    )
+    name = fields.Char(string="Barcode", required=True,)
     sequence = fields.Integer(
         string="Sequence",
         default=0,

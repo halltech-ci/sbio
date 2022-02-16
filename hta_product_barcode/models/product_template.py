@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# from odoo import models, fields, api
+from odoo import fields, models, _
 
 
-# class hta_product_barcode(models.Model):
-#     _name = 'hta_product_barcode.hta_product_barcode'
-#     _description = 'hta_product_barcode.hta_product_barcode'
+class ProductTemplate(models.Model):
+    _inherit = "product.template"
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+    barcode_ids = fields.One2many(
+        comodel_name="product.barcode",
+        inverse_name="product_tmpl_id",
+        string="Barcodes",
+    )
