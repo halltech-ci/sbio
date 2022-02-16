@@ -7,8 +7,7 @@ class ProductProduct(models.Model):
     _inherit = "product.product"
 
     barcode_ids = fields.One2many(comodel_name="product.barcode", inverse_name="product_id", string="Barcodes",)
-    barcode = fields.Char(string="Main barcode", compute="_compute_barcode", store=True, inverse="_inverse_barcode", compute_sudo=True,
-    )
+    barcode = fields.Char(string="Main barcode", compute="_compute_barcode", store=True, inverse="_inverse_barcode", compute_sudo=True,)
 
     @api.depends("barcode_ids.name", "barcode_ids.sequence")
     def _compute_barcode(self):
