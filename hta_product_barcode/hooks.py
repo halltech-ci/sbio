@@ -8,3 +8,4 @@ def post_init_hook(cr, registry):
     SELECT id, product_tmpl_id, barcode, 0
     FROM product_product
     WHERE barcode IS NOT NULL"""
+    )
