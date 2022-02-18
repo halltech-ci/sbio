@@ -76,6 +76,7 @@ class ProductConversion(models.Model):
         
     
     def validate(self):
+        self._compute_allocate_qty()
         if not self.conversion_line:
             raise UserError(_('Veuillez choisir les produits'))
         inventory_loss = self.env['stock.location'].search([('usage', '=', 'inventory'), ('scrap_location', '=', False), ('return_location', '=', False)], limit=1)
@@ -147,6 +148,7 @@ class ProductConversion(models.Model):
         if vals.get('name', '/') == '/':
             vals['name'] = self.env['ir.sequence'].next_by_code('product.conversion') or '/'
         res = super(ProductConversion, self).create(vals)
+        #self._compute_allocate_qty()
         return res
 
     def unlink(self):
@@ -155,15 +157,33 @@ class ProductConversion(models.Model):
                 raise UserError(_('Warning! You cannot delete a validated Conversion'))
         return super(ProductConversion, self).unlink()
     
+    #@api.depends('conversion_line')
+    def _compute_allocate_qty(self):
+        for line in self.conversion_line:
+            if line.dest_product_id:
+                prefixe = line.dest_product_id.default_code or ""
+                quantity = str(int(line.converted_qty))
+                lot = line.conversion_id.src_lot.name
+                new_lot = "{0}{1}{2}{3}{4}".format(prefixe, quantity, lot,str(int(line.conversion_ratio)), 'k')
+                dest_lot = self.env['stock.production.lot'].create({
+                    'name': new_lot,
+                    'product_id': line.dest_product_id.id,
+                    'company_id': line.conversion_id.company_id.id,
+                }
+                )
+                line.dest_lot = dest_lot
+    
 class ProductConversionLinem(models.Model):
     _name = "product.conversion.line"
     _description = "Line for product conversion"
     
     conversion_id = fields.Many2one('product.conversion', string='Conversion id')
-    conversion_ratio = fields.Float(string='Conversion Ratio', compute='_get_conversion_ration')
+    conversion_ratio = fields.Float(string='Conversion Ratio',)
     dest_product_id = fields.Many2one('product.product', string="Product")
     dest_uom = fields.Many2one('uom.uom', string="Unit of measure", related="dest_product_id.uom_id")
-    dest_lot = fields.Many2one('stock.production.lot', string='Destination Lot')
+    dest_lot = fields.Many2one('stock.production.lot', string='Destination Lot', 
+                               #compute='_compute_allocate_qty', store=True
+                              )
     to_location = fields.Many2one('stock.location', string='Destination Location')
     converted_qty = fields.Float(string='Converted Quantity')
     dest_product_tracking = fields.Selection(related='dest_product_id.tracking', readonly=True)
@@ -187,8 +207,10 @@ class ProductConversionLinem(models.Model):
         for line in self:
             if line.conversion_ratio != 0:
                 line.converted_qty = int(line.allocate_quantity / line.conversion_ratio)
-        
+                
     
+        
+    """
     @api.onchange('dest_product_id')
     def _onchange_dest_product_id(self):
         for line in self:
@@ -197,7 +219,7 @@ class ProductConversionLinem(models.Model):
                     line.dest_lot = line.conversion_id.src_lot.id
                 else:
                     raise UserError(_('Veuillez activer le suivi par lot sur l\'article:' + str(line.dest_product_id.name)))
-    
+    """
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
