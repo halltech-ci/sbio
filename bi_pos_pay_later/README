@@ -1,0 +1,7 @@
+
+Version 15.0.0.2 : (21/10/21)
+		- Solved issue of multiple picking generated when paying order from backend.
+
+Version 15.0.0.3 : (02/11/21)
+		- Solved session closing issue.
+		- Solved date issue for return amount .

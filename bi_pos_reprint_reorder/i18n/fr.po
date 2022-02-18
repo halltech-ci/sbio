@@ -1,0 +1,155 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* bi_pos_reprint_reorder
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-12-22 06:41+0000\n"
+"PO-Revision-Date: 2021-12-22 06:41+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Apply"
+msgstr "Appliquer"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "CHANGE"
+msgstr "MONNAIE"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Discount:"
+msgstr "Remise:"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Discounts"
+msgstr "Remises"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Logo"
+msgstr "Logo"
+
+#. module: bi_pos_reprint_reorder
+#: model:ir.model,name:bi_pos_reprint_reorder.model_pos_order
+msgid "Point of Sale Orders"
+msgstr "Commandes au point de vente"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Print"
+msgstr "Imprimer"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Print Receipt"
+msgstr "Imprimer le reçu"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Product"
+msgstr "Produit"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Re-Order"
+msgstr "Réorganiser"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Receipt"
+msgstr "Reçu"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Reorder Products"
+msgstr "Recommander des produits"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Reorder Qty"
+msgstr "Quantité de réapprovisionnement"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Served by"
+msgstr "Servi par"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "TOTAL"
+msgstr "LE TOTAL"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Tel:"
+msgstr "Tél :"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "Total Taxes"
+msgstr "Taxes totales"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "VAT:"
+msgstr "VAT:"
+
+#. module: bi_pos_reprint_reorder
+#. openerp-web
+#: code:addons/bi_pos_reprint_reorder/static/src/xml/pos_reprint_reorder.xml:0
+#, python-format
+msgid "back"
+msgstr "retour"

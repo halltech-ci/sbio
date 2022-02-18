@@ -1,0 +1,38 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="pos_order_inherit_pos">
+      <field name="model">pos.order</field>
+      <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+      <field name="arch" type="xml">
+          <xpath expr="//sheet//group[@name='order_fields']/field[@name='user_id']" position="after">
+            <field name="delivery_person" readonly="True"/>
+            <field name="date_delivery" readonly="True"/>  
+          </xpath>
+          
+      </field>
+    </record>
+      <record id="view_pos_hta_filter" model="ir.ui.view">
+            <field name="name">hta.pos.filter</field>
+            <field name="model">pos.order</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search expense">
+                    <field name="name" string="Reference Commande"/>
+                    <field name="date_order" string="Date commande"/>
+                    <field name="partner_id" string="Client"/>
+                    <field name="pos_reference" string="Numero du reçu"/>
+                    <field name="delivery_person" string="Livreur"/>
+                    <filter name="state" string="Facturé" domain="[('state','=','invoiced')]"/>
+                    <filter name="date_order" string="Date de la commande"/>
+                    <group expand="1" string="Grouper par">
+                        <filter name="session_id" string="Session" context="{'group_by':'session_id'}"/>
+                        <filter name="delivery_person" string="Livreur" context="{'group_by':'delivery_person'}"/>
+                        <filter name="user_id" string="Caissier" context="{'group_by':'user_id'}"/>
+                        <filter name="partner_id" string="Client" context="{'group_by':'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+      </record>
+
+  </data>
+</odoo>
