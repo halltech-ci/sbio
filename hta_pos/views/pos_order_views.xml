@@ -1,13 +1,36 @@
 <odoo>
   <data>
+      
+     <record model="ir.ui.view" id="pos_order_inherit_pos_tree">
+      <field name="model">pos.order</field>
+      <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+      <field name="arch" type="xml">
+          <field name="partner_id" position="after">
+                <field name="customer_Phone" string="Phone Client"/>
+                <field name="delivery_person"/>
+                <field name="delivery_phone" string="Phone Livreur"/>
+          </field>
+      </field>
+    </record> 
+      
+      
     <record model="ir.ui.view" id="pos_order_inherit_pos">
       <field name="model">pos.order</field>
       <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
       <field name="arch" type="xml">
           <xpath expr="//sheet//group[@name='order_fields']/field[@name='user_id']" position="after">
-            <field name="delivery_person" readonly="True"/>
+            <!--<field name="delivery_person" readonly="True"/>--> 
+            <field name="delivery_person" string="Livreur"/>
             <field name="date_delivery" readonly="True"/>  
           </xpath>
+          
+          
+          <field name="delivery_person" position="after">
+                <field name="delivery_phone" string="Phone Livreur"/>
+          </field>
+          <field name="partner_id" position="after">
+                <field name="customer_Phone" string="Phone Client"/>
+          </field>
           
       </field>
     </record>
