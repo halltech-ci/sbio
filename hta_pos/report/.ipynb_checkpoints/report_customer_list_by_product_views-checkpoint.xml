@@ -17,7 +17,7 @@
     <report id="pos_report_customer_list_product"
         model="report.pos.report.wizard"
         string="Rapport list client par article"
-        report_type="qweb-pdf"
+        report_type="qweb-html"
         paperformat='paperformat_custom_report_pos_list_customer'
         name="hta_pos.report_pos_custmer_product"
         menu="False"/>
@@ -40,6 +40,7 @@
                                 <h3 class="text-center">RAPPORT LISTE CLIENT PAR PRODUITS
                                     <span style="font-size: 14px;"><strong>De</strong>: <t t-esc="date_start"/> <strong>A</strong>: <t t-esc="date_end"/></span>
                                 </h3>
+                        
                                 <br/>
                            
                             </div>
@@ -60,11 +61,11 @@
                             <t t-foreach="docs" t-as="lines"> 
                                     <t t-set="product" t-value="lines['get_lines']"/> 
                                     <t t-if="product">
-                                        <t t-foreach="analytic" t-as="line">
+                                        <t t-foreach="product" t-as="line">
                                             
                                             <tr>
                                                 <th class='text-center'>
-                                                    <span t-esc="line.get('product')"/> 
+                                                    <span t-esc="line.get('name_product')"/> 
                                                 </th>
                                                 <td> <span t-esc="line.get('customer_name')" /> </td>
                                                 <td><span t-esc="line.get('customer_phone')" /> </td>

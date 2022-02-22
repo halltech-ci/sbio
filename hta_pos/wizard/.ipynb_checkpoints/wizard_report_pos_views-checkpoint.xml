@@ -7,7 +7,7 @@
             <form string="Rapport Client/Articles">
                 <group>
                     <group>
-                        <field name="product_id"/>
+                        <field name="product_id" domain="[('available_in_pos', '=', True)]"/>
                     </group>
                     <group>
                         <field name="date_start"/>

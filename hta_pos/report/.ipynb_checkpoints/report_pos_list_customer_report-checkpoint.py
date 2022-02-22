@@ -18,16 +18,15 @@ class ReportTimeSheetReportView(models.AbstractModel):
         
         #params = [tuple(analytic_id),date_start,date_end]
         query = """
-                SELECT rpo.product_id AS product, SUM(rpo.price_sub_total) AS price_sub_total, SUM(rpo.product_qty) AS product_qty, rp.name AS customer_name, rp.phone AS customer_phone
+                SELECT rpo.product_id AS product, (rpo.price_sub_total) AS price_sub_total, (rpo.product_qty) AS product_qty, prod.name AS name_product, rp.name AS customer_name, rp.phone AS customer_phone
                 FROM report_pos_order AS rpo
-                INNER JOIN product_product AS pp ON  pp.id = rpo.product_id
                 INNER JOIN res_partner AS rp ON rp.id = rpo.partner_id
+                INNER JOIN product_product AS prod ON prod.id = rpo.product_id
 
                 WHERE 
-                   (rpo.product_id = """+ product_id+""")
+                   (rpo.product_id = """+ product_id +""")
                     AND
-                    (x_aml.date BETWEEN '%s' AND '%s')
-                GROUP BY product
+                    (rpo.date BETWEEN '%s' AND '%s')
         """%(date_start,date_end)
 
         self.env.cr.execute(query)
@@ -40,31 +39,31 @@ class ReportTimeSheetReportView(models.AbstractModel):
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
         
-        
         docs = []
         if data['form']['product_id']:
             product_id = data['form']['product_id'][0]
-            lines = self.env['product.product'].search([('id','=',product_id)])
+            lines = self.env['report.pos.order'].search([('product_id','=',product_id)])
         else:
-            lines = self.env['product.product'].search([])
+            lines = self.env['report.pos.order'].search([])
         for line in lines:
-            prod_id = line.id
+            prod_id = line.product_id.id
             id_pp = str(prod_id)
             
             get_lines = self.get_lines(id_pp,date_start,date_end)
-            #name = line.name
+            name = line.product_id.name
             
             docs.append ({
-                #'name': name,
+                'id_pp': id_pp,
+                'name':name,
                 'get_lines':get_lines,
             })
-            
-        
+             
         return {
             'doc_model': 'report.pos.report.wizard',
             'date_start': date_start,
             'date_end': date_end,
             'docs': docs,
+            
             'get_lines':self.get_lines,
         }
     
