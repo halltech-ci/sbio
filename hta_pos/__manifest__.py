@@ -20,15 +20,24 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['point_of_sale'],
+    'depends': ['point_of_sale',
+                #'report_xlsx'
+               ],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'wizard/assign_commands.xml',
         'views/payment_order.xml',
         'views/assign_commands_views.xml',
         'views/pos_order_views.xml',
+        
+        # WIZARD
+        'wizard/assign_commands.xml',
+        'wizard/wizard_report_pos_views.xml',
+        
+        # Report
+        'report/report_customer_list_by_product_views.xml',
+        
     ],
     # only loaded in demonstration mode
     'demo': [
