@@ -37,5 +37,3 @@ class PosPaymentCommands(models.TransientModel):
                 pos_order._compute_total_cost_in_real_time()
                 #pos_order._create_order_picking()
                 #return {'type': 'ir.actions.act_window_close'}
-
-

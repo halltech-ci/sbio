@@ -13,7 +13,6 @@
       </field>
     </record> 
       
-      
     <record model="ir.ui.view" id="pos_order_inherit_pos">
       <field name="model">pos.order</field>
       <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
@@ -31,7 +30,6 @@
           <field name="partner_id" position="after">
                 <field name="customer_Phone" string="Phone Client"/>
           </field>
-          
       </field>
     </record>
       <record id="view_pos_hta_filter" model="ir.ui.view">

@@ -2,6 +2,7 @@ from datetime import datetime
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_round
 
 
 class PosAssignCommands(models.TransientModel):
@@ -25,5 +26,10 @@ class PosAssignCommands(models.TransientModel):
             else:
                 pos_order.delivery_person = self.delivery_person
                 pos_order.date_delivery = self.date_delivery
+                
+                
+    
+    
+   
 
 

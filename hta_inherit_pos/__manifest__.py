@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "hta_pos",
+    'name': "hta_inherit_pos",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,17 +20,17 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['point_of_sale'],
+    'depends': ['base','point_of_sale','hta_pos'],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'wizard/assign_commands.xml',
-        'wizard/fonction_return_stock_picking.xml',
-        'views/payment_order.xml',
-        'views/assign_commands_views.xml',
-        'views/pos_order_views.xml',
+        # 'security/ir.model.access.csv',
+        'wizard/hta_return_pos_wizard.xml',
+        'views/pos_order_return.xml',
+        'views/views.xml',
+        'views/templates.xml',
     ],
+    
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
