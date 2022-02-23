@@ -26,7 +26,6 @@
     'data': [
         'security/ir.model.access.csv',
         'wizard/assign_commands.xml',
-        'wizard/fonction_return_stock_picking.xml',
         'views/payment_order.xml',
         'views/assign_commands_views.xml',
         'views/pos_order_views.xml',
