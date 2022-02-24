@@ -1,1 +1,0 @@
-- Implement ticket without price generation on proxy mode.

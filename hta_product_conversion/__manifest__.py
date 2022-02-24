@@ -21,7 +21,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'stock', 'product', 'hta_product_barcode'],
-
+    
     # always loaded
     'data': [
         'security/ir.model.access.csv',
