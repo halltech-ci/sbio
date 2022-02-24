@@ -40,7 +40,6 @@
                                 <h3 class="text-center">RAPPORT LISTE CLIENT PAR PRODUITS
                                     <span style="font-size: 14px;"><strong>De</strong>: <t t-esc="date_start"/> <strong>A</strong>: <t t-esc="date_end"/></span>
                                 </h3>
-                        
                                 <br/>
                            
                             </div>
@@ -59,13 +58,12 @@
                         </thead>
                         <tbody>
                             <t t-foreach="docs" t-as="lines"> 
-                                    <t t-set="product" t-value="lines['get_lines']"/> 
+                                    <t t-set="product" t-value="lines['get_lines']"/>
                                     <t t-if="product">
                                         <t t-foreach="product" t-as="line">
-                                            
                                             <tr>
                                                 <th class='text-center'>
-                                                    <span t-esc="line.get('name_product')"/> 
+                                                    <span t-esc="lines['name']"/> 
                                                 </th>
                                                 <td> <span t-esc="line.get('customer_name')" /> </td>
                                                 <td><span t-esc="line.get('customer_phone')" /> </td>
@@ -73,7 +71,7 @@
                                                 <td class='text-center'><span t-esc="line.get('price_sub_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                             </tr>   
                                         </t>
-                                    </t>  
+                                        </t>     
                             </t>
 
                         </tbody>

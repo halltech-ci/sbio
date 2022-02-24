@@ -14,22 +14,22 @@ class ReportTimeSheetReportView(models.AbstractModel):
     
     _description = 'Rapport liste des client/Articles'
     
-    def get_lines(self, product_id, date_start,date_end):
+    def get_lines(self, product_id,date_start,date_end):
         
-        #params = [tuple(analytic_id),date_start,date_end]
+        params = [date_start,date_end]
         query = """
-                SELECT rpo.product_id AS product, (rpo.price_sub_total) AS price_sub_total, (rpo.product_qty) AS product_qty, prod.name AS name_product, rp.name AS customer_name, rp.phone AS customer_phone
+                SELECT rp.name AS customer_name, rp.phone AS customer_phone, SUM(rpo.price_sub_total) AS price_sub_total, SUM(rpo.product_qty) AS product_qty
                 FROM report_pos_order AS rpo
                 INNER JOIN res_partner AS rp ON rp.id = rpo.partner_id
                 INNER JOIN product_product AS prod ON prod.id = rpo.product_id
-
                 WHERE 
-                   (rpo.product_id = """+ product_id +""")
+                   (prod.id = """+product_id+""")
                     AND
-                    (rpo.date BETWEEN '%s' AND '%s')
-        """%(date_start,date_end)
+                    (rpo.date BETWEEN %s AND %s)
+                GROUP BY customer_name,customer_phone
+        """
 
-        self.env.cr.execute(query)
+        self.env.cr.execute(query,params)
         return self.env.cr.dictfetchall()
       
 
@@ -42,15 +42,15 @@ class ReportTimeSheetReportView(models.AbstractModel):
         docs = []
         if data['form']['product_id']:
             product_id = data['form']['product_id'][0]
-            lines = self.env['report.pos.order'].search([('product_id','=',product_id)])
+            lines = self.env['product.product'].search([('product_id','=',product_id)])
         else:
-            lines = self.env['report.pos.order'].search([])
+            lines = self.env['product.product'].search([])
         for line in lines:
-            prod_id = line.product_id.id
+            prod_id = line.id
             id_pp = str(prod_id)
-            
+            name = line.partner_ref
             get_lines = self.get_lines(id_pp,date_start,date_end)
-            name = line.product_id.name
+            
             
             docs.append ({
                 'id_pp': id_pp,
