@@ -21,6 +21,8 @@
 
     # any module necessary for this one to work correctly
     'depends': ['point_of_sale',
+                'stock',
+               
                 #'report_xlsx'
                ],
 
@@ -30,6 +32,8 @@
         'views/payment_order.xml',
         'views/assign_commands_views.xml',
         'views/pos_order_views.xml',
+        'views/stock_picking.xml',
+        'views/produit_views.xml',
         
         # WIZARD
         'wizard/assign_commands.xml',

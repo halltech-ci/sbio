@@ -23,13 +23,14 @@
             </form>
         </field>
     </record>
-    
-        <record id="action_pos_report_report_wizard" model="ir.actions.act_window">
-            <field name="name">Client/Articles</field>
-            <field name="res_model">report.pos.report.wizard</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
-    </record>
+
+    <act_window 
+        id="action_pos_report_report_wizard"
+        name="Client/Articles"
+        res_model="report.pos.report.wizard"
+        view_mode="form"
+        target="new"
+        />
 
     <menuitem 
         id="menu_pos_report_report_wizard"
