@@ -195,7 +195,7 @@
 					<t t-foreach='props.orderlines' t-as='line'>
 						<t t-set='simple' t-value='(line.discount === 0 and line.qty === 1)' />
 						<div t-if='simple'>
-							<t t-esc="line.product_id"/>
+							<t t-esc="line.product_id.substr(0,20)"/>
 							<span t-esc='env.pos.format_currency_no_symbol(line.total_price)' class="price_display pos-receipt-right-align"/>
 						</div>
 						<t t-if='!simple'>
@@ -303,7 +303,6 @@
 				<br /><br />
 				<div class='orderlines'>
 					<t t-foreach='props.orderlines' t-as='line'>
-						
 						<div>
 							<t t-esc="line.product_id"/>
 						</div>
@@ -311,7 +310,10 @@
                         <div>
 							<t t-esc="line.notice"/>
 						</div>
-                        <div class="pos-receipt-right-align">--------</div>
+                        <br/>
+                        <div>---------------------------------------</div>
+                        <br/>
+                        
 					</t>
 				</div>
 				<br/>

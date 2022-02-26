@@ -85,6 +85,9 @@ List all POS order on POS screen Show order on POS view all orders on POS Displa
             "bi_pos_reprint_reorder/static/src/js/Screens/POSOrdersScreen.js",
             "bi_pos_reprint_reorder/static/src/js/Screens/OrderReprintScreen.js",
             "bi_pos_reprint_reorder/static/src/js/Screens/OrderReprintReceipt.js",
+            
+            "bi_pos_reprint_reorder/static/src/js/Screens/OrderPrintNotice.js",
+            "bi_pos_reprint_reorder/static/src/js/Screens/OrderPrintNoticeScreen.js",
         ],
         'web.assets_qweb': [
             'bi_pos_reprint_reorder/static/src/xml/**/*',
