@@ -181,14 +181,13 @@ class ProductConversionLinem(models.Model):
     conversion_ratio = fields.Float(string='Conversion Ratio',)
     dest_product_id = fields.Many2one('product.product', string="Product")
     dest_uom = fields.Many2one('uom.uom', string="Unit of measure", related="dest_product_id.uom_id")
-    dest_lot = fields.Many2one('stock.production.lot', string='Destination Lot', 
-                               #compute='_compute_allocate_qty', store=True
-                              )
+    dest_lot = fields.Many2one('stock.production.lot', string='Destination Lot',)
     to_location = fields.Many2one('stock.location', string='Destination Location')
-    converted_qty = fields.Float(string='Converted Quantity')
+    converted_qty = fields.Float(string='Converted Qty')
     dest_product_tracking = fields.Selection(related='dest_product_id.tracking', readonly=True)
-    allocate_quantity = fields.Float(string='Allocate Quantity', digits='Product Price')
+    allocate_quantity = fields.Float(string='Allocate Qty', digits='Product Price')
     company_id = fields.Many2one(related='conversion_id.company_id', string='Company', store=True, readonly=True)
+    qty_done = fields.Integer(string='Qty Done')
     
     @api.depends('conversion_id.src_product_id')
     def _get_conversion_ration(self):

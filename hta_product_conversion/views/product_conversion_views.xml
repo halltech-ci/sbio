@@ -46,6 +46,7 @@
                                 <field name="conversion_ratio" readonly="1" force_save="1" required="1"/>
                                 <field name="allocate_quantity" attrs="{'readonly':[('parent.state','in',('done','cancel'))]}" required="1"/>
                                 <field name="converted_qty" readonly="1" force_save="1" required="1"/>
+                                <field name="qty_done" required="1"/>
                                 <field name="dest_product_tracking" invisible="1"/>
                                 <field name="to_location" required="1" attrs="{'readonly':[('parent.state','in',('done','cancel'))]}" domain="[('usage', '=', 'internal')]"/>
                                 <field name="dest_lot" readonly='1' domain="[('product_id', '=', dest_product_id)]"/>
@@ -79,7 +80,7 @@
       <field name="view_mode">tree,form</field>
     </record>
         
-    <menuitem action="action_product_conversion" id="menu_product_conversion" name="Product Conversion" parent="stock.menu_stock_warehouse_mgmt" sequence="1"/>
+    <menuitem action="action_product_conversion" id="menu_product_conversion" name="Product Conversion" parent="mrp.menu_mrp_manufacturing" sequence="99"/>
       
     <record id="view_product_product_form_view" model="ir.ui.view">
         <field name="name">product.product.form.simplified</field>
