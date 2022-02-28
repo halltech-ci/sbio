@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','point_of_sale','hta_pos'],
+    'depends': ['base','point_of_sale','hta_pos','stock'],
 
     # always loaded
     'data': [
@@ -29,6 +29,9 @@
         'views/pos_order_return.xml',
         'views/views.xml',
         'views/templates.xml',
+        'report_barcode/report_barcode_views.xml',
+        'report_barcode/with_price2x7_views.xml',
+        'report_barcode/with_price4x7_views.xml',
     ],
     
     # only loaded in demonstration mode
