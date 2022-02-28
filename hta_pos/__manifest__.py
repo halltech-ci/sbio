@@ -35,12 +35,18 @@
         'views/stock_picking.xml',
         'views/produit_views.xml',
         
+        #inherit report barcode
+#         'report_barcode/report_simple_label_dymo_views.xml',
+#         'report_barcode/report_simple_label4x7_views.xml',
+#         'report_barcode/report_simple_label2x7_views.xml',
+        
         # WIZARD
         'wizard/assign_commands.xml',
         'wizard/wizard_report_pos_views.xml',
         
         # Report
         'report/report_customer_list_by_product_views.xml',
+        'report/report_pos_print_order_delivery.xml',
         
     ],
     # only loaded in demonstration mode

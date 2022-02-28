@@ -18,6 +18,7 @@
                 </group>
                 <footer>
                     <button name="assign_delivery_orders" string="Valider" type="object" class="oe_highlight"/>
+                    <button name="print_order_assigner" string="Print" type="object" class="oe_highlight"/>
                     <button string="Cancel" special="cancel"/>
                 </footer>
             </form>
