@@ -50,7 +50,7 @@
                                 <field name="qty_done" required="1" attrs="{'readonly':[('parent.state','in',('done','cancel'))]}"/>
                                 <field name="dest_product_tracking" invisible="1"/>
                                 <field name="to_location" required="1" attrs="{'readonly':[('parent.state','in',('done','cancel'))]}" domain="[('usage', '=', 'internal')]"/>
-                                <field name="dest_lot" readonly='1' domain="[('product_id', '=', dest_product_id)]"/>
+                                <field name="dest_lot" domain="[('product_id', '=', dest_product_id)]"/>
                                 <field name="company_id" force_save="1" invisible="1" />
                             </tree>
                         </field>

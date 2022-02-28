@@ -93,6 +93,7 @@ class ProductConversion(models.Model):
     
     
     def validate(self):
+        self._compute_allocate_qty()
         if not self.conversion_line:
             raise UserError(_('Veuillez choisir les articles'))
         inventory_loss = self.env['stock.location'].search([('usage', '=', 'inventory'), ('scrap_location', '=', False), ('return_location', '=', False)], limit=1)
@@ -198,6 +199,7 @@ class ProductConversionLinem(models.Model):
     dest_product_id = fields.Many2one('product.product', string="Product")
     dest_uom = fields.Many2one('uom.uom', string="Unit of measure", related="dest_product_id.uom_id")
     dest_lot = fields.Many2one('stock.production.lot', string='Destination Lot',)
+
     to_location = fields.Many2one('stock.location', string='Destination Location')
     converted_qty = fields.Float(string='Converted Qty')
     dest_product_tracking = fields.Selection(related='dest_product_id.tracking', readonly=True)
