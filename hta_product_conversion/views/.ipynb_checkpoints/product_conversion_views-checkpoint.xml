@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="view_product_product_form_view" model="ir.ui.view">
+        <field name="name">product.product.form.simplified</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page string="Conversion">
+                    <field name="conversion_line" widget="one2many_list">
+                        <tree editable="bottom">
+                            <field name="convertible_product" required="1"/>
+                            <field name="uom_id" readonly="1" force_save="1" required="1"/>
+                            <field name="conversion_ratio" required="1"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>
