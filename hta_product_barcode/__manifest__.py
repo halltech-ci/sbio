@@ -20,7 +20,11 @@
     'version': '15.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['product'],
+    'depends': ['product',
+                'stock',
+                'stock_barcode',
+                'barcodes',
+               ],
 
     # always loaded
     'data': [
@@ -29,6 +33,14 @@
         'views/templates.xml',
         'views/product_template_views.xml',
         'views/product_product_views.xml',
+        
+         # report barcode inherit 
+        'report_barcode/report_barcode_views.xml',
+        'report_barcode/report_simple_label_views.xml',
+        'report_barcode/with_price2x7_views.xml',
+        'report_barcode/with_price4x7_views.xml', 
+        
+        
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <template id="inherit_report_barcode_simple_label4x12" inherit_id="product.report_simple_label4x12">
+             <xpath expr="//div[@class='o_label_name'] " position="replace">
+                <p>
+                </p>
+            </xpath> 
+            <xpath expr="//div[@class='o_label_left_column'] " position="replace">
+                <p>
+                </p>
+            </xpath> 
+            <xpath expr="//div[@class='o_label_price_medium text-right'] " position="replace">
+                <p>
+                </p>
+            </xpath>
+            
+            <xpath expr="//div[@class='o_label_left_column o_label_full_with'] " position="replace">
+                <p>
+                </p>
+            </xpath>
+            <xpath expr="//div[@class='text-center o_label_small_barcode'] " position="replace">
+                <div class="text-center o_label_small_barcode">
+                        <t t-if="barcode">
+                            <div t-out="barcode" style="padding:0; font-size:12px;" t-options="{'widget': 'barcode', 'symbology': 'auto', 'img_style': barcode_size}"/>
+                            <span class="text-center" t-out="barcode" style="font-size:12px;"/>
+                        </t>
+                    </div>
+            </xpath>
+            
+            <xpath expr="//div[@class='text-center o_label_small_barcode'] " position="after">
+                <div class="container" style="font-size:10px;">
+                  <div class="row">
+                    <div class="col-6">
+                      Fab:47/54/5555 <!--span class="text-nowrap" t-field="product.default_code"/-->
+                    </div>
+                    <div class="col-6">
+                      Exp:43/55/6666 <!--span class="text-nowrap" t-field="product.default_code"/-->
+                    </div>
+                 </div>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

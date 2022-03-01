@@ -62,7 +62,7 @@
                                     <t t-if="product">
                                         <t t-foreach="product" t-as="line">
                                             <tr>
-                                                <th class='text-center'>
+                                                <th>
                                                     <span t-esc="lines['name']"/> 
                                                 </th>
                                                 <td> <span t-esc="line.get('customer_name')" /> </td>

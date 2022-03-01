@@ -22,7 +22,7 @@
     # any module necessary for this one to work correctly
     'depends': ['point_of_sale',
                 'stock',
-               
+                
                 #'report_xlsx'
                ],
 
@@ -35,10 +35,6 @@
         'views/stock_picking.xml',
         'views/produit_views.xml',
         
-        #inherit report barcode
-#         'report_barcode/report_simple_label_dymo_views.xml',
-#         'report_barcode/report_simple_label4x7_views.xml',
-#         'report_barcode/report_simple_label2x7_views.xml',
         
         # WIZARD
         'wizard/assign_commands.xml',
