@@ -1,0 +1,125 @@
+<odoo>
+    <record id="paperformat_report_order_assign_delivery" model="report.paperformat">
+            <field name="name">POS</field>
+            <field name="default" eval="False"/>
+            <field name="format">custom</field>
+            <field name="page_height">210</field>
+            <field name="page_width">300</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">4</field>
+            <field name="margin_bottom">9</field>
+            <field name="margin_right">3</field>
+            <field name="margin_left">3</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+    </record>
+    <report id="pos_report_assign_order"
+        model="pos.assign.commands.wizard"
+        string="Commande Assigner"
+        report_type="qweb-html"
+        paperformat='paperformat_report_order_assign_delivery'
+        name="hta_pos.report_pos_delivery_order"
+        menu="False"/>
+    
+<!--     <report id="cash_generate_xlsx_report"
+        model="account.cash.report.wizard"
+        string="Account Cash Report"
+        report_type="xlsx"
+        name="custom_report.account_cash_xlsx_generate"
+        file="custom_report.account_cash_xlsx_generate"
+        
+        /> -->
+
+    <template id="report_pos_delivery_order">
+        <t t-call="web.html_container">
+                <div class="article mt0 o_report_layout_standard">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm" style="display: block;text-align:center;">
+                                <h3 class="text-center">
+                                    LES COMMANDES ASSIGNEES AUX LIVREURS
+                                </h3>
+                                <br/>
+<!--                                 <h3 class="text-center">
+                                    <t t-foreach="orders" t-as="lines">
+                                        <t t-set="number" t-value="lines['pos_reference']"/>
+                                        <t t-set="lines_order" t-value="lines['line_docs']"/>
+                                        <t t-esc="number"/>
+                                        <t t-foreach="lines_order" t-as="line">
+                                            <t t-esc="line['full_product_name']"/>
+                                        </t>    
+                                    </t>     
+                                </h3> -->
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="container">
+                        <div class="row">
+                             <div class="col-6" >
+                                <p>DATE</p>
+                                <p><t t-esc="date_delivery"/></p>
+                            </div>
+                            <div class="col-6" >
+                                <p>LIVREUR</p>
+                                <p><t t-esc="delivery_person[1]"/></p>
+                            </div>
+                        </div>
+                    </div>
+                 <table class="table table-sm table-condensed table-bordered" >
+                     <t t-foreach="orders" t-as="lines">
+                        <t t-set="number" t-value="lines['pos_reference']"/>
+                        <t t-set="date_delivery" t-value="lines['pos_order_date']"/>
+                         <t t-set="amount_total" t-value="lines['amount_total']"/>
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class='text-center'>Commande: <t t-esc="number"/></th>
+                                <th class='text-center'>Date Livraison: <t t-esc="date_delivery"/></th>
+                            </tr>
+                            <tr>
+                                <th class='text-center'>Produit</th>
+                                <th class='text-center'>Qté</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="lines_order" t-value="lines['line_docs']"/>
+                            <t t-foreach="lines_order" t-as="line">
+                                <tr>
+                                    <th class='text-center'>
+                                        <span t-esc="line['full_product_name']"/> 
+                                    </th>
+                                    <td> <span t-esc="line['qty']" /> </td>
+                                </tr>   
+                            </t>
+                            <tr class="border-black o_total">
+                                <td><strong>Total Montant</strong></td>
+                                    <td class="text-right">
+                                        <span class="text-nowrap"  t-esc="amount_total"/>
+                                    </td>
+                            </tr>
+                        </tbody>
+                     </t>                 
+                    </table>
+                    <br/>
+            </div> 
+            <div class="footer o_standard_footer" style="border-top: 1px solid black;">
+                <div class="row text-center">
+                    <div class="col col-12 text-center">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">Page:</li>
+                            <li class="list-inline-item">
+                                <span class="page"/>
+                            </li>
+                            <li class="list-inline-item">/</li>
+                            <li class="list-inline-item">
+                                <span class="topage"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

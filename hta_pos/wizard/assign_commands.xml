@@ -1,0 +1,38 @@
+<odoo>
+    <record id="assign_command_wizard" model="ir.ui.view" >
+        <field name="name">Assign Commands</field>
+        <field name="model">pos.assign.commands.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Assign Commands">
+                <p>
+                Vous voulez assigner ces commandes au livrieurs ...
+                </p>
+                <group>
+                    <group>
+                        <field name="delivery_person"/>
+                    </group>
+                    <group>
+                        <field name="date_delivery"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="assign_delivery_orders" string="Valider" type="object" class="oe_highlight"/>
+                    <button name="print_order_assigner" string="Print" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="assign_cmmd_delivery_action" model="ir.actions.act_window">
+            <field name="name">Assigner la commande </field>
+            <field name="res_model">pos.assign.commands.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="point_of_sale.model_pos_order"/>
+            <field name="binding_view_types">list</field>
+    </record>
+
+
+</odoo>
