@@ -1,6 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <data>
+    <record id="product_conversion_form" model="ir.ui.view">
+      <field name="name">product.conversion.form</field>
+      <field name="model">product.conversion</field>
+      <field name="arch" type="xml">
+        <form>
+        	<header>
+        		<field name="state" widget="statusbar" class="oe_right" statusbar="draft,reserve,done,cancel"/>
+                <button name="reserve_qty" string="Reserver" type="object" class="oe_highlight" states="draft"/>
+                <button name="validate" string="Validate" type="object" class="oe_highlight" states='reserve'/>
+                <button name="cancel" string="Cancel" type="object" class="oe_highlight" states='reserve'/>
+                <button name="set_to_draft" string="Set To Draft" type="object" class="oe_highlight" states='cancel,'/>
+        	</header>
+        	<sheet>
+                <div class="oe_title">
+                    <h1>
+                        <field name="name" readonly="1"/>
+                    </h1>
+                </div>
+                    <group>
+                        <group>
+                            <field name="src_product_id" attrs="{'readonly':[('state','in',('done','cancel'))]}" domain="[('type', '=', 'product')]" required="1"/>
+                            <field name="src_lot" attrs="{'readonly':['|',('state','in',('reserved', 'done','cancel')),('src_product_tracking', '!=', 'lot')]}" domain="[('product_id', '=', src_product_id)]"/>
+                            <field name="qty_to_convert" required="1" attrs="{'readonly':['|',('state','in',('reseved', 'done','cancel')),('src_lot','=',False)]}"/>
+                            
+                            <field name="src_product_tracking" invisible="1"/>
+                            
+                            <field name="date" readonly='1' required="1"/>
+                        </group>
+                        <group>
+                            <field name="from_location" required="1" attrs="{'readonly':[('state','in',('reserved', 'done','cancel'))]}" domain="[('usage', '=', 'internal')]"/>
+                            <field name="user_id" force_save="1" readonly="1" />
+                            <field name="src_uom" readonly="1" force_save="1" required="1"/>
+                            <field name="product_ids" force_save="1" widget="many2many_tags" invisible="1"/>
+                            
+                            <field name="company_id" force_save="1" readonly="1" />
+                        </group>
+                    </group>
+                <notebook>
+                    <page string="Conversion Line">   
+                        <field name="conversion_line" widget="one2many_list">
+                            <tree editable="bottom">
+                                <field name="dest_product_id" required="1" force_save='1' domain="[('type', '=', 'product'), ('id','in', parent.product_ids)]" attrs="{'readonly':[('parent.state','in',('reserved', 'done','cancel'))]}"/>
+                                <field name="dest_uom" readonly="1" force_save="1" required="1"/>
+                                <field name="conversion_ratio" readonly="1" force_save="1" required="1"/>
+                                <field name="allocate_quantity" attrs="{'readonly':[('parent.state','in',('reserved', 'done','cancel'))]}" required="1"/>
+                                <field name="converted_qty" readonly="1" force_save="1" required="1"/>
+                                <field name="qty_done" required="1" attrs="{'readonly':[('parent.state','in',('done','cancel'))]}"/>
+                                <field name="dest_product_tracking" invisible="1"/>
+                                <field name="to_location" required="1" attrs="{'readonly':[('parent.state','in',('done','cancel'))]}" domain="[('usage', '=', 'internal')]"/>
+                                <field name="dest_lot" readonly='1' domain="[('product_id', '=', dest_product_id)]"/>
+                                <field name="company_id" force_save="1" invisible="1" />
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+	        </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="product_conversion_tree" model="ir.ui.view">
+        <field name="name">product.conversion.tree</field>
+        <field name="model">product.conversion</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="src_product_id"/>
+                <field name="date"/>
+                <field name="qty_to_convert"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+        
+    <record id="action_product_conversion" model="ir.actions.act_window">
+      <field name="name">Product Conversion</field>
+      <field name="res_model">product.conversion</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+        
+    <menuitem action="action_product_conversion" id="menu_product_conversion" name="Product Conversion" parent="mrp.menu_mrp_manufacturing" sequence="99"/>
+      
     <record id="view_product_product_form_view" model="ir.ui.view">
         <field name="name">product.product.form.simplified</field>
         <field name="model">product.product</field>

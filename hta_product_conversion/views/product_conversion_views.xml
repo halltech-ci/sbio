@@ -7,11 +7,11 @@
       <field name="arch" type="xml">
         <form>
         	<header>
-        		<field name="state" widget="statusbar" class="oe_right" statusbar="draft,done,cancel"/>
+        		<field name="state" widget="statusbar" class="oe_right" statusbar="draft,reserve,done,cancel"/>
                 <button name="reserve_qty" string="Reserver" type="object" class="oe_highlight" states="draft"/>
                 <button name="validate" string="Validate" type="object" class="oe_highlight" states='reserve'/>
-                <button name="cancel" string="Cancel" type="object" class="oe_highlight" states='draft'/>
-                <button name="set_to_draft" string="Set To Draft" type="object" class="oe_highlight" states='cancel'/>
+                <button name="cancel" string="Cancel" type="object" class="oe_highlight" states='reserve'/>
+                <button name="set_to_draft" string="Set To Draft" type="object" class="oe_highlight" states='cancel,'/>
         	</header>
         	<sheet>
                 <div class="oe_title">

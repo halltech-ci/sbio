@@ -22,7 +22,7 @@
     # any module necessary for this one to work correctly
     'depends': ['point_of_sale',
                 'stock',
-                'bi_pos_reprint_reorder',
+#                 'bi_pos_reprint_reorder',
                 
                 #'report_xlsx'
                ],

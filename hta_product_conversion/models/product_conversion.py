@@ -89,7 +89,7 @@ class ProductConversion(models.Model):
             allocte_qty += line.allocate_quantity
         if allocte_qty > self.qty_to_convert:
             raise UserError(_('Quantité allouée supérieure à la quantité disponible.'))
-        self.write({'state': 'reserved'})
+        self.write({'state': 'reserve'})
     
     
     def validate(self):
