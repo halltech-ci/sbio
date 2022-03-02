@@ -35,10 +35,10 @@
         'views/product_product_views.xml',
         
          # report barcode inherit 
-        'report_barcode/report_barcode_views.xml',
-        'report_barcode/report_simple_label_views.xml',
-        'report_barcode/with_price2x7_views.xml',
-        'report_barcode/with_price4x7_views.xml', 
+#         'report_barcode/report_barcode_views.xml',
+#         'report_barcode/report_simple_label_views.xml',
+#         'report_barcode/with_price2x7_views.xml',
+#         'report_barcode/with_price4x7_views.xml', 
         
         
     ],

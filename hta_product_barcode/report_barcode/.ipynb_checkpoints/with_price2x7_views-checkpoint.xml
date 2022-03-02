@@ -1,11 +1,11 @@
 <odoo>
     <data>
         <template id="inherit_report_barcodesimple_label2x7" inherit_id="product.report_simple_label2x7">
-            <xpath expr="//div[@class='o_label_name'] " position="replace">
+            <xpath expr="//div[hasclass('o_label_name')] " position="replace">
                 <p>
                 </p>
             </xpath>
-            <xpath expr="//div[@class='text-center o_label_left_column'] " position="replace">
+            <xpath expr="//div[hasclass('o_label_left_column')] " position="replace">
                 <div class="text-center o_label_left_column">
                      <t t-if="barcode">
                             <!-- `quiet=0` to remove the left and right margins on the barcode -->
@@ -16,7 +16,7 @@
                         </t>
                 </div>
             </xpath>
-             <xpath expr="//div[@class='text-right'] " position="replace">
+             <xpath expr="//div[hasclass('text-right')] " position="replace">
                 <div class="container" style="font-size:11px;">
                   <div class="row">
                     <div class="col-3">
