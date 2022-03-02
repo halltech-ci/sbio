@@ -14,13 +14,24 @@
             <field name="header_spacing">3</field>
             <field name="dpi">90</field>
     </record>
-    <report id="pos_report_assign_order"
+         <record id="pos_report_assign_order" model="ir.actions.report">
+            <field name="name">Commande Assigner</field>
+            <field name="model">pos.assign.commands.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">hta_pos.report_pos_delivery_order</field>
+            <field name="report_file">hta_pos.report_pos_delivery_order</field>
+    
+<field name="print_report_name">Commande Assigner</field>
+            <field name="binding_model_id" ref="model_pos_assign_commands_wizard"/>
+            <field name="binding_type">report</field>
+        </record>
+<!--     <report id="pos_report_assign_order"
         model="pos.assign.commands.wizard"
         string="Commande Assigner"
         report_type="qweb-html"
         paperformat='paperformat_report_order_assign_delivery'
         name="hta_pos.report_pos_delivery_order"
-        menu="False"/>
+        menu="False"/> -->
     
 <!--     <report id="cash_generate_xlsx_report"
         model="account.cash.report.wizard"

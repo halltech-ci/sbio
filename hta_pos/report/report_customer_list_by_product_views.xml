@@ -14,13 +14,25 @@
             <field name="header_spacing">3</field>
             <field name="dpi">90</field>
     </record>
-    <report id="pos_report_customer_list_product"
+    
+     <record id="pos_report_customer_list_product" model="ir.actions.report">
+            <field name="name">Rapport client par article</field>
+            <field name="model">report.pos.report.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">hta_pos.report_pos_custmer_product</field>
+            <field name="report_file">hta_pos.report_pos_custmer_productr</field>
+    
+<field name="print_report_name">Rapport Client</field>
+            <field name="binding_model_id" ref="model_report_pos_report_wizard"/>
+            <field name="binding_type">report</field>
+        </record>
+<!--     <report id="pos_report_customer_list_product"
         model="report.pos.report.wizard"
         string="Rapport list client par article"
         report_type="qweb-html"
         paperformat='paperformat_custom_report_pos_list_customer'
         name="hta_pos.report_pos_custmer_product"
-        menu="False"/>
+        menu="False"/> -->
     
 <!--     <report id="cash_generate_xlsx_report"
         model="account.cash.report.wizard"
