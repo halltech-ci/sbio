@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_conversion,product_conversion,model_product_conversion,mrp.group_mrp_user,1,1,1,1
-access_product_conversion_line,product_conversion_line,model_product_conversion_line,mrp.group_mrp_user,1,1,1,1
-access_product_line,product_line,model_product_line,mrp.group_mrp_user,1,1,1,1
