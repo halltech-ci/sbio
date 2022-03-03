@@ -10,7 +10,7 @@
                 </p>
             </xpath>
             <xpath expr="//div[hasclass('text-center o_label_small_barcode')] " position="replace">
-               <div class="text-center o_label_small_barcode">
+               <div class="text-center o_label_small_barcodes">
                     <t t-if="barcode">
                         <div t-out="barcode" style="padding:0" t-options="{'widget': 'barcode', 'quiet': 0, 'symbology': 'auto', 'img_style': barcode_size}"/>
                         <div class="o_label_name" style="line-height: 130%;height:2.7em;background-color: transparent;">
@@ -19,7 +19,7 @@
                     </t>
                 </div>
             </xpath>
-            <xpath expr="//div[hasclass('text-center o_label_small_barcode')]" position="after">
+            <xpath expr="//div[hasclass('text-center o_label_small_barcodes')]" position="after">
                <div class="container" style="font-size:11px;">
                   <div class="row">
                     <div class="col-6">
