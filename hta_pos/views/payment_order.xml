@@ -1,0 +1,35 @@
+<odoo>
+    <record id="payment_command_wizard" model="ir.ui.view" >
+        <field name="name">Payment after delivery</field>
+        <field name="model">payment.after.delivery.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Payment after delivery">
+                <p>
+                Vous aller passer au paiment après la livraison...
+                </p>
+                <group>
+                    <group>
+                        <field name="payment_method"/>
+                    </group>
+                    <group>
+                        <field name="amount"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="payment_after_orders" string="Valider" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="payment_after_delivery_action" model="ir.actions.act_window">
+            <field name="name">Passer au paiement</field>
+            <field name="res_model">payment.after.delivery.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="point_of_sale.model_pos_order"/>
+            <field name="binding_view_types">list</field>
+    </record>
+</odoo>
