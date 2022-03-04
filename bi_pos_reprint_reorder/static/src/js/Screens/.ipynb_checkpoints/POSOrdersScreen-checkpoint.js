@@ -12,6 +12,7 @@ odoo.define('bi_pos_reprint_reorder.POSOrdersScreen', function (require) {
 				super(...arguments);
 				useListener('click-reorder', this.clickReOrder);
 				useListener('click-reprint', this.clickReprint);
+                useListener('click-printnotice', this.clickPrintNotice);
 			}
 			
 			clickReOrder(event){
@@ -44,6 +45,21 @@ odoo.define('bi_pos_reprint_reorder.POSOrdersScreen', function (require) {
 					let data = output;
 					data['order'] = order;
 					self.showTempScreen('OrderReprintScreen',data);
+				});
+
+			}
+            async clickPrintNotice(event){
+				let self = this;
+				let order = event.detail;
+
+				await self.rpc({
+					model: 'pos.order',
+					method: 'print_notice_product',
+					args: [order.id],
+				}).then(function(output) {
+					let data = output;
+					data['order'] = order;
+					self.showTempScreen('OrderPrintNoticeScreen',data);
 				});
 
 			}
