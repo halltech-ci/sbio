@@ -20,7 +20,7 @@
     'version': '15.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock', 'product'],
+    'depends': ['base', 'stock', 'mrp'],
 
     # always loaded
     'data': [
@@ -29,6 +29,8 @@
         'views/templates.xml',
         #views
         'views/product_conversion_views.xml',
+        #data
+        'data/product_conversion_sequence.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
