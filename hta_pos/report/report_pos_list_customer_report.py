@@ -42,11 +42,7 @@ class ReportTimeSheetReportView(models.AbstractModel):
         docs = []
         if data['form']['product_id']:
             product_id = data['form']['product_id'][0]
-<<<<<<< HEAD
-            lines = self.env['product.product'].search([('product_id','=',product_id)])
-=======
             lines = self.env['product.product'].search([('id','=',product_id)])
->>>>>>> main_dev
         else:
             lines = self.env['product.product'].search([])
         for line in lines:
