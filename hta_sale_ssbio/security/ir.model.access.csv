@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hta_sale_ssbio_hta_sale_ssbio,hta_sale_ssbio.hta_sale_ssbio,model_hta_sale_ssbio_hta_sale_ssbio,base.group_user,1,1,1,1

@@ -18,18 +18,21 @@
                 </group>
                 <footer>
                     <button name="assign_delivery_orders" string="Valider" type="object" class="oe_highlight"/>
+
+                    <button name="print_order_assigner" string="Print" type="object" class="oe_highlight"/>
                     <button string="Cancel" special="cancel"/>
                 </footer>
             </form>
         </field>
     </record>
-        <act_window name="Assigner Commande"
-        id="assign_cmmd_delivery_action"
-        res_model="pos.assign.commands.wizard"
-        binding_model="pos.order"
-        binding_views="list"
-        view_mode="form"
-        target="new"
-    />
+    
+    <record id="assign_cmmd_delivery_action" model="ir.actions.act_window">
+            <field name="name">Assigner la commande </field>
+            <field name="res_model">pos.assign.commands.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="point_of_sale.model_pos_order"/>
+            <field name="binding_view_types">list</field>
+    </record>
 
 </odoo>

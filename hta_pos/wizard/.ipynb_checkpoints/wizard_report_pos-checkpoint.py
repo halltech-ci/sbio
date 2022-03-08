@@ -20,5 +20,9 @@ class AccountAnalyticReportWizard(models.TransientModel):
             'form': self.read()[0]
         }
         # ref `module_name.report_id` as reference.
+<<<<<<< HEAD
         return self.env.ref('hta_pos.pos_report_customer_list_product').with_context(landscape=True).report_action(self, data=data)
+=======
+        return self.env.ref('hta_pos.account_analytic_report').with_context(landscape=True).report_action(self, data=data)
+>>>>>>> main_dev
 
