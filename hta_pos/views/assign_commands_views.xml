@@ -6,8 +6,9 @@
       <field name="arch" type="xml">
           <xpath expr="//sheet//div[2]/div[1]" position="after">
 
-            <field name="company_delivery" widget="boolean_button" string="Compagnie Livraison ?" attrs="{'invisible': [ ('is_company','=', False)]}"/>
-            <field name="person_delivery" widget="boolean_button" string="Livreur?" attrs="{'invisible': ['|', '&amp;', ('is_company','=', True),('parent_id', '=', False),('company_name', '!=', False),('company_name', '!=', '')]}"/>
+
+            <field name="company_delivery" string="Compagnie Livraison ?" attrs="{'invisible': [ ('is_company','=', False)]}"/>
+            <field name="person_delivery" string="Livreur?" attrs="{'invisible': ['|', '&amp;', ('is_company','=', True),('parent_id', '=', False),('company_name', '!=', False),('company_name', '!=', '')]}"/>
 
           </xpath>
           <xpath expr="//sheet//notebook/page[@name='internal_notes']" position="after">

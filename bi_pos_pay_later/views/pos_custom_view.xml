@@ -21,7 +21,7 @@
 						}">
 							<label for="partial_product_id"/>
 							<div class="text-muted">
-								Set Product for partial payment calculation.
+								Définissez le produit pour le calcul du paiement partiel.
 							</div>
 							<div class="content-group mt16">
 								<field name="partial_product_id" attrs="{'required': [('allow_partical_payment', '!=', False)]}"/>

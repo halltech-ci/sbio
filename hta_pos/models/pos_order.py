@@ -13,6 +13,37 @@ class HtaPos(models.Model):
 
     date_delivery = fields.Datetime()
 
+    customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True)
+    delivery_phone = fields.Char(related='delivery_person.phone', store=True)
+
+    
+    def assign_command_wizard(self):
+    	#view_id = self.env.ref('point_of_sale.assign_command_wizard').id
+    	context = self._context.copy()
+    	return {
+            'name':' Assigner au livreur',
+            'type':'ir.actions.act_window',
+            'view_mode': 'form',
+            #'view_type': 'form',
+            'res_model':'pos.assign.commands.wizard',
+            #'res_id':self.env.ref('stock.picking').id,
+            'target':'new',
+        }
+    
+    def payment_wizard_order(self):
+    	#view_id = self.env.ref('point_of_sale.payment_command_wizard').id
+    	context = self._context.copy()
+    	return {
+            'name':'Passer au paiement',
+            'type':'ir.actions.act_window',
+            'view_mode': 'form',
+            #'view_type': 'form',
+            'res_model':'payment.after.delivery.wizard',
+            #'res_id':self.env.ref('stock.picking').id,
+            'target':'new',
+        }
+    
+    
 
 # class AssignPos(models.Model):
 #     _name = 'assign.commands'

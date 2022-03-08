@@ -1,0 +1,62 @@
+<odoo>
+  <data>
+    <record id="view_order_form_extends" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/field[@name='state']" position="replace">
+                <field name="state" widget="statusbar" statusbar_visible="draft,waiting_for_approval,approve,sent,sale"/>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm'][2]" position="replace">
+                <button name="action_confirm"  
+                        string="Confirm"
+                        class="btn-primary o_sale_confirm" 
+                        type="object"
+                        attrs="{'invisible': [('state', 'not in', ['approve', 'sent'])]}"
+                />
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', 'in', ['done', 'approve', 'sale'])]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_quotation_send'][1]" position="attributes">
+                <attribute name="states">approve</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="replace">
+                <button name="action_cancel" 
+                        states="draft,sent,waiting_for_approval" 
+                        type="object"
+                        string="Cancel"
+                        confirm='Voulez-vous vraiment annuler ce devis ?'
+                        attrs="{'invisible': [('state', 'not in', ['done','sale'])]}"
+                />
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <button name="ask_for_approval" 
+                        states="draft,waiting_for_approval" 
+                        type="object" 
+                        class="oe_highlight"
+                        string="Ask for approval"
+                        groups="sales_team.group_sale_manager"
+                />
+                <button name="action_approve" 
+                        states="waiting_for_approval" 
+                        type="object" 
+                        class="oe_highlight"
+                        string="Approve"
+                        confirm='Voulez-vous vraiment approver ce devis ?'
+                        groups="hta_sale_ssbio.group_sale_order_approval"
+                />
+            </xpath>
+            <xpath expr="//sheet/group/group" position="inside">
+                <field name="approver_id" />
+            </xpath>
+            
+<!--             <xpath expr="//sheet/notebook/page[@name='order_lines']/tree/field[@name='price_unit']" position="replace">
+                <field name="price_unit" attrs="{'readonly': [('qty_invoiced', '&gt;', 0),('user_id','=',[])]}"/>
+            </xpath> -->
+        </field>
+    </record>
+  </data>
+</odoo>

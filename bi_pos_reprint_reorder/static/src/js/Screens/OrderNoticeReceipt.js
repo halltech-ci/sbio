@@ -1,10 +1,10 @@
-odoo.define('bi_pos_reprint_reorder.OrderReprintReceipt', function(require) {
+odoo.define('bi_pos_reprint_reorder.OrderNoticeReceipt', function(require) {
 	'use strict';
 
 	const PosComponent = require('point_of_sale.PosComponent');
 	const Registries = require('point_of_sale.Registries');
 
-	class OrderReprintReceipt extends PosComponent {
+	class OrderNoticeReceipt extends PosComponent {
 		constructor() {
 			super(...arguments);
 		}
@@ -18,9 +18,9 @@ odoo.define('bi_pos_reprint_reorder.OrderReprintReceipt', function(require) {
 		return true
 		}
 	}
-	OrderReprintReceipt.template = 'OrderReprintReceipt';
+	OrderNoticeReceipt.template = 'OrderNoticeReceipt';
 
-	Registries.Component.add(OrderReprintReceipt);
+	Registries.Component.add(OrderNoticeReceipt);
 
-	return OrderReprintReceipt;
+	return OrderNoticeReceipt;
 });

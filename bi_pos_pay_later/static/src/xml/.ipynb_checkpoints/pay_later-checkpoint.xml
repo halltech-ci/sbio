@@ -4,7 +4,7 @@
 		<t t-name="CreateDraftPOS" owl="1">
 			<span class="control-button pos_bag odoo-theme-color">
 				<i class="fa fa-file"></i>
-				<span>Projet de commande </span>
+				<span>Brouillon </span>
 			</span>
 		</t>
 
@@ -19,7 +19,7 @@
 			<xpath expr="//div[hasclass('top-content')]" position="replace">
 				<div class="top-content">
 					<div class="button back odoo-theme-color" t-on-click="back">
-						<t t-if="!env.isMobile">Discard</t>
+						<t t-if="!env.isMobile">Retour</t>
 						<t t-else="">
 							<i class="fa fa-undo"></i>
 						</t>
@@ -40,7 +40,7 @@
 						<i class='fa fa-check'></i> Posté
 					</div>
 					<div class="button draft odoo-theme-color" t-on-click="changeFilter('invoiced')">
-                            <i class='fa fa-dollar'></i> Facturé
+						<i class='fa fa-dollar'></i> Facturé
 					</div>
 					<div class="button" t-if="state.filter_state">
 						<span id="filter_order">Filtré par: </span>
@@ -89,7 +89,7 @@
 				<div class="button back"
 					t-on-click="click_back">
 					<i class="fa fa-angle-double-left fa-fw"></i>
-					<span class="back_text">Retour</span>
+					<span class="back_text">Rtour</span>
 				</div>
 			</xpath>
 		</t>
@@ -128,7 +128,7 @@
 								</t>
 								<t t-if="line.discount !== 0">
 									<div class="pos-receipt-left-padding">
-										Remise: <t t-esc="line.discount" />%
+										Rabais: <t t-esc="line.discount" />%
 									</div>
 								</t>
 								<div class="pos-receipt-left-padding">

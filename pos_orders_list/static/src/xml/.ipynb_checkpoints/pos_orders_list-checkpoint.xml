@@ -4,7 +4,7 @@
 	<t t-name="SeePOSOrdersButton" owl="1">
 		<span class="control-button see_pos_orders odoo-theme-color">
 			<i class="fa fa-university"></i>
-			<span>Orders</span>
+			<span>Commandes</span>
 		</span>
 	</t>
 
@@ -13,7 +13,7 @@
 			<div class="screen-content orders-screen">
 				<div class="top-content">
 					<div class="button back odoo-theme-color" t-on-click="back">
-						<t t-if="!env.isMobile">Discard</t>
+						<t t-if="!env.isMobile">Retour</t>
 						<t t-else="">
 							<i class="fa fa-undo"></i>
 						</t>
@@ -96,7 +96,7 @@
 				t-on-click.stop="trigger('click-showDetails',props.order)">
 				<t t-if="props.order.state == 'draft'">Brouillon/Nouveau</t>
 				<t t-if="props.order.state == 'invoiced'">Facturé</t>
-				<t t-if="props.order.state == 'paid'">Payé</t>
+				<t t-if="props.order.state == 'paid'">Paid</t>
 				<t t-if="props.order.state == 'done'">Posté</t>
 				<t t-if="props.order.state == 'cancel'">Annulé</t>
 			</td>
@@ -114,7 +114,7 @@
 						<t t-set="order" t-value="props.order || []"/>
 						<table style='width:100%'>
 							<tr class="popup-tr">
-								<td style='width:20%; '><strong>Réf commande:</strong>
+								<td style='width:20%; '><strong>Réf commande :</strong>
 								</td>
 								<td style='width:30%; '>
 									<span t-esc="order['name']"/>
@@ -141,7 +141,7 @@
 								</td>
 							</tr>
 							<tr class="popup-tr">
-								<td style='width:20%; '><strong>Réf du reçu:</strong>
+								<td style='width:20%; '><strong>Référence du reçu :</strong>
 								</td>
 								<td style='width:30%; '>
 									<span t-esc="order['pos_reference']"/>
@@ -157,7 +157,7 @@
 								</td>
 							</tr>
 							<tr class="popup-tr">
-								<td style='width:20%; '><strong>Société:</strong>
+								<td style='width:20%; '><strong>Compagnie:</strong>
 								</td>
 								<td style='width:30%; ' 
 									t-if="order['company_id']">
@@ -176,8 +176,8 @@
 						<table style='width:100%'>
 							<thead>
 								<tr class="orderline-table-head">
-									<th style='width:25%; padding-left: 10px; '>Produit</th>
-									<th style='width:25%; padding-left: 10px; '>Remise</th>
+									<th style='width:25%; padding-left: 10px; '>Articles</th>
+									<th style='width:25%; padding-left: 10px; '>Rabais</th>
 									<th style='width:25%; padding-left: 10px; '>Quantité</th>
 									<th style='width:25%; padding-left: 10px; '>Prix</th> 
 								</tr>
@@ -194,7 +194,7 @@
 					</main>
 					<footer class="footer">
 						<div class="button cancel odoo-theme-color" t-on-click="cancel">
-							Close
+							Fermer
 						</div>
 					</footer>
 				</div>

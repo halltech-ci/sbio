@@ -16,11 +16,15 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Uncategorized',
+    'category': 'Sales/Point of Sale',
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['point_of_sale'],
+    'depends': ['point_of_sale',
+                'stock',
+                
+                #'report_xlsx'
+               ],
 
     # always loaded
     'data': [
@@ -28,16 +32,19 @@
         'views/payment_order.xml',
         'views/assign_commands_views.xml',
         'views/pos_order_views.xml',
-        
+        'views/stock_picking.xml',
+        'views/produit_views.xml',
         # WIZARD
         'wizard/assign_commands.xml',
         'wizard/wizard_report_pos_views.xml',
-        
         # Report
         'report/report_customer_list_by_product_views.xml',
+        'report/report_pos_print_order_delivery.xml',
+        
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
+    'license': 'LGPL-3',
 }

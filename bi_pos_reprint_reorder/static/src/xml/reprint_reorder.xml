@@ -3,8 +3,9 @@
 
 		<t t-name="POSOrdersScreen" t-inherit="pos_orders_list.POSOrdersScreen" t-inherit-mode="extension" owl="1">
 			<xpath expr="//tr" position="inside">
-				<th>Re-Order</th>
-				<th>Receipt</th>
+				<th>Nouvelle commande</th>
+				<th>Le reçu</th>
+                <th>Notice</th>
 			</xpath> 
 		</t>
 		
@@ -12,11 +13,15 @@
 			<xpath expr="//tr" position="inside">
 				<td class="print-order" t-att-data-id='props.order.id' 
 					t-on-click.stop="trigger('click-reorder',props.order)">
-					<button class="odoo-theme-button"><i class="fa fa-refresh"></i> Re-Order</button>
+					<button class="odoo-theme-button"><i class="fa fa-refresh"></i> Nouvelle commande</button>
 				</td>
 				<td class="print-order" t-att-data-id='props.order.id' 
 					t-on-click.stop="trigger('click-reprint',props.order)">
-					<button class="odoo-theme-button"><i class="fa fa-print"></i>Print</button>
+					<button class="odoo-theme-button"><i class="fa fa-print"></i>Impression</button>
+				</td>
+                <td class="print-order" t-att-data-id='props.order.id' 
+					t-on-click.stop="trigger('click-notice',props.order)">
+					<button class="odoo-theme-button"><i class="fa fa-print"></i>Notice</button>
 				</td>
 			</xpath> 
 		</t>
@@ -26,14 +31,14 @@
 				<Draggable>
 					<div class="popup" style="min-width: 50%;">
 						<header class="title drag-handle">
-							Reorder Products
+							Nouvelle commande
 						</header>
 						<main class="body traceback" style="font-family: 'Lato-Reg';">
 							<table class='reorder-product-list' style='width:100%;    text-align: center;line-height: 30px;'>
 								<thead>
 									<tr class="orderline-table-head">
-										<th>Product</th>
-										<th>Reorder Qty</th>
+										<th>Articles</th>
+										<th>Qté</th>
 									</tr>
 								</thead>
 								<tbody class='reorder-product-list-contents'>
@@ -51,11 +56,11 @@
 						</main>
 						<footer class="footer">
 							<div class="button cancel odoo-theme-button" t-on-click="cancel">
-								Close
+								Fermer
 							</div>
 
 							<div class="button confirm odoo-theme-button" t-on-click="do_reorder">
-								Re-Order
+								Nouvelle commande
 							</div>
 						</footer>
 					</div>
@@ -70,10 +75,10 @@
 						<span class="button back" t-on-click="back">
 							<i class="fa fa-angle-double-left"></i>
 							<span> </span>
-							<span>Back</span>
+							<span>Retour</span>
 						</span>
 						<div class="top-content-center">
-							<h1> Reprint Order</h1>
+							<h1> Commande de réimpression</h1>
 						</div>
 						<span class="button next highlight" t-on-click="back">
 							<span>Ok</span>
@@ -85,7 +90,7 @@
 						<div class="button print" t-on-click="printReceipt">
 							<i class="fa fa-print"></i>
 							<span> </span>
-							<span>Print</span>
+							<span>Impression</span>
 						</div>
 						<div class="pos-receipt-container">
 							<OrderReprintReceipt 
@@ -101,7 +106,47 @@
                                                  
                                 partner_name = "props.partner_name"	
 								partner_phone = "props.partner_phone"	
-								delivery = "props.delivery"	
+								delivery = "props.delivery"	                 
+								t-ref="order-receipt"			
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</t>
+        <t t-name="OrderNoticeScreen" owl="1">
+			<div class="receipt-screen screen">
+				<div class="screen-content">
+					<div class="top-content">
+						<span class="button back" t-on-click="back">
+							<i class="fa fa-angle-double-left"></i>
+							<span> </span>
+							<span>Retour</span>
+						</span>
+						<div class="top-content-center">
+							<h1>ReImpression</h1>
+						</div>
+						<span class="button next highlight" t-on-click="back">
+							<span>Ok</span>
+							<span> </span>
+							<i class="fa fa-angle-double-right"></i>
+						</span>
+					</div>
+					<div class="centered-content">
+						<div class="button print" t-on-click="printReceipt">
+							<i class="fa fa-print"></i>
+							<span> </span>
+							<span>Impression</span>
+						</div>
+						<div class="pos-receipt-container">
+							<OrderNoticeReceipt 
+								order="props.order"
+								orderlines = "props.orderlines"
+								user_name = "props.user_name"
+                                   
+                                partner_name = "props.partner_name"	
+								partner_phone = "props.partner_phone"	
+								t-ref="order-receipt"			
 							/>
 						</div>
 					</div>
@@ -114,7 +159,7 @@
 				<img class="pos-receipt-logo" t-att-src='env.pos.company_logo_base64' alt="Logo"/>
 				<br/>
 				<div class="pos-receipt-contact">
-					<!--<t t-if='env.pos.company.contact_address'>
+<!-- 					<t t-if='env.pos.company.contact_address'>
 						<div><t t-esc='env.pos.company.contact_address' /></div>
 					</t>
 					<t t-if='env.pos.company.phone'>
@@ -128,24 +173,21 @@
 					</t>
 					<t t-if='env.pos.company.website'>
 						<div><t t-esc='env.pos.company.website' /></div>
-					</t>-->
+					</t> -->
+                    <div class='cashier'>
+						<div>Client(e): <t t-esc='props.partner_name' /></div>
+                        <div>Phone: <t t-esc='props.partner_phone' /></div>
+                        <div>Lieu Livraison: <t t-esc='props.delivery' /></div>
+                        
+					</div>
 					<br/>
-					<t>
-						<div class='cashier'>
-							<div>--------------------------------</div>
-							<div>Client: <t t-esc='props.partner_name' /></div>
-                            <div>Phone: <t t-esc='props.partner_phone' /></div>
-                            <div>Lieu Livraison: <t t-esc='props.delivery' /></div>
-						</div>
-					</t>
-                    <br/>
+					
 					<t t-if='props.user_name'>
 						<div class='cashier'>
 							<div>--------------------------------</div>
-							<div>Served by <t t-esc='props.user_name' /></div>
+							<div>Servi par <t t-esc='props.user_name' /></div>
 						</div>
 					</t>
-                
 				</div>
 				<br /><br />
 				<div class='orderlines'>
@@ -162,7 +204,7 @@
 									<t t-esc="env.pos.format_currency_no_symbol(line.price_unit)"/>
 								</div>
 								<div class="pos-receipt-left-padding">
-									Discount: <t t-esc='line.discount' />%
+									Rabais: <t t-esc='line.discount' />%
 								</div>
 							</t>
 							<div class="pos-receipt-left-padding">
@@ -197,12 +239,12 @@
 				<br/>
 				<t t-if='discount_total'>
 					<div>
-						Discounts
+						Réductions
 						<span t-esc='env.pos.format_currency(props.discount)' class="pos-receipt-right-align"/>
 					</div>
 				</t>
 				<div>
-					Total Taxes
+					Taxes totales
 					<span t-esc='env.pos.format_currency(props.tax)' class="pos-receipt-right-align"/>
 				</div>
 				<div class='before-footer' />
@@ -217,6 +259,59 @@
 						<div style="margin:auto;margin-top:10px;" id="barcode_print1"></div>
 					</div>
 				</t>
+			</div>
+		</t>
+        
+        
+        
+        
+        <t t-name="OrderNoticeReceipt" owl="1">
+			<div class="pos-receipt">
+				<img class="pos-receipt-logo" t-att-src='env.pos.company_logo_base64' alt="Logo"/>
+				<br/>
+				<div class="pos-receipt-contact">
+<!-- 					<t t-if='env.pos.company.contact_address'>
+						<div><t t-esc='env.pos.company.contact_address' /></div>
+					</t>
+					<t t-if='env.pos.company.phone'>
+						<div>Tel:<t t-esc='env.pos.company.phone' /></div>
+					</t>
+					<t t-if='env.pos.company.vat'>
+						<div>VAT:<t t-esc='env.pos.company.vat' /></div>
+					</t>
+					<t t-if='env.pos.company.email'>
+						<div><t t-esc='env.pos.company.email' /></div>
+					</t>
+					<t t-if='env.pos.company.website'>
+						<div><t t-esc='env.pos.company.website' /></div>
+					</t> -->
+                    <div class='cashier'>
+						<div>Client(e): <t t-esc='props.partner_name' /></div>
+                        <div>Phone: <t t-esc='props.partner_phone' /></div>
+                        
+					</div>
+					<br/>
+					
+					<t t-if='props.user_name'>
+						<div class='cashier'>
+							<div>--------------------------------</div>
+							<div>Servi par <t t-esc='props.user_name' /></div>
+						</div>
+					</t>
+				</div>
+				<br /><br />
+				<div class='orderlines'>
+					<t t-foreach='props.orderlines' t-as='line'>
+						<div>
+							<t t-esc="line.product_id"/>
+                            <br/>
+							<t t-esc="line.notice"/>
+						</div>
+                        <div>--------------------------------</div>
+                        <br/>
+					</t>
+				</div>
+
 			</div>
 		</t>
 
