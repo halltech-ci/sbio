@@ -18,6 +18,7 @@ class pos_order(models.Model):
 		for orderline in self.lines:
 			new_vals = {
 				'product_id': orderline.full_product_name,
+                'notice': orderline.notice,
 				'total_price' : orderline.price_subtotal_incl,
 				'qty': orderline.qty,
 				'price_unit': orderline.price_unit,
@@ -53,25 +54,24 @@ class pos_order(models.Model):
 		return vals
     
     
-    def notice_print(self):
-		orderlines = []
-		paymentlines = []
-		discount = 0
-
-		for orderline in self.lines:
-			new_vals = {
-				'product_id': orderline.full_product_name,
-				'notice':orderline.notice,
-				}
+#     def notice_print(self):
+#         orderlines = []
+#         paymentlines = []
+# 		discount = 0
+#         for orderline in self.lines:
+#             new_vals = {
+# 				'product_id': orderline.full_product_name,
+# 				'notice':orderline.notice,
+# 				}
 				
 
-		vals = {
-			'orderlines': orderlines,
-			'barcode': self.barcode,
-			'user_name' : self.user_id.name,
+# 		vals = {
+# 			'orderlines': orderlines,
+# 			'barcode': self.barcode,
+# 			'user_name' : self.user_id.name,
             
-            'partner_name':self.partner_id.name,
-            'partner_phone':self.partner_id.phone,
-		}
+#             'partner_name':self.partner_id.name,
+#             'partner_phone':self.partner_id.phone,
+# 		}
 
-		return vals
+# 		return vals

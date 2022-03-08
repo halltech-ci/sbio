@@ -55,7 +55,7 @@ odoo.define('bi_pos_reprint_reorder.POSOrdersScreen', function (require) {
 
 				await self.rpc({
 					model: 'pos.order',
-					method: 'notice_print',
+					method: 'print_pos_receipt',
 					args: [order.id],
 				}).then(function(output) {
 					let data = output;
