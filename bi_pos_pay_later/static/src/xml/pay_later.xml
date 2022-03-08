@@ -4,15 +4,15 @@
 		<t t-name="CreateDraftPOS" owl="1">
 			<span class="control-button pos_bag odoo-theme-color">
 				<i class="fa fa-file"></i>
-				<span>Projet de commande </span>
+				<span>Draft Order </span>
 			</span>
 		</t>
 
 		<t t-name="PayPOSOrdersScreen" t-inherit="pos_orders_list.POSOrdersScreen" t-inherit-mode="extension" owl="1">
 			<xpath expr="//th[hasclass('order_state')]" position="after">
 				<t t-if="env.pos.config.allow_partical_payment">
-					<th>Montant dû</th>
-					<th>Payer</th>
+					<th>Amount Due</th>
+					<th>Pay</th>
 				</t>
 			</xpath> 
 
@@ -31,19 +31,19 @@
 						<input placeholder="Search Orders" size="1" t-on-keyup="updateOrderList" class="input-search-orders"/>
 					</div>
 					<div class="button draft odoo-theme-color" t-on-click="changeFilter('draft')">
-						<i class='fa fa-file'></i> Non payé
+						<i class='fa fa-file'></i> Unpaid
 					</div>
 					<div class="button paid odoo-theme-color" t-on-click="changeFilter('paid')">
-						<i class='fa fa-credit-card'></i> Payé
+						<i class='fa fa-credit-card'></i> Paid
 					</div>
 					<div class="button draft  odoo-theme-color" t-on-click="changeFilter('done')">
-						<i class='fa fa-check'></i> Posté
+						<i class='fa fa-check'></i> Posted
 					</div>
 					<div class="button draft odoo-theme-color" t-on-click="changeFilter('invoiced')">
-                            <i class='fa fa-dollar'></i> Facturé
+						<i class='fa fa-dollar'></i> Invoiced
 					</div>
 					<div class="button" t-if="state.filter_state">
-						<span id="filter_order">Filtré par: </span>
+						<span id="filter_order">Filtered By: </span>
 						<span id="filter_state" t-esc="state.filter_state"/>
 					</div>
 				</div>
@@ -65,7 +65,7 @@
 					<td  class='order-pay' t-att-data-id='props.order.id' 
 					t-on-click.stop="trigger('click-pay',props.order)">
 						<t t-if="props.order.state == 'draft'">
-							<button class="odoo-theme-button" t-att-id='props.order.id' ><i class="fa fa-credit-card"></i> Payer</button>
+							<button class="odoo-theme-button" t-att-id='props.order.id' ><i class="fa fa-credit-card"></i> Pay</button>
 						</t>
 						<t t-else="">
 							<span> - </span>
@@ -80,7 +80,7 @@
 				<t t-if="env.pos.config.allow_partical_payment">
 					<div class="button pay-partial" t-on-click="clickPayLater"
 						t-att-class="{ highlight: !currentOrder.is_paid() }">
-						<span class="next_text">Livraison</span>
+						<span class="next_text">Partial Payment</span>
 						<i class="fa fa-angle-double-right fa-fw"></i>
 					</div>
 				</t>
@@ -89,7 +89,7 @@
 				<div class="button back"
 					t-on-click="click_back">
 					<i class="fa fa-angle-double-left fa-fw"></i>
-					<span class="back_text">Retour</span>
+					<span class="back_text">Back</span>
 				</div>
 			</xpath>
 		</t>
@@ -128,7 +128,7 @@
 								</t>
 								<t t-if="line.discount !== 0">
 									<div class="pos-receipt-left-padding">
-										Remise: <t t-esc="line.discount" />%
+										Discount: <t t-esc="line.discount" />%
 									</div>
 								</t>
 								<div class="pos-receipt-left-padding">
@@ -162,7 +162,7 @@
 				<t t-if="props.order.is_partial || props.order.is_draft_order ">
 					<table style="width: 100%;">
 						<tr>
-							<td>Montant total payé:</td>
+							<td>Total Paid Amount:</td>
 							<td style="text-align: right;">
 								<t t-if="(props.order.is_paying_partial == false) or (props.order.get_total_with_tax() == props.order.get_total_paid())">
 									<t t-esc="env.pos.format_currency(props.order.get_total_paid())"/>
@@ -173,7 +173,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td>Montant dû:</td>
+							<td>Amount Due:</td>
 							<td style="text-align: right;">	
 								<t t-esc="env.pos.format_currency(props.order.get_partial_due())"/>	
 							</td>
@@ -188,13 +188,13 @@
 				<t t-if="props.order.state == 'draft' ">
 					<table style="width: 100%;">
 						<tr>
-							<td>Montant total payé:</td>
+							<td>Total Paid Amount:</td>
 							<td style="text-align: right;">
 								<t t-esc="env.pos.format_currency(props.order.amount_paid)"/>
 							</td>
 						</tr>
 						<tr>
-							<td>Montant dû:</td>
+							<td>Amount Due:</td>
 							<td style="text-align: right;">
 								<t t-esc="env.pos.format_currency(props.order.amount_due)"/>
 							</td>

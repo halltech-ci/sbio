@@ -37,7 +37,6 @@
         # WIZARD
         'wizard/assign_commands.xml',
         'wizard/wizard_report_pos_views.xml',
-        
         # Report
         'report/report_customer_list_by_product_views.xml',
         'report/report_pos_print_order_delivery.xml',

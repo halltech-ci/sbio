@@ -37,18 +37,18 @@
 									<table class="client-list">
 										<thead>
 											<tr class="odoo-theme-color">
-												<th class="order_ref">Réf commande</th>
-												<th class="receipt_ref">Réf du reçu</th>
-												<th class="order_cstmr">Client(e)</th>
-												<th class="order_date">Date de commande</th>
+												<th class="order_ref">Order Ref</th>
+												<th class="receipt_ref">Receipt Ref</th>
+												<th class="order_cstmr">Customer</th>
+												<th class="order_date">Order Date</th>
 												<th class="order_total">Total</th>
-												<th class="order_state">État</th>
+												<th class="order_state">State</th>
 											</tr>
 										</thead>
 										<tbody class="posorders-list-contents">
 											<t t-if="!pos_orders">
 												<tr>
-													<td>Chargement....</td>
+													<td>Loading....</td>
 												</tr>
 											</t>
 											<t t-foreach="pos_orders" t-as="order"
@@ -94,11 +94,11 @@
 			</td>
 			<td class='order-state' t-att-data-id='props.order.id' 
 				t-on-click.stop="trigger('click-showDetails',props.order)">
-				<t t-if="props.order.state == 'draft'">Brouillon/Nouveau</t>
-				<t t-if="props.order.state == 'invoiced'">Facturé</t>
-				<t t-if="props.order.state == 'paid'">Payé</t>
-				<t t-if="props.order.state == 'done'">Posté</t>
-				<t t-if="props.order.state == 'cancel'">Annulé</t>
+				<t t-if="props.order.state == 'draft'">Draft/New</t>
+				<t t-if="props.order.state == 'invoiced'">Invoiced</t>
+				<t t-if="props.order.state == 'paid'">Paid</t>
+				<t t-if="props.order.state == 'done'">Posted</t>
+				<t t-if="props.order.state == 'cancel'">Cancelled</t>
 			</td>
 		</tr>
 	</t>
@@ -108,25 +108,25 @@
 			<Draggable>
 				<div class="popup bi-popup-width">
 					<header class="title drag-handle">
-						Détails de la commande
+						Order Details
 					</header>
 					<main class="body traceback" style="font-family: 'Lato-Reg';">
 						<t t-set="order" t-value="props.order || []"/>
 						<table style='width:100%'>
 							<tr class="popup-tr">
-								<td style='width:20%; '><strong>Réf commande:</strong>
+								<td style='width:20%; '><strong>Order Ref:</strong>
 								</td>
 								<td style='width:30%; '>
 									<span t-esc="order['name']"/>
 								</td>
-								<td style='width:20%; '><strong>Date de commande:</strong>
+								<td style='width:20%; '><strong>Order Date:</strong>
 								</td>
 								<td style='width:30%; '>    
 									<span t-esc="order['pos_order_date']" />
 								</td>
 							</tr>
 							<tr class="popup-tr">
-								<td style='width:20%; '><strong>Client(e):</strong>
+								<td style='width:20%; '><strong>Customer:</strong>
 								</td>
 								<td style='width:30%; ' 
 									t-if="order['partner_id']">
@@ -134,30 +134,30 @@
 									<span t-esc="order['partner_id'][1] or ''"/>
 									
 								</td>
-								<td style='width:20%; '><strong>Montant total:</strong>
+								<td style='width:20%; '><strong>Total Amount:</strong>
 								</td>
 								<td style='width:30%; '>    
 									<span t-esc="env.pos.format_currency(order['amount_total'])" />
 								</td>
 							</tr>
 							<tr class="popup-tr">
-								<td style='width:20%; '><strong>Réf du reçu:</strong>
+								<td style='width:20%; '><strong>Receipt Ref:</strong>
 								</td>
 								<td style='width:30%; '>
 									<span t-esc="order['pos_reference']"/>
 								</td>
-								<td style='width:20%; '><strong>Statut:</strong>
+								<td style='width:20%; '><strong>Status:</strong>
 								</td>
 								<td style='width:30%; '>
-									<t t-if="order['state'] == 'draft'">Brouillon/Nouveau</t>
-									<t t-if="order['state'] == 'invoiced'">Facturé</t>
-									<t t-if="order['state'] == 'paid'">Payé</t>
-									<t t-if="order['state'] == 'done'">Posté</t>
-									<t t-if="order['state'] == 'cancel'">Annulé</t>    
+									<t t-if="order['state'] == 'draft'">Draft/New</t>
+									<t t-if="order['state'] == 'invoiced'">Invoiced</t>
+									<t t-if="order['state'] == 'paid'">Paid</t>
+									<t t-if="order['state'] == 'done'">Posted</t>
+									<t t-if="order['state'] == 'cancel'">Cancelled</t>    
 								</td>
 							</tr>
 							<tr class="popup-tr">
-								<td style='width:20%; '><strong>Société:</strong>
+								<td style='width:20%; '><strong>Company:</strong>
 								</td>
 								<td style='width:30%; ' 
 									t-if="order['company_id']">
@@ -176,10 +176,10 @@
 						<table style='width:100%'>
 							<thead>
 								<tr class="orderline-table-head">
-									<th style='width:25%; padding-left: 10px; '>Produit</th>
-									<th style='width:25%; padding-left: 10px; '>Remise</th>
-									<th style='width:25%; padding-left: 10px; '>Quantité</th>
-									<th style='width:25%; padding-left: 10px; '>Prix</th> 
+									<th style='width:25%; padding-left: 10px; '>Product</th>
+									<th style='width:25%; padding-left: 10px; '>Discount</th>
+									<th style='width:25%; padding-left: 10px; '>Quantity</th>
+									<th style='width:25%; padding-left: 10px; '>Price</th> 
 								</tr>
 							</thead>
 							<tbody>
@@ -206,7 +206,7 @@
 	<t t-name="ClientListScreen" t-inherit="point_of_sale.ClientListScreen" t-inherit-mode="extension" owl="1">
 		<xpath expr="//tr" position="inside">
 			<t t-if="env.pos.config.show_order">
-				<th>Commandes</th>
+				<th>Orders</th>
 			</t>
 		</xpath> 
 	</t>
@@ -217,7 +217,7 @@
 			<t t-if="env.pos.config.show_order">
 				<td class='order-partner' t-att-data-id='props.partner.id' 
 				t-on-click.stop="trigger('click-show-orders',props.partner)">
-					<button><i class="fa fa-university"></i> Afficher les commandes</button>
+					<button><i class="fa fa-university"></i> View Orders</button>
 				</td>
 			</t>
 		</xpath> 

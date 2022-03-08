@@ -9,7 +9,7 @@
 			<field name="arch" type="xml">
 				<xpath expr="//div[4]" position="after">
 					<br/>
-					<h2>Afficher les commandes dans le PDV </h2>
+					<h2>Display Orders in POS </h2>
 					<div class="row mt16 o_settings_container" id="session_config">
 						<div id="show_odr" class="col-xs-12 col-md-6 o_setting_box">
 							<div class="o_setting_left_pane">
@@ -23,7 +23,7 @@
 							<div class="o_setting_right_pane">
 								<label for="pos_session_limit" string="Session Limit Configuration "/>
 								<div class="text-muted">
-									Définissez la limite de session pour charger les commandes pos. Si vous avez plus de 1000 commandes, nous vous recommandons de ne pas utiliser l'option "Tout charger".
+									Set session limit to load pos orders. If you have more than 1000 orders, then we recommend not to use "Load all" option.
 								</div>
 								<div class="content-group mt16">
 									<field name="pos_session_limit" attrs="{'required': [('show_order', '!=', False)]}"/>
@@ -49,7 +49,7 @@
 							
 					</div>
 
-					<h2>Afficher le code-barres dans le reçu</h2>
+					<h2>Display Barcode in Receipt </h2>
 					<div class="row mt16 o_settings_container" id="session_config">
 						<div id="barcode_div" class="col-xs-12 col-md-6 o_setting_box">
 							<div class="o_setting_left_pane">
