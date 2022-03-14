@@ -10,14 +10,16 @@ class ProductConversion(models.Model):
     _description = "Model for product unit of mesure conversion"
     
     name = fields.Text(string="Name", default='/')
-    state = fields.Selection([('draft', 'Draft'), ('done', 'Done'), ('cancel', 'Cancelled')], default='draft')
+    state = fields.Selection([('draft', 'Draft'), ('reserve', 'reserved'), ('done', 'Done'), ('cancel', 'Cancelled')], default='draft')
     src_product_id = fields.Many2one('product.product', string='Product')
     src_uom = fields.Many2one('uom.uom', string="Unit of measure", related="src_product_id.uom_id")
     src_lot = fields.Many2one('stock.production.lot', string='Source Lot')
     src_product_tracking = fields.Selection(related='src_product_id.tracking', readonly=True)
     from_location = fields.Many2one('stock.location', string='Source Location')
     qty_to_convert = fields.Float(string="Quantity To Convert", digits='Product Price',)
-    qty_done = fields.Float(string="Quantity Done", digits='Product Price', compute='_compute_qty_done')
+    #qty_done = fields.Float(string="Quantity Done", digits='Product Price', compute='_compute_qty_done')
+    qty_used = fields.Float(string="Quantity Used", digits='Product Price')
+    qty_lost = fields.Float(string="Lost Quantity", digits='Product Price')
     conversion_line = fields.One2many('product.conversion.line', 'conversion_id', string='Conversion Line')
     product_ids = fields.Many2many('product.product', string='product ids', compute="_compute_store_convertible_products", store=True)
     user_id = fields.Many2one('res.users', string='User', default=lambda self: self.env.user)
@@ -51,15 +53,33 @@ class ProductConversion(models.Model):
               raise ValidationError(_('Le suivi par lot n\'est pas activé pour cet article'))
     """                                  
                                       
-    
-    def _compute_qty_done(self):
+    @api.onchange('conversion_line')
+    def _onchange_qty_used(self):
         for prod in self:
             qty_done = 0
             if len(prod.conversion_line.ids) > 0:
                 for line in prod.conversion_line:
-                    qty_done += line.converted_qty * line.conversion_ratio
-                self.qty_done = qty_done
+                    qty_done += line.allocate_quantity
+                self.qty_used = qty_done
+                
+    @api.onchange('qty_used')
+    def _onchange_qty_lost(self):
+        for prod in self:
+            qty_lost = 0
+            if len(prod.conversion_line.ids) > 0:
+                for line in prod.conversion_line:
+                    qty_lost += line.conversion_ratio * line.qty_done
+                self.qty_lost = qty_lost - self.qty_used
     
+    @api.onchange('conversion_line')
+    def _onchange_qty_lost(self):
+        for prod in self:
+            qty_lost = 0
+            if len(prod.conversion_line.ids) > 0:
+                for line in prod.conversion_line:
+                    qty_lost += line.conversion_ratio * line.qty_done
+                self.qty_lost = qty_lost - self.qty_used
+                
     @api.constrains('qty_to_convert')
     def _check_qty_to_convert(self):
         for rec in self:
@@ -75,20 +95,37 @@ class ProductConversion(models.Model):
             self.product_ids = lst
         
     
-    def validate(self):
-        self._compute_allocate_qty()
+    def reserve_qty(self):
+        #self._compute_allocate_qty()
         if not self.conversion_line:
-            raise UserError(_('Veuillez choisir les produits'))
+            raise UserError(_('Veuillez choisir les articles'))
         inventory_loss = self.env['stock.location'].search([('usage', '=', 'inventory'), ('scrap_location', '=', False), ('return_location', '=', False)], limit=1)
         if not inventory_loss:
             raise UserError(_('Kindly map a conversion location'))
         allocte_qty = 0.0
         for line in self.conversion_line:
             if line.allocate_quantity == 0.0:
-                raise UserError(_('Veuillez indiquer la quantité à allouer'))
+                raise UserError(_('Veuillez indiquer la quantité à convertir'))
             allocte_qty += line.allocate_quantity
-        if allocte_qty != self.qty_to_convert:
-            raise UserError(_('The given allocate Quantity must be equal to the Quantity given for conversion.'))
+        if allocte_qty > self.qty_to_convert:
+            raise UserError(_('Quantité allouée supérieure à la quantité disponible.'))
+        self.write({'state': 'reserve'})
+    
+    
+    def validate(self):
+        self._compute_allocate_qty()
+        if not self.conversion_line:
+            raise UserError(_('Veuillez choisir les articles'))
+        inventory_loss = self.env['stock.location'].search([('usage', '=', 'inventory'), ('scrap_location', '=', False), ('return_location', '=', False)], limit=1)
+        if not inventory_loss:
+            raise UserError(_('Kindly map a conversion location'))
+        allocte_qty = 0.0
+        for line in self.conversion_line:
+            if line.allocate_quantity == 0.0:
+                raise UserError(_('Veuillez indiquer la quantité à convertir'))
+            allocte_qty += line.allocate_quantity
+        if allocte_qty > self.qty_to_convert:
+            raise UserError(_('Quantité allouée supérieure à la quantité disponible.'))
         vals_from = {
             'name': self.name + '/ SL',
             'product_id': self.src_product_id.id,
@@ -96,14 +133,14 @@ class ProductConversion(models.Model):
             'location_dest_id': inventory_loss.id,
             'product_uom_qty': self.qty_to_convert,
             'product_uom': self.src_uom.id,
-            'quantity_done': self.qty_to_convert,
+            'quantity_done': self.qty_used,
             'state': 'confirmed',
             'move_line_ids': [(0, 0, {
                 'product_id': self.src_product_id.id,
                 'lot_id': self.src_lot.id or '',
                 'product_uom_qty': 0,
                 'product_uom_id': self.src_uom.id,
-                'qty_done': self.qty_done,
+                'qty_done': self.qty_used,
                 'location_id': self.from_location.id,
                 'location_dest_id': inventory_loss.id,
             })]
@@ -118,14 +155,14 @@ class ProductConversion(models.Model):
                 'location_dest_id': line.to_location.id,
                 'product_uom_qty': line.converted_qty,
                 'product_uom': line.dest_uom.id,
-                'quantity_done': line.converted_qty,
+                'quantity_done': line.qty_done,
                 'state': 'confirmed',
                 'move_line_ids': [(0, 0, {
                     'product_id': line.dest_product_id.id,
                     'lot_id': line.dest_lot.id,
                     'product_uom_qty': 0,
                     'product_uom_id': line.dest_uom.id,
-                    'qty_done': line.converted_qty,
+                    'qty_done': line.qty_done,
                     'location_id': inventory_loss.id,
                     'location_dest_id': line.to_location.id,
                 })]
@@ -162,12 +199,13 @@ class ProductConversion(models.Model):
         for line in self.conversion_line:
             if line.dest_product_id:
                 prefixe = line.dest_product_id.default_code or ""
-                quantity = str(int(line.converted_qty))
+                quantity = str(int(line.qty_done))
                 lot = line.conversion_id.src_lot.name
                 new_lot = "{0}{1}{2}{3}{4}".format(prefixe, quantity, lot,str(int(line.conversion_ratio)), 'k')
                 dest_lot = self.env['stock.production.lot'].create({
                     'name': new_lot,
                     'product_id': line.dest_product_id.id,
+                    'product_qty': line.qty_done,
                     'company_id': line.conversion_id.company_id.id,
                 }
                 )
@@ -181,14 +219,13 @@ class ProductConversionLinem(models.Model):
     conversion_ratio = fields.Float(string='Conversion Ratio',)
     dest_product_id = fields.Many2one('product.product', string="Product")
     dest_uom = fields.Many2one('uom.uom', string="Unit of measure", related="dest_product_id.uom_id")
-    dest_lot = fields.Many2one('stock.production.lot', string='Destination Lot', 
-                               #compute='_compute_allocate_qty', store=True
-                              )
+    dest_lot = fields.Many2one('stock.production.lot', string='Destination Lot',)
     to_location = fields.Many2one('stock.location', string='Destination Location')
-    converted_qty = fields.Float(string='Converted Quantity')
+    converted_qty = fields.Float(string='Converted Qty')
     dest_product_tracking = fields.Selection(related='dest_product_id.tracking', readonly=True)
-    allocate_quantity = fields.Float(string='Allocate Quantity', digits='Product Price')
+    allocate_quantity = fields.Float(string='Allocate Qty', digits='Product Price')
     company_id = fields.Many2one(related='conversion_id.company_id', string='Company', store=True, readonly=True)
+    qty_done = fields.Integer(string='Qty Done',)
     
     @api.depends('conversion_id.src_product_id')
     def _get_conversion_ration(self):
