@@ -18,7 +18,7 @@ class pos_order(models.Model):
 		for orderline in self.lines:
 			new_vals = {
 				'product_id': orderline.full_product_name,
-                'notice': orderline.notice,
+                'notice': orderline.product_id.notice_fields,
 				'total_price' : orderline.price_subtotal_incl,
 				'qty': orderline.qty,
 				'price_unit': orderline.price_unit,
