@@ -8,8 +8,8 @@ from odoo.tools import float_compare, float_round
 import time
 
 class ProductConversion(models.Model):
-    _name = "product.conversion"
-    _description = "Model for product unit of mesure conversion"
+    _name = "product.reconversion"
+    _description = "Model for reproduction product mrp"
     
     name = fields.Text(string="Name", default='/')
     state = fields.Selection([('draft', 'Draft'), ('reserve', 'reserved'), ('done', 'Done'), ('cancel', 'Cancelled')], default='draft')
@@ -18,11 +18,11 @@ class ProductConversion(models.Model):
     src_lot = fields.Many2one('stock.production.lot', string='Source Lot')
     src_product_tracking = fields.Selection(related='src_product_id.tracking', readonly=True)
     from_location = fields.Many2one('stock.location', string='Source Location')
-    qty_to_convert = fields.Float(string="Quantity To Convert", digits='Product Price',)
+    stock_qty = fields.Float(string="Stock Quantity", digits='Product Price',)
     #qty_done = fields.Float(string="Quantity Done", digits='Product Price', compute='_compute_qty_done')
-    qty_used = fields.Float(string="Quantity Used", digits='Product Price')
-    qty_lost = fields.Float(string="Lost Quantity", digits='Product Price')
-    conversion_line = fields.One2many('product.conversion.line', 'conversion_id', string='Conversion Line')
+    add_qty = fields.Float(string="Add Quantity", digits='Product Price')
+    #qty_lost = fields.Float(string="Lost Quantity", digits='Product Price')
+    reconversion_line = fields.One2many('product.reconversion.line', 'reconversion_id', string='Reconversion Line')
     product_ids = fields.Many2many('product.product', string='product ids', compute="_compute_store_convertible_products", store=True)
     user_id = fields.Many2one('res.users', string='User', default=lambda self: self.env.user)
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env['res.company']._company_default_get('product.conversion'))
@@ -214,10 +214,10 @@ class ProductConversion(models.Model):
                 line.dest_lot = dest_lot
     
 class ProductConversionLinem(models.Model):
-    _name = "product.conversion.line"
-    _description = "Line for product conversion"
+    _name = "product.reconversion.line"
+    _description = "Line for product reconversion"
     
-    conversion_id = fields.Many2one('product.conversion', string='Conversion id')
+    reconversion_id = fields.Many2one('product.reconversion', string='Reconversion id')
     conversion_ratio = fields.Float(string='Conversion Ratio',)
     dest_product_id = fields.Many2one('product.product', string="Product")
     dest_uom = fields.Many2one('uom.uom', string="Unit of measure", related="dest_product_id.uom_id")
@@ -259,38 +259,3 @@ class ProductConversionLinem(models.Model):
                 else:
                     raise UserError(_('Veuillez activer le suivi par lot sur l\'article:' + str(line.dest_product_id.name)))
     """
-class ProductProduct(models.Model):
-    _inherit = "product.product"
-
-    conversion_line = fields.One2many('product.line', 'prod_id', string='Conversion')
-    duplicate_product_check = fields.Boolean(string='Duplicate Product Check', compute="_compute_check_duplicate_convertible_product")
-    
-    
-    @api.depends('conversion_line.convertible_product')
-    def _compute_check_duplicate_convertible_product(self):
-        lst = []
-        self.duplicate_product_check = False
-        for conversion in self.conversion_line:
-            if conversion.convertible_product not in lst:
-                lst.append(conversion.convertible_product)
-            else:
-                raise UserError(_('Conversion Ratio for ' + str(conversion.convertible_product.name) + ' has already been set'))
-        self.duplicate_product_check = True
-
-
-class ProductLine(models.Model):
-    _name = "product.line"
-    _description = "product conversion product line"
-
-    prod_id = fields.Many2one('product.product', string="Prod id")
-    conversion_ratio = fields.Float(string='Conversion Ratio')
-    convertible_product = fields.Many2one('product.product', string='Convertible Product')
-    uom_id = fields.Many2one('uom.uom', string="UOM")
-
-    @api.onchange('convertible_product')
-    def onchange_uom(self):
-        if self.convertible_product:
-            self.uom_id = self.convertible_product.uom_id.id
-        return {}
-    
-    
