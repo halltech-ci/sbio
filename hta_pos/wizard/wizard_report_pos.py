@@ -22,3 +22,12 @@ class AccountAnalyticReportWizard(models.TransientModel):
         # ref `module_name.report_id` as reference.
         return self.env.ref('hta_pos.pos_report_customer_list_product').with_context(landscape=True).report_action(self, data=data)
 
+    
+    def get_generate_xlsx_report(self):
+        data = {
+            'date_start': self.date_start,
+            'date_end': self.date_end,
+            'product_id': self.product_id.ids, 
+        }
+        # ref `module_name.report_id` as reference.
+        return self.env.ref('hta_pos.pos_report_generate_xlsx_report').report_action(self, data=data)
