@@ -15,22 +15,22 @@ class ReportTimeSheetReportView(models.AbstractModel):
     _description = 'Rapport liste des client/Articles'
     
     def get_lines(self, product_id,date_start,date_end):
-        
-        params = [date_start,date_end]
-        query = """
-                SELECT rp.name AS customer_name, rp.phone AS customer_phone, SUM(rpo.price_sub_total) AS price_sub_total, SUM(rpo.product_qty) AS product_qty
-                FROM report_pos_order AS rpo
-                INNER JOIN res_partner AS rp ON rp.id = rpo.partner_id
-                INNER JOIN product_product AS prod ON prod.id = rpo.product_id
-                WHERE 
-                   (prod.id = """+product_id+""")
-                    AND
-                    (rpo.date BETWEEN %s AND %s)
-                GROUP BY customer_name,customer_phone
-        """
 
-        self.env.cr.execute(query,params)
-        return self.env.cr.dictfetchall()
+            params = [date_start,date_end]
+            query = """
+                    SELECT rp.name AS customer_name, rp.phone AS customer_phone,rpo.date AS date_order, SUM(rpo.price_sub_total) AS price_sub_total, SUM(rpo.product_qty) AS product_qty
+                    FROM report_pos_order AS rpo
+                    INNER JOIN res_partner AS rp ON rp.id = rpo.partner_id
+                    INNER JOIN product_product AS prod ON prod.id = rpo.product_id
+                    WHERE 
+                       (prod.id = """+product_id+""")
+                        AND
+                        (rpo.date BETWEEN %s AND %s)
+                    GROUP BY customer_name,customer_phone,date_order
+            """
+
+            self.env.cr.execute(query,params)
+            return self.env.cr.dictfetchall()
       
 
     @api.model
@@ -42,11 +42,7 @@ class ReportTimeSheetReportView(models.AbstractModel):
         docs = []
         if data['form']['product_id']:
             product_id = data['form']['product_id'][0]
-<<<<<<< HEAD
-            lines = self.env['product.product'].search([('product_id','=',product_id)])
-=======
             lines = self.env['product.product'].search([('id','=',product_id)])
->>>>>>> main_dev
         else:
             lines = self.env['product.product'].search([])
         for line in lines:
@@ -71,4 +67,132 @@ class ReportTimeSheetReportView(models.AbstractModel):
             'get_lines':self.get_lines,
         }
     
+
     
+
+class ReportPosReporttXlsxGenerate(models.AbstractModel):
+    """
+        Abstract Model specially for report template.
+        _name = Use prefix `report.` along with `module_name.report_name`
+    """
+    _name = 'report.hta_pos.pos_report_xlsx_generate'
+    _inherit = 'report.report_xlsx.abstract'
+    
+    _description = 'Report Account Cash XLM'
+    
+
+    
+    def get_lines(self, product_id,date_start,date_end):
+
+            params = [date_start,date_end]
+            query = """
+                    SELECT rp.name AS customer_name, rp.phone AS customer_phone,rpo.date AS date_order, SUM(rpo.price_sub_total) AS price_sub_total, SUM(rpo.product_qty) AS product_qty
+                    FROM report_pos_order AS rpo
+                    INNER JOIN res_partner AS rp ON rp.id = rpo.partner_id
+                    INNER JOIN product_product AS prod ON prod.id = rpo.product_id
+                    WHERE 
+                       (prod.id = """+product_id+""")
+                        AND
+                        (rpo.date BETWEEN %s AND %s)
+                    GROUP BY customer_name,customer_phone,date_order
+            """
+
+            self.env.cr.execute(query,params)
+            return self.env.cr.dictfetchall()
+    
+    #Excel traitement
+    def generate_xlsx_report(self, workbook, data, partners):
+        
+        
+        sheet = workbook.add_worksheet('RAPPORT POINT DE VENTE')
+        
+        company_format = workbook.add_format(
+                {'bg_color': 'white', 'align': 'left', 'font_size': 14,
+                    'font_color': 'black','bold': True,})
+        title = workbook.add_format(
+                {'bg_color': 'white', 'align': 'center', 'font_size': 28,
+                    'font_color': 'black', 'bold': True, 'border': 1})
+        
+        montant_initial = workbook.add_format(
+                {'bg_color': 'white', 'align': 'center', 'font_size': 16,
+                    'font_color': 'black','bold': True,})
+        
+        table_header = workbook.add_format(
+                {'bg_color': 'black', 'align': 'center', 'font_size': 18,
+                    'font_color': 'white'})
+        table_body_space = workbook.add_format(
+                {'align': 'left', 'font_size': 12, 'border': 1})
+        table_body_line = workbook.add_format(
+                {'bg_color': '#eee8e2', 'align': 'center', 'font_size': 15,
+                    'font_color': 'black', 'border': 1})
+        table_body_group_line = workbook.add_format(
+                {'bg_color': 'black', 'align': 'right', 'font_size': 12,
+                    'font_color': 'white', 'border': 1})
+        
+        table_recap = workbook.add_format(
+                {'bg_color': '#f05987', 'align': 'right', 'font_size': 12,
+                    'font_color': 'white', 'border': 1})
+        table_recap_solde = workbook.add_format(
+                {'bg_color': '#98ec6e', 'align': 'right', 'font_size': 12,
+                    'font_color': 'white', 'border': 1})
+        
+        
+        
+        
+        date_start = data.get('date_start')
+        date_end = data.get('date_end')
+        
+        docs = []
+        if data.get('product_id'):
+            product_id = data.get('product_id')
+            lines = self.env['product.product'].search([('id','=',product_id)])
+        else:
+            lines = self.env['product.product'].search([])
+        for line in lines:
+            prod_id = line.id
+            id_pp = str(prod_id)
+            name = line.partner_ref
+            get_lines = self.get_lines(id_pp,date_start,date_end)
+            
+            
+            docs.append ({
+                'id_pp': id_pp,
+                'name':name,
+                'get_lines':get_lines,
+            })
+            
+        sheet.set_column('A:A', 40)
+        
+        row = 2
+        col = 0
+        
+        sheet.merge_range(row, col, row+1, col+5, 'RAPPORT POINT DE VENTE', title)
+            
+        row += 5
+        col = 0
+        sheet.set_column('B:B', 20)
+        sheet.set_column('C:C', 30)
+        sheet.set_column('D:D', 50)
+        sheet.set_column('E:E', 30)
+        
+        
+        
+        sheet.merge_range(row, col, row+1, col, 'Client', table_header)
+        sheet.merge_range(row, col+1, row+1, col+1, 'Téléphone', table_header)
+        sheet.merge_range(row, col+2, row+1, col+2, 'Date Commande', table_header)
+        sheet.merge_range(row, col+3, row+1, col+3, 'Produit', table_header)
+        sheet.merge_range(row, col+4, row+1, col+4, 'Qté', table_header)
+        # Header row
+        
+        
+        
+        ligne = 10
+        i = 0
+        for line in docs:
+            for cash in line['get_lines']:
+                sheet.write(ligne+i, col, cash.get('customer_name'))
+                sheet.write(ligne+i, col+1, cash.get('customer_phone'))
+                sheet.write(ligne+i, col+2, cash.get('date_order').strftime('%d/%m/%Y'))
+                sheet.write(ligne+i, col+3, line['name'])
+                sheet.write(ligne+i, col+4, cash.get('product_qty'))
+                i +=1

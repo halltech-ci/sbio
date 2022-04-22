@@ -26,6 +26,14 @@
             <field name="binding_model_id" ref="model_report_pos_report_wizard"/>
             <field name="binding_type">report</field>
         </record>
+    
+        <record id="pos_report_generate_xlsx_report" model="ir.actions.report">
+            <field name="name">Rapport client par article</field>
+            <field name="model">report.pos.report.wizard</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">hta_pos.pos_report_xlsx_generate</field>
+            <field name="report_file">hta_pos.pos_report_xlsx_generate</field>
+        </record>
 <!--     <report id="pos_report_customer_list_product"
         model="report.pos.report.wizard"
         string="Rapport list client par article"
@@ -41,7 +49,16 @@
         name="custom_report.account_cash_xlsx_generate"
         file="custom_report.account_cash_xlsx_generate"
         
-        /> -->
+        /> 
+        <report id="cash_generate_xlsx_report"
+        model="account.cash.report.wizard"
+        string="Account Cash Report"
+        report_type="xlsx"
+        name="custom_report.account_cash_xlsx_generate"
+        file="custom_report.account_cash_xlsx_generate"
+        
+        />
+-->
 
     <template id="report_pos_custmer_product">
         <t t-call="web.html_container">
@@ -61,11 +78,11 @@
                     <table class="table table-sm table-condensed table-bordered" >
                         <thead class="thead-dark">
                             <tr>
-                                <th class='text-center'>Produit</th>
                                 <th class='text-center'>Client</th>
                                 <th class='text-center'>Téléphone</th>
+                                <th class='text-center'>Date Commande</th>
+                                <th class='text-center'>Produit</th>
                                 <th class='text-center'>Qté</th>
-                                <th class='text-center'>Montant Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,13 +91,13 @@
                                     <t t-if="product">
                                         <t t-foreach="product" t-as="line">
                                             <tr>
+                                                <td> <span t-esc="line.get('customer_name')" /> </td>
+                                                <td><span t-esc="line.get('customer_phone')" /> </td>
+                                                <td><span t-esc="line.get('date_order')" /> </td>
                                                 <th>
                                                     <span t-esc="lines['name']"/> 
                                                 </th>
-                                                <td> <span t-esc="line.get('customer_name')" /> </td>
-                                                <td><span t-esc="line.get('customer_phone')" /> </td>
                                                 <td class='text-center'><span t-esc="line.get('product_qty')" /> </td>
-                                                <td class='text-center'><span t-esc="line.get('price_sub_total')" t-options='{"widget": "float", "precision": 0}'/></td>
                                             </tr>   
                                         </t>
                                         </t>     

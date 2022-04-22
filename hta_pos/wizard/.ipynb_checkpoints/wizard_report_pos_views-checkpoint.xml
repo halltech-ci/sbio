@@ -17,7 +17,8 @@
                     </group>
                 </group>
                 <footer>
-                    <button name="get_report" string="Get Report" type="object" class="oe_highlight"/>
+                    <button name="get_report" string="Rapport PDF" type="object" class="oe_highlight"/>
+                    <button name="get_generate_xlsx_report" string="Rapport Excel" type="object" class="oe_highlight"/>
                     <button string="Cancel" special="cancel"/>
                 </footer>
             </form>
