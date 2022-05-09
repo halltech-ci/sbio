@@ -1,0 +1,1007 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Overtime Work entry-->
+    <record id="work_entry_type_overtime" model="hr.work.entry.type">
+        <field name="name">Overtime</field>
+        <field name="code">WORK700</field>
+        <field name="color">5</field>
+    </record>
+    <!--Training Overtime -->
+    <record id="work_entry_type_training" model="hr.work.entry.type">
+        <field name="name">Training</field>
+        <field name="code">WORK500</field>
+        <field name="color">5</field>
+    </record>
+    <!-- Unjustify work entry type-->
+    <!--<record id="work_entry_type_unjustified_reason" model="hr.work.entry.type">
+        <field name="name">Unjustified Reason</field>
+        <field name="code">LEAVE700</field>
+        <field name="is_leave">True</field>
+        <field name="leave_type_ids" eval="[(6,0,[ref('hr_holidays.holiday_status_unpaid')])]"/>
+    </record>
+    -->
+
+
+    <!-- HR SALARY RULE CATEGORIES-->
+    <!--SALAIRE BRUT -->
+    <record id="hr_payroll_brut_salary" model="hr.salary.rule.category">
+        <field name="name">Salaire Brut</field>
+        <field name="code">BRUT</field>
+    </record>
+    
+    <!-- CATEGORIE RETENUES-->
+    
+    <record id="hr_payroll_retenue_salary" model="hr.salary.rule.category">
+        <field name="name">Retenues</field>
+        <field name="code">RET</field>
+    </record>
+    <!-- CATEGORIE RETENUES FISCALES-->
+    <record id="hr_payroll_retenue_fiscale" model="hr.salary.rule.category">
+        <field name="name">Retenues Fiscales</field>
+        <field name="code">RFISC</field>
+    </record>
+    
+    <record id="hr_payroll_variable_salary" model="hr.salary.rule.category">
+        <field name="name">Variable</field>
+        <field name="code">VAR</field>
+    </record>
+    
+    <record id="hr_payroll_cotisation_salary" model="hr.salary.rule.category">
+        <field name="name">Cotisations</field>
+        <field name="code">COT</field>
+    </record>
+    
+    <record id="hr_payroll_cumul_salary" model="hr.salary.rule.category">
+        <field name="name">Cumul</field>
+        <field name="code">CUMUL</field>
+    </record>
+    <record id="hr_payroll_salary_indemnite" model="hr.salary.rule.category">
+        <field name="name">Indemnites</field>
+        <field name="code">IND</field>
+    </record>
+    
+    <record id="hr_payroll_prime_salary" model="hr.salary.rule.category">
+        <field name="name">Primes</field>
+        <field name="code">PRIME</field>
+    </record>
+    <!--Categorie retenues sociale-->
+    <record id="hr_payroll_retenue_social" model="hr.salary.rule.category">
+        <field name="name">Retenues Sociales</field>
+        <field name="code">SOCIAL</field>
+    </record>
+    
+    <!-- Structure Type -->
+    <record id="structure_type_work_days_conceptor" model="hr.payroll.structure.type">
+            <field name="name">Conceptor Employee</field>
+            <field name="country_id" eval="False"/>
+            <field name="wage_type">monthly</field>
+    </record>
+    <record id="structure_type_dayly_worker_conceptor" model="hr.payroll.structure.type">
+            <field name="name">Dayly Worker</field>
+            <field name="country_id" eval="False"/>
+            <field name="wage_type">hourly</field>
+    </record>
+    
+    <!-- Structure salaire-->
+    <record id="structure_days_work" model="hr.payroll.structure">
+        <field name="name">Employee</field>
+        <field name="country_id" eval="False"/>
+        <field name="unpaid_work_entry_type_ids" eval="[
+            (4, ref('hr_work_entry_contract.work_entry_type_legal_leave')),
+        ]"/>
+        <field name="use_worked_day_lines" eval="True"/>
+        <field name="type_id" ref="structure_type_work_days_conceptor"/>
+        <field name="country_id" eval="False"/>
+    </record>
+    <record id="structure_dayly_worker" model="hr.payroll.structure">
+        <field name="name">Dayly</field>
+        <field name="country_id" eval="False"/>
+        <field name="unpaid_work_entry_type_ids" eval="[
+            (4, ref('hr_work_entry_contract.work_entry_type_legal_leave')),
+        ]"/>
+        <field name="use_worked_day_lines" eval="True"/>
+        <field name="type_id" ref="structure_type_dayly_worker_conceptor"/>
+        <field name="country_id" eval="False"/>
+    </record>
+    
+    <function model="hr.salary.rule" name="write">
+        <value model="hr.salary.rule" search="[
+            ('struct_id', '=', ref('hta_custom_payroll.structure_days_work')),
+            ('code', '=', 'GROSS')]"/>
+        <value eval="{
+            'name': 'Salaire Brut',
+            'code': 'BRUT',
+            'sequence': 1000,
+            'category_id': ref('hta_custom_payroll.hr_payroll_brut_salary'),
+            'amount_python_compute': 'result = SBRUT',
+            }"/>
+    </function>
+    <function model="hr.salary.rule" name="write">
+        <value model="hr.salary.rule" search="[
+            ('struct_id', '=', ref('hta_custom_payroll.structure_days_work')),
+            ('code', '=', 'NET')]"/>
+        <value eval="{
+            'name': 'Salaire Net',
+            'sequence': 1000,
+            'category_id': ref('hr_payroll.NET'),
+            'amount_python_compute': 'result = SNET',
+            }"/>
+    </function>
+    
+    <!-- Regle de calcul salaire de Base -->
+    <record id="hr_salary_rule_employee_salary_base" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Salaire de Base</field>
+        <field name="code">BASE</field>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="sequence">1</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+BASE = contract.wage
+unpaid = payslip.struct_id.unpaid_work_entry_type_ids
+PAID = 0
+UNPAID = 0
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids:
+        if line.work_entry_type_id not in unpaid:
+            PAID += line.number_of_hours
+        else:
+            UNPAID += line.number_of_hours
+    result = BASE * PAID/(PAID + UNPAID)
+        </field>
+    </record>
+    <!-- Regle de calcul du sursalaire -->
+    <record id="hr_salary_rule_employee_sursalaire" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Sursalaire</field>
+        <field name="code">SS</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">2</field>
+        <field name="sequence">1</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.sursalaire
+        </field>
+    </record>
+    
+    <record id="hr_salary_rule_basic_salary" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Basic Salary</field>
+        <field name="code">BASIC</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="sequence">4</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = BASE
+        </field>
+    </record>
+    <!-- Regle de calcul du salaire brut -->
+    <record id="hr_salary_rule_employee_brut" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Salaire Brut</field>
+        <field name="code">SBRUT</field>
+        <field name="sequence">4</field>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">3</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = BASE + SS + PDR + PDL + PDC + PDTR + PDG + AAV + HSUP + HS15 + HS50 + HS75 + HS100 + PREND + ICP + IL + ICG + PAMCI
+        </field>
+    </record>
+    <!-- Regle de calcul Prime anciennete-->
+    <record id="hr_salary_rule_prime_anciennete" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime anciennete</field>
+        <field name="code">PDA</field>
+        <field name="sequence">1</field>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">4</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+val = employee.seniority
+result = 0
+if val &gt;= 2 and val &lt;25 :
+    result = contract.salaire_base*val*0.01
+if val &gt;= 25:
+    result = contract.salaire_base*0.25
+        </field>
+    </record>
+    <!-- Regle de calcul de salaire base imposable -->
+    <record id="hr_salary_rule_employee_imposable" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Base Imposable</field>
+        <field name="code">SBI</field>
+        <field name="sequence">5</field>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">5</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = SBRUT + PDA
+        </field>
+    </record>
+    <!-- Regle de calcul impot sur salaire -->
+    <record id="hr_salary_rule_impot_salaire" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_retenue_fiscale"/> 
+        <field name="name">Impot sur salaire (I.S)</field>
+        <field name="code">IS</field>
+        <field name="sequence">6</field>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">6</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = SBI*0.012
+        </field>
+    </record>
+    <!-- Regle de calcul contribution national -->
+    <record id="hr_salary_rule_contribution_nationale" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_retenue_fiscale"/> 
+        <field name="name">Contribution Nationale</field>
+        <field name="code">CN</field>
+        <field name="sequence">7</field>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">7</field>
+        <field name="condition_select">none</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+val = RN
+if val &lt; 50042 :
+    result = 0
+elif val &gt;= 50042 and val &lt;= 130000:
+   result = val*0.015 - 750
+elif val &gt; 130000 and val &lt;= 200000:
+    result = val*0.05 - 5300
+else:
+    result = val*0.1 - 15300
+        </field>
+    </record>
+    <!-- Regle de calcul variable Q -->
+    <record id="hr_salary_rule_igr" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_retenue_fiscale"/> 
+        <field name="name">Impot Général sur le Revenu</field>
+        <field name="code">IGR</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="sequence">9</field>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+PART = employee.nbre_part
+if Q &lt; 25000:
+    result = 0
+elif Q &gt;= 25000 and Q &lt; 45583:
+    result = (RGI*1/11) - (2273*PART)
+elif (Q &gt;= 45667 and Q &lt; 81583):
+    result = (RGI*15/115) - (4076*PART)
+elif (Q &gt;= 81667 and Q &lt;= 126583):
+    result= (RGI*1/6) - (7031*PART)  
+elif (Q &gt;= 126667 and Q &lt; 220333):
+    result= (RGI*0.2) - (11250*PART)  
+elif (Q &gt;= 220414 and Q &lt; 389083):
+    result=(RGI*35/135) - (24306*PART)
+elif (Q &gt;= 389167 and Q &lt; 842167):
+    result= (RGI*45/145) - (44181*PART)
+else:
+    result=(RGI*3/8) - (98633*PART)
+        </field>
+    </record>
+    <!-- Regle de calcul regime de retraite employeur -->
+    <record id="hr_salary_rule_retraite_employe" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_retenue_salary"/> 
+        <field name="name">Regime de Retraite Employe</field>
+        <field name="code">RRE</field>
+        <field name="sequence">8</field>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">9</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = SBI*6.3/100
+        </field>
+    </record>
+    <!-- Regle de calcul CMU employer -->
+    <record id="hr_salary_rule_cmu_employe" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_retenue_salary"/> 
+        <field name="name">CMU Employe</field>
+        <field name="code">CMUE</field>
+        <field name="sequence">8</field>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">10</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = (1 + employee.children)*500
+        </field>
+    </record>
+    <!-- Regle de calcul total des cotisations salarie -->
+    <record id="hr_salary_rule_total_cotisation_employe" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">TOTAL COTISATIONS EMPLOYE</field>
+        <field name="code">TCOTEM</field>
+        <field name="sequence">10</field>
+        <field name="appears_on_paybook">True</field>
+        <field name="rubrique">11</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = RRE + IS + CN + IGR + CMUE
+        </field>
+    </record>
+    <!-- Regle de calcul regime de retraite generale -->
+    <record id="hr_salary_rule_retraite_general" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cotisation_salary"/> 
+        <field name="name">RETRAITE GENERALE</field>
+        <field name="code">RG</field>
+        <field name="sequence">9</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = RRE + RRP
+        </field>
+    </record>
+<!-- Regle de calcul du Indemnite Compensatrice -->
+    <record id="hr_salary_rule_employee_indemnite_compensatrice" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Indemnite Compensatrice</field>
+        <field name="code">ICP</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="sequence">1</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_compensatrice
+        </field>
+    </record>
+<!-- Regle de calcul du Indemnite Conge -->
+    <record id="hr_salary_rule_employee_indemnite_conge" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Indemnite Conge</field>
+        <field name="code">ICG</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="sequence">1</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_conge
+        </field>
+    </record>
+<!-- Regle de calcul du Licencement -->
+    <record id="hr_salary_rule_employee_indemnite_licencement" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Indemnite Licencement</field>
+        <field name="code">IL</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="sequence">1</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_licencement
+        </field>
+    </record>
+    <!-- Reglge de calcul de salaire autres avantages-->
+    <record id="hr_salary_rule_autres_avantages" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Autres Avantages</field>
+        <field name="code">AAV</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.autres_avantages
+        </field>
+    </record>
+    
+    <!-- Reglge de calcul de salaire Prime de responsabilite-->
+    <record id="hr_salary_rule_prime_reponsabilite" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de responsabilite</field>
+        <field name="code">PDR</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_responsabilite
+        </field>
+    </record>
+    <!-- Regle de calcul Prime de Transport-->
+    <record id="hr_salary_rule_prime_transport" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de transport</field>
+        <field name="code">PDTR</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_transport
+        </field>
+    </record>
+    <!-- Regle de calcul taux horaire-->
+    <record id="hr_salary_rule_employee_taux_horaire" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_brut_salary"/> 
+        <field name="name">Taux Horaire</field>
+        <field name="code">TH</field>
+        <field name="sequence">2</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = (BASE)/173.33
+        </field>
+    </record>
+<!-- Regle de calcul conge paye-->
+    <record id="hr_salary_rule_legal_leave" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Legal Leave</field>
+        <field name="code">CONGES</field>
+        <field name="sequence">3</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids: 
+        if line.code == 'LEAVE120':
+            result = line.number_of_days
+        </field>
+    </record>
+
+
+    <!-- Regle de calcul heure sup-->
+    <record id="hr_salary_rule_overtime" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Total Overtime</field>
+        <field name="code">HSUP</field>
+        <field name="sequence">3</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids: 
+        if line.code == 'WORK700':
+            result = line.amount
+        </field>
+    </record>
+<!-- Regle de calcul heure sup-->
+    <record id="hr_salary_rule_work_hours" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Total Work Hours</field>
+        <field name="code">WORK</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_payslip">True</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0
+unpaid = payslip.struct_id.unpaid_work_entry_type_ids
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids:
+        if line.work_entry_type_id not in unpaid : 
+            result += line.number_of_hours
+        </field>
+    </record>
+    
+    <!-- Regle de calcul heure sup-->
+    <record id="hr_salary_rule_contract_work_hours" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Contract Work Hours</field>
+        <field name="code">CWORK</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = 0
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids:
+        result += line.number_of_hours
+        </field>
+    </record>
+    
+    <record id="hr_salary_rule_hs15" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Heure Supplementaire 15%</field>
+        <field name="code">HS15</field>
+        <field name="sequence">3</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+val = TH 
+result = 0
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids: 
+        if line.name == 'HS 15%':
+            result = line.number_of_hours * val * 0.15
+        </field>
+    </record>
+    
+    <record id="hr_salary_rule_hs50" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Heure Supplementaire 50%</field>
+        <field name="code">HS50</field>
+        <field name="sequence">3</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+val = TH
+result = 0
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids: 
+        if line.name == 'HS 50%':
+            result = line.number_of_hours * val * 0.50
+
+        </field>
+    </record>
+        <record id="hr_salary_rule_hs75" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Heure Supplementaire 75%</field>
+        <field name="code">HS75</field>
+        <field name="sequence">3</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+val = TH
+result = 0
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids: 
+        if line.name == 'HS 75%':
+            result = line.number_of_hours * val * 0.75
+
+        </field>
+    </record>
+        <record id="hr_salary_rule_hs100" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Heure Supplementaire 100%</field>
+        <field name="code">HS100</field>
+        <field name="sequence">3</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+val = TH
+result = 0
+if payslip.worked_days_line_ids:
+    for line in payslip.worked_days_line_ids: 
+        if line.name == 'HS 100%':
+            result = line.number_of_hours * val * 1
+
+        </field>
+    </record>
+    
+    <!-- Regle de calcul Prime de communication-->
+    <record id="hr_salary_rule_prime_communication" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de communication</field>
+        <field name="code">PDC</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_communication
+        </field>
+    </record>
+    <!-- Regle de calcul Prime Assurance MCI-->
+    <record id="hr_salary_rule_prime_assu_mci" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Part Assurance Employeur</field>
+        <field name="code">PAMCI</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_assurance_mci
+        </field>
+    </record>
+    <!-- Regle de caclcul Prime de logement -->
+    <record id="hr_salary_rule_prime_logement" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de logement</field>
+        <field name="code">PDL</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_logement
+        </field>
+    </record>
+    <!-- Regle de calcul indemnite de logement-->
+    <record id="hr_salary_rule_indemnite_logement" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Indemnite de transport</field>
+        <field name="code">IDTR</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.indemnite_transport
+        </field>
+    </record>
+
+    <!-- Prime de salissure-->
+    <record id="hr_salary_rule_prime_salissure" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de salissure</field>
+        <field name="code">PDS</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_salissure
+        </field>
+    </record>
+    
+    <!-- Regle de calcul Prime anciennete-->
+    <record id="hr_salary_rule_anciennete" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Anciennete</field>
+        <field name="code">ANC</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="sequence">1</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = employee.seniority
+        </field>
+    </record>
+
+    
+    <!-- Regle de calcul Prime de rendement-->
+    <record id="hr_salary_rule_prime_rendement" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de rendement</field>
+        <field name="code">PREND</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prime_rendement
+        </field>
+    </record>
+    <!-- Regle de calcul gratification-->
+    <record id="hr_salary_rule_prime_gratification" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_prime_salary"/> 
+        <field name="name">Prime de gratification</field>
+        <field name="code">PDG</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.gratification
+        </field>
+    </record>
+
+    <!-- Regle de calcul du taux horaire.
+     TH = (SB + SS + PDR + PDL + PDC)/173.33-->
+
+    
+    <!-- Regle de calcul contribution national -->
+    <record id="hr_salary_rule_base_nationale" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_variable_salary"/> 
+        <field name="name">Base</field>
+        <field name="code">RN</field>
+        <field name="sequence">6</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = (SBI*0.8)
+        </field>
+    </record>
+    
+    
+    <!-- Regle de calcul iscn -->
+    <record id="hr_salary_rule_iscn" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_variable_salary"/> 
+        <field name="name">Variable de calcul iscn</field>
+        <field name="code">ISCN</field>
+        <field name="sequence">8</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = (IS+CN)*0.85
+        </field>
+    </record>
+
+    <!-- Regle de calcul variable rgi -->
+    <record id="hr_salary_rule_rgi" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_variable_salary"/> 
+        <field name="name">Variable de calcul RGI</field>
+        <field name="code">RGI</field>
+        <field name="sequence">8</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = (SBI*0.68 - ISCN)
+        </field>
+    </record>
+    
+    <!-- Regle de calcul variable Q -->
+    <record id="hr_salary_rule_quotien" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_variable_salary"/> 
+        <field name="name">Variable de calcul Q</field>
+        <field name="code">Q</field>
+        <field name="sequence">8</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = RGI/employee.nbre_part
+        </field>
+    </record>
+    
+    <!-- Regle de calcul regime de retraite employeur -->
+    <record id="hr_salary_rule_retraite_patronat" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cotisation_salary"/> 
+        <field name="name">Regime de Retraite Patronal</field>
+        <field name="code">RRP</field>
+        <field name="sequence">8</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = SBI*7.7/100
+        </field>
+    </record>
+    
+    <!-- Regle de calcul CMU employer -->
+    <record id="hr_salary_rule_cmu_patronat" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cotisation_salary"/> 
+        <field name="name">CMU Petronat</field>
+        <field name="code">CMUP</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = (1 + employee.children)*500
+        </field>
+    </record>
+    
+    <!-- Regle de calcul taxe formation continue -->
+    <record id="hr_salary_rule_formation_continue" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cotisation_salary"/> 
+        <field name="name">Formation Continue</field>
+        <field name="code">FC</field>
+        <field name="sequence">8</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = SBRUT*0.6/100
+        </field>
+    </record>
+    
+    <!-- Regle de calcul taxe formation continue -->
+    <record id="hr_salary_rule_formation_apprentissage" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cotisation_salary"/> 
+        <field name="name">Taxe Apprentissage</field>
+        <field name="code">TAPP</field>
+        <field name="sequence">8</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = SBRUT*0.4/100
+        </field>
+    </record>
+    
+    <!-- Regle de calcul total des cotisations -->
+    <record id="hr_salary_rule_total_cotisation" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">TOTAL DES COTISATIONS</field>
+        <field name="code">TCOT</field>
+        <field name="sequence">8</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories.COT
+        </field>
+    </record>
+    
+    <!-- Regle de calcul total des cotisations -->
+    <record id="hr_salary_rule_total_retenue" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">TOTAL DES RETENUES</field>
+        <field name="code">TRET</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="sequence">8</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories.RET
+        </field>
+    </record>
+    <!-- Regle de calcul de la base sociale -->
+    <record id="hr_salary_rule_base_sociale" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">BASE SOCIALE</field>
+        <field name="code">BSO</field>
+        <field name="sequence">8</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+if SBRUT &gt; 70000:
+    result = 70000
+else:
+    result = SBRUT
+        </field>
+    </record>
+    
+    <!-- Regle de calcul prestations familiales -->
+    <record id="hr_salary_rule_prestation_familiales" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_retenue_social"/> 
+        <field name="name">Prestations Familiales</field>
+        <field name="code">PF</field>
+        <field name="sequence">8</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = BSO*5.75/100
+        </field>
+    </record>
+    <!-- Regle de calcul accident de travail -->
+    <record id="hr_salary_rule_accident_travail" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_retenue_social"/> 
+        <field name="name">Accident de Travail</field>
+        <field name="code">AT</field>
+        <field name="sequence">8</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = BSO*4/100
+        </field>
+    </record>
+    <!-- Regle de calcul total des retenues sociales -->
+    <record id="hr_salary_rule_total_social" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">TOTAL RETENUES SOCIALES PATRONALES</field>
+        <field name="code">TSOCPA</field>
+        <field name="sequence">8</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = RRP + PF + AT
+        </field>
+    </record>
+    <!-- Regle de calcul total des cotisations patronales -->
+    <record id="hr_salary_rule_total_cotisation_patronale" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">TOTAL COTISATIONS PATRONALES</field>
+        <field name="code">TCOTPA</field>
+        <field name="sequence">8</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = TSOCPA + FC + TAPP + CMUP + IS
+        </field>
+    </record>
+    <!-- Regle de calcul total des retenues sociales -->
+    <record id="hr_salary_rule_total_retenue_fiscale" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">TOTAL DES RETENUES FISCALES</field>
+        <field name="code">TFISC</field>
+        <field name="sequence">10</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = IS + CN + IGR
+        </field>
+    </record>
+    
+    <!-- Regle de calcul salaire net -->
+    <record id="hr_salary_rule_net_salary" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">SALAIRE NET</field>
+        <field name="code">SNET</field>
+        <field name="sequence">11</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = SBI - TCOTEM
+        </field>
+    </record>
+    <!-- Regle de calcul Prelevement Assurance MCI  -->
+    <record id="hr_salary_rule_mci_ass" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Prelevement Assurance Employe</field>
+        <field name="code">ASSMCI</field>
+        <field name="sequence">7</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.prelevement_assurance_mci
+        </field>
+    </record>
+        
+    <record id="hr_salary_rule_loan_empl" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Prêt</field>
+        <field name="code">PRET</field>
+        <field name="sequence">7</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.pret        
+        </field>
+    </record>
+    -->
+    
+    <!-- Regle de calcul avance percus -->
+    <record id="hr_salary_rule_net_avs" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">Avances et Acomptes perçus</field>
+        <field name="code">AVS</field>
+        <field name="sequence">1</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.avs
+        </field>
+    </record>
+    <!-- Regle de calcul salaire net percu-->
+    <record id="hr_salary_rule_net_percu" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_cumul_salary"/> 
+        <field name="name">SALAIRE NET A PAYER</field>
+        <field name="code">NETAP</field>
+        <field name="sequence">12</field>
+        <field name="struct_id" ref="structure_days_work"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = SNET + IDTR - (ASSMCI + AVS)
+        </field>
+    </record>
+
+</odoo>

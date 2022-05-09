@@ -1,0 +1,17 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="inherit_hr_salary_rule_form_views">
+        <field name="name">salary_rule_form_inherit</field>
+        <field name="model">hr.salary.rule</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+        <field name="arch" type="xml">
+          <!-- Chose field that must appear on paybook-->
+          <xpath expr="//sheet/group[@name='main_details']/field[@name='active']" position="after">
+            <field name='appears_on_paybook' required="True"/>
+            <field name='rubrique' required="True"/>
+          </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

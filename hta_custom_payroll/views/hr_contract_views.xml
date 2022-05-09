@@ -1,0 +1,51 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="hta_hr_contract_form_inherits">
+      <field name="model">hr.contract</field>
+      <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+      <field name="arch" type="xml">
+          <xpath expr="//sheet/notebook/page[@name='information']/group[@name='salary_info']/group[@name='salary']" position="inside">
+                <label for="sursalaire"/>
+                <div class="o_row" name="sursalaire">
+                    <field name="sursalaire" nolabel="1"/>
+                </div>
+            </xpath>
+          <xpath expr="//sheet/notebook/page[@name='information']" position="inside">
+              <group groups="hr.group_hr_manager" name="prime_et_avantages" string="Prime et Avantages mensuels">
+                    <group string="Employee Costs">
+                        <field name="salaire_brut" string="Coût Annuel"/>
+                    </group>
+                </group>
+          </xpath>
+          <xpath expr="//sheet/notebook/page[@name='information']/group[@name='salary_info']" position="after">
+              <group name='prime_et_avantages'>
+                  <group string="Primes et Indemnités">
+                      <field name="communication_flotte"/>
+                      <field name="prime_responsabilite"/>
+                      <field name="prime_transport"/>
+                      <field name="prime_rendement"/>
+                      <field name="prime_communication"/>
+                      <field name="prime_assurance_mci"/> 
+                      <field name="prime_logement" string="indemnité de logement"/>
+                      <field name="indemnite_transport" string="Indemnité de Transport"/>
+                  </group>
+                  <group string="Traitements Annuels" name="avantage_annuel">
+                      <field name="indemnite_conge" string="Indemnité de Congé"/>
+                      <field name="autres_avantages" string="Autre Avantages"/>
+                      <field name="gratification"/>
+                  </group>
+            </group>
+          </xpath>
+          <xpath expr="//sheet/notebook/page[@name='information']/group[@name='prime_et_avantages']" position="after">
+              <group>
+                  <group string="Deduction" name="deduction">
+                      <field name="pret"/>
+                      <field name="avs" string="Avances et  Acomptes perçus"/>
+                      <field name="prelevement_assurance_mci"/>
+                  </group>
+              </group>
+          </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

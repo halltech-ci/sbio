@@ -1,0 +1,47 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="hr_employee_form_inherits">
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_form"/>
+      <field name="arch" type="xml">
+          <xpath expr="//sheet//notebook/page[@name='hr_settings']/group" position="inside">
+              <group string="Hiring Informations">
+                    <!--<field name="matricule" />-->
+                    <group>
+                        <field name="hiring_date" readonly="True"/>
+                        <field name="seniority"/>
+                    </group>
+              </group>
+              <group string="Information RH">
+                  <group>
+                    <field name="qualification"/>
+                    <field name="categorie"/>
+                </group>
+              </group>
+          </xpath>
+          <xpath expr="//sheet//notebook/page[@name='personal_information']/group/group[3]" position="inside">
+                <field name="nbre_part"/>
+          </xpath>
+          <xpath expr="//sheet//notebook/page[@name='personal_information']/group/group[7]" position="after">
+                <group string="Banque">
+                    <!--<field name="ssnid" string="N° CNPS"/>-->
+                    <field name="bank_account_id" string = "Banque"/>
+                    <field name="rib" string="RIB"/>
+              </group>
+          </xpath>
+          <xpath expr="//sheet//notebook/page[@name='hr_settings']" position="after">
+              <page string="Accounting Information" name="accounting">
+                  <group name="account_info" string="Account Info">
+                        <group>
+                            <field name="account_debit" string="Compte de debit"/>
+                        </group>
+                        <group>
+                            <field name="account_credit" string="Compte de credit"/>
+                        </group>
+                    </group>
+              </page>  
+          </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>
