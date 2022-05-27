@@ -26,18 +26,18 @@
     <!-- This group approve expense before this expense can be send to accounting-->  
     <record id="group_mrp_production_conversion" model="res.groups">
         <field name="name">MRP Manger Conversion</field>
-        <field name="implied_ids" eval="[(3, ref('mrp_progress_button.group_mrp_prodoction_valider'))]"/>
+        <field name="implied_ids" eval="[(3, ref('mrp_progress_bar.group_mrp_prodoction_valider'))]"/>
         <field name="category_id" ref="module_category_mrp_productions_inherit"/>
     </record>
     
     <record id="group_mrp_production_remrp" model="res.groups">
         <field name="name">MRP Manager Re-Manufacturing</field>
-        <field name="implied_ids" eval="[(3, ref('mrp_progress_button.group_mrp_production_conversion'))]"/>
+        <field name="implied_ids" eval="[(3, ref('mrp_progress_bar.group_mrp_production_conversion'))]"/>
         <field name="category_id" ref="module_category_mrp_productions_inherit"/>
     </record>   
     <record id="group_mrp_production_create" model="res.groups">
         <field name="name">Manager MRP</field>
-        <field name="implied_ids" eval="[(3, ref('mrp_progress_button.group_mrp_production_remrp'))]"/>
+        <field name="implied_ids" eval="[(3, ref('mrp_progress_bar.group_mrp_production_remrp'))]"/>
         <field name="category_id" ref="module_category_mrp_productions_inherit"/>
     </record>
     
