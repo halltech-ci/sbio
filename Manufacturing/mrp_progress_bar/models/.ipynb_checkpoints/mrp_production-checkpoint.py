@@ -9,7 +9,7 @@ from odoo import models, fields, api, _
 class MrpProduction(models.Model):
     _inherit = "mrp.production"
     
-    state = fields.Selection(selection_add=[('finish','Finalize'),('submit','Soumis')])
+    state = fields.Selection(selection_add=[('submit','Soumis'),('confirmed',),('finish','Finalize'),('done',)])
     def action_progress(self):
         self.write(
             {

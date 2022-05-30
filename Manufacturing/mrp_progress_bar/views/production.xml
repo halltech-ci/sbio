@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//header/field[@name='state']" position='replace'>
-                <field name="state" widget="statusbar" statusbar_visible="draft,submit,confirmed,progress,finish,done" readonly='1'/>
+                <field name="state" widget="statusbar" statusbar_visible="draft,submit,confirmed,progress,finish,done"/>
             </xpath>    
 <!--             <button name="button_mark_done" position="replace">
             <button name="button_mark_done" attrs="{'invisible': ['|', '|', ('state', 'in', ('draft', 'cancel', 'progress','done', 'to_close')), ('qty_producing', '=', 0), ('move_raw_ids', '!=', [])]}" string="Validate" type="object" class="oe_highlight"
