@@ -32,6 +32,7 @@
                     />
                     <button
                         name="%(mrp_production_request_create_mo_action)d"
+                        groups="mrp_production_request.group_mrp_production_request_manager"
                         states="approved"
                         string="Create Manufacturing Order"
                         type="action"
