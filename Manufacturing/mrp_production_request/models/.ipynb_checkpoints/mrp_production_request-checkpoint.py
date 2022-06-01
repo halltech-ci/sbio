@@ -3,7 +3,7 @@
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-
+from odoo.http import request
 
 class MrpProductionRequest(models.Model):
     _name = "mrp.production.request"
@@ -288,6 +288,22 @@ class MrpProductionRequest(models.Model):
 
     def button_to_approve(self):
         self.write({"state": "to_approve"})
+        subject = 'Approval request'
+        recipients = self.assigned_to.login
+        base_url = request.env['ir.config_parameter'].get_param('web.base.url')
+        base_url += '/web#id=%d&view_type=form&model=%s' % (self.id, self._name)
+        message = "<p>Miss {0}</p>".format(self.assigned_to.name) + "<p>You have an approval request for a manufacturing request {0}</p>".format(self.name) + "<p>Click the bellow link to approve</p>"
+        message_body = message + base_url
+        template_obj = self.env['mail.mail']
+        template_data = {
+            'subject': subject,
+            'body_html': message_body,
+            'email_to': recipients
+        }
+        template_id = template_obj.create(template_data)
+        template_obj.send(template_id)
+        template_id.send()
+
         return True
 
     def button_approved(self):

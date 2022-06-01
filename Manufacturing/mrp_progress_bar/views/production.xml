@@ -5,9 +5,12 @@
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//header/field[@name='state']" position='replace'>
+            <field name="product_id" position='replace'>
+                <field name="product_id" context="{'default_detailed_type': 'product'}" attrs="{'readonly': [('state', '!=', 'draft')]}" default_focus="1" domain="[('bom_ids','!=',False),('bom_ids.type','!=','phantom')]"/>
+            </field>
+<!--             <xpath expr="//header/field[@name='state']" position='replace'>
                 <field name="state" widget="statusbar" statusbar_visible="draft,submit,confirmed,progress,finish,done"/>
-            </xpath>    
+            </xpath>     -->
 <!--             <button name="button_mark_done" position="replace">
             <button name="button_mark_done" attrs="{'invisible': ['|', '|', ('state', 'in', ('draft', 'cancel', 'progress','done', 'to_close')), ('qty_producing', '=', 0), ('move_raw_ids', '!=', [])]}" string="Validate" type="object" class="oe_highlight"
                             confirm="There are no components to consume. Are you still sure you want to continue?" data-hotkey="g"/>
