@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="mrp_production_progress_bar_form_view" model="ir.ui.view">
+        <field name="name">mrp.production.view.form.progress.bar</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position='replace'>
+                <field name="product_id" context="{'default_detailed_type': 'product'}" attrs="{'readonly': [('state', '!=', 'draft')]}" default_focus="1" domain="[('bom_ids','!=',False),('bom_ids.type','!=','phantom')]"/>
+            </field>
+<!--             <xpath expr="//header/field[@name='state']" position='replace'>
+                <field name="state" widget="statusbar" statusbar_visible="draft,submit,confirmed,progress,finish,done"/>
+            </xpath>     -->
+<!--             <button name="button_mark_done" position="replace">
+            <button name="button_mark_done" attrs="{'invisible': ['|', '|', ('state', 'in', ('draft', 'cancel', 'progress','done', 'to_close')), ('qty_producing', '=', 0), ('move_raw_ids', '!=', [])]}" string="Validate" type="object" class="oe_highlight"
+                            confirm="There are no components to consume. Are you still sure you want to continue?" data-hotkey="g"/>
+                    <button name="button_mark_done" attrs="{'invisible': ['|', '|', ('state', 'in', ('draft', 'cancel', 'progress','done', 'to_close')), ('qty_producing', '=', 0), ('move_raw_ids', '=', [])]}" string="Validate" type="object" class="oe_highlight" data-hotkey="g"/>
+            </button> -->
+                <button name="button_unplan" position="before">
+                <button
+                    name="action_progress"
+                    attrs="{'invisible': [('state', '!=', 'confirmed')]}"
+                    type="object"
+                    string="Mark As Started"
+                    class="oe_highlight"
+                />
+            </button>
+            <button name="action_assign" position="after">
+                <button
+                    name="action_unstart"
+                    attrs="{'invisible': ['|', ('state', '!=', 'progress'), ('qty_producing', '!=', 0)]}"
+                    type="object"
+                    string="Unstart"
+                />
+            </button>
+<!--             <button name="action_submit"
+                    string="Soumettre"
+                    type="object"
+                    class="oe_highlight"
+                    states="draft"
+            /> -->
+            <field name="company_id" position="after">
+                <field name="date_start" />
+            </field>
+        </field>
+    </record>
+</odoo>

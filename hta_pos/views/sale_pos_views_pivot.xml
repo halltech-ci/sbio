@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="pos_order_inherit_pos_view_pivot">
+      <field name="model">sale.report</field>
+      <field name="inherit_id" ref="point_of_sale.view_report_pos_order_pivot"/>
+      <field name="arch" type="xml">
+          <xpath expr="//pivot/field[@name='price_total']" position="after">
+            <field name="amount_paid" type="measure"/>
+          </xpath>
+          
+      </field>
+    </record>
+
+  </data>
+</odoo>
