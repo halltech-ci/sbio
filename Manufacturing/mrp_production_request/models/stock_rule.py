@@ -8,36 +8,9 @@ from odoo.exceptions import UserError
 class StockRule(models.Model):
     _inherit = "stock.rule"
 
-    def _prepare_mrp_production_request(
-        self,
-        product_id,
-        product_qty,
-        product_uom,
-        location_id,
-        name,
-        origin,
-        company_id,
-        values,
-        bom,
-    ):
-        data = self._prepare_mo_vals(
-            product_id,
-            product_qty,
-            product_uom,
-            location_id,
-            name,
-            origin,
-            company_id,
-            values,
-            bom,
-        )
-        for key in [
-            "date_deadline",
-            "propagate_cancel",
-            "propagate_date",
-            "propagate_date_minimum_delta",
-            "user_id",
-        ]:
+    def _prepare_mrp_production_request(self, product_id, product_qty, product_uom, location_id, name, origin, company_id, values, bom,):
+        data = self._prepare_mo_vals(product_id, product_qty, product_uom, location_id, name, origin, company_id, values, bom,)
+        for key in ["date_deadline", "propagate_cancel", "user_id",]:
             data.pop(key)
         data["state"] = "to_approve"
         orderpoint = values.get("orderpoint_id")
