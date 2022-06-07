@@ -24,6 +24,7 @@ from odoo import models, api
 
 class ValidateLotNumber(models.Model):
     _name = 'serial_no.validation'
+    _description = 'Serial number validation'
 
     @api.model
     def validate_lots(self, lots):

@@ -85,4 +85,4 @@ class PosOrderReturn(models.Model):
 class PosOrderLineReturn(models.Model):
     _inherit = 'pos.order.line'
 
-    returned_qty = fields.Integer(string='Returned Qty', digits=0, readonly=True)
+    returned_qty = fields.Integer(string='Returned Qty', readonly=True)

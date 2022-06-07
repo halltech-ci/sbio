@@ -44,6 +44,7 @@ class AccountMove(models.Model):
 class VoucherReceiptPrint(models.AbstractModel):
     """Class for print the Qweb report"""
     _name = 'report.print_voucher_receipts.print_voucher_receipt'
+    _description = "Print report"
 
     @api.model
     def _get_report_values(self, docids, data):
