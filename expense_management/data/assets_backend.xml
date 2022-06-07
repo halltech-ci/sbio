@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="asstes_backend" name="Exepense Reconcile Asset" inherit_id="web.assets_backend">
+            <xpath expr="." position='inside'>
+                <script type='text/javascript' src="expense_management/static/src/js/expense_reconcile.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>
