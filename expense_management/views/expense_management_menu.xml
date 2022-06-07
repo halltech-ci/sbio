@@ -235,7 +235,7 @@
                         <filter string="Projet" name="Projet" domain="[]" context="{'group_by': 'project'}"/>
                         <filter string="Analytic" name="analytic" domain="[]" context="{'group_by': 'analytic_account'}"/>
                         <filter string="Order Date" name="date" domain="[]" context="{'group_by': 'date'}"/>
-                        <filter string="Valideur" name="valideur" domain="[]" context="{'group_by': 'expense_approver'}"/>
+                        <filter string="Valideur" name="valideur" domain="[]" context="{'group_by': 'approver'}"/>
                     </group>
                 </search>
             </field>
