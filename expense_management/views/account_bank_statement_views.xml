@@ -7,11 +7,11 @@
         <field name="arch" type="xml">
             <!-- Insert account object-->
           <xpath expr="//sheet/notebook/page[@name='statement_line_ids']/field[@name='line_ids']/tree/field[@name='partner_id']" position="before">
-            <field name="journal_entry_ids" invisible='1'/>
+            <!--<field name="journal_entry_ids" invisible='1'/>-->
             <field name="company_id" invisible='1'/>
-            <field name="project_id"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
-            <field name="analytic_account_id"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
-            <field name="analytic_tag_ids"  attrs="{'readonly' : [('journal_entry_ids', '!=', [])] }"/>
+            <field name="project_id"  attrs="{'readonly' : [('is_reconciled', '=', True)] }"/>
+            <field name="analytic_account_id"  attrs="{'readonly' : [('is_reconciled', '=', True)}"/>
+            <field name="analytic_tag_ids"  attrs="{'readonly' : [('is_reconciled', '=', True)}"/>
           </xpath>
         </field>
     </record>
