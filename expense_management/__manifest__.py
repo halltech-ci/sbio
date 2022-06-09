@@ -27,22 +27,22 @@
 
     # always loaded
     'data': [
-        'security/expense_management_security.xml',
-        'security/ir.model.access.csv',
+        #'security/expense_management_security.xml',
+        #'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
         #Menu
-        'views/res_config_settings_views.xml',
-        'views/expense_management_menu.xml',
+        #'views/res_config_settings_views.xml',
+        #'views/expense_management_menu.xml',
         #views
-        'views/account_bank_statement_views.xml',
-        'views/product_template_views.xml',
-        'views/expense_line_reconcile_views.xml',
-        'views/bank_statement_line_reconcile_view.xml',
+        #'views/account_bank_statement_views.xml',
+        #'views/product_template_views.xml',
+        #'views/expense_line_reconcile_views.xml',
+        #'views/bank_statement_line_reconcile_view.xml',
         #data
-        'data/mail_template.xml',
-        'data/expense_request_seq.xml',
-        'data/assets_backend.xml',
+        #'data/mail_template.xml',
+        #'data/expense_request_seq.xml',
+        #'data/assets_backend.xml',
         
     ],
     'qweb':[
