@@ -63,7 +63,7 @@ class ExpenseLine(models.Model):
     amount = fields.Float("Montant", required=True, digits='Product Price')
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, default=lambda self: self.env.company)
     partner_id = fields.Many2one('res.partner', string="Fournisseur",)
-    requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange', related='request_id.requested_by')
+    requested_by = fields.Many2one('res.users' ,'Demandeur', tracking=True, related='request_id.requested_by')
     analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account/Projet', domain=lambda self: self._get_analytic_domain())
     analytic_line = fields.Many2one('account.analytic.line', string="Analytic_line")
     expense_type = fields.Boolean(string="Imputer au projet", default=True)

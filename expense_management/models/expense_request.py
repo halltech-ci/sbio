@@ -55,7 +55,7 @@ class ExpenseRequest(models.Model):
     
     line_ids = fields.One2many('expense.line', 'request_id', string='Expense Line', states={'to_cancel': [('readonly', True)]})
     intermediary = fields.Many2one('hr.employee', string="Intermediaire")
-    requested_by = fields.Many2one('res.users' ,'Demandeur', track_visibility='onchange',
+    requested_by = fields.Many2one('res.users' ,'Demandeur', tracking=True',
                     default=_get_default_requested_by)
     date = fields.Datetime(default=fields.Datetime.now, string="Date",
                           #readonly=True, 
