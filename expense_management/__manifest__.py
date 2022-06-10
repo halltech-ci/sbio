@@ -19,7 +19,7 @@
     'version': '15.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account', 'web_tour'],
+    'depends': ['hr', 'web_tour'],
 
     # always loaded
     'data': [
