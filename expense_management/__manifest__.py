@@ -23,6 +23,7 @@
 
     # always loaded
     'data': [
+        'security/expense_management_security.xml',
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
