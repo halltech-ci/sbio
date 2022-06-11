@@ -19,3 +19,6 @@ class ExpenseLine(models.Model):
     _name = 'expense.line'
     _description = 'Custom expense line'
     
+    
+    name = fields.Char(string='Description')
+    request_id = fields.Many2one('expense.request')
