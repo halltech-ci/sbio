@@ -4,3 +4,5 @@ from . import models
 from . import expense_request
 from . import expense_line
 from . import account_bank_statement
+from . import res_company
+from . import res_config_settings
