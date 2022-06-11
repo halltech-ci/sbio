@@ -12,7 +12,10 @@ STATES = [('draft', 'Broullon'),
         ('post', 'Paye'),
         ('reconcile', 'Lettre'),
         ('cancel', 'Rejete')
-    ]    
+    ] 
+READONLY_STATES = {
+        'to_cancel': [('readonly', True)],
+        }
 
 
 class ExpenseRequest(models.Model):
@@ -35,18 +38,20 @@ class ExpenseRequest(models.Model):
     date = fields.Datetime(default=fields.Datetime.now, string="Date", readonly=True)
     company_id = fields.Many2one('res.company', string='Company', required=True, index=True, readonly=True, states={'draft': [('readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, states={'draft': [('readonly', False)]}, default=lambda self: self.env.company.currency_id)
-    """total_amount = fields.Monetary('Total Amount', currency_field='currency_id', compute='_compute_amount', store=True, tracking=True)
+    total_amount = fields.Monetary('Total Amount', currency_field='currency_id', compute='_compute_amount', store=True, tracking=True)
     analytic_account = fields.Many2one('account.analytic.account', string='Analytic Account', check_company=True,)
-    project_id = fields.Many2one('project.project', string='Projet')
+    #project_id = fields.Many2one('project.project', string='Projet')
     to_approve_allowed = fields.Boolean(compute="_compute_to_approve_allowed")
-    journal = fields.Many2one('account.journal', string='Journal', domain=[('type', 'in', ['cash', 'bank'])], states=READONLY_STATES, default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
-
+    journal = fields.Many2one('account.journal', string='Journal', domain=[('type', 'in', ['cash', 'bank'])], states=STATES, default=lambda self: self.env['account.journal'].search([('type', '=', 'cash')], limit=1))
     statement_id = fields.Many2one('account.bank.statement', string="Caisse", tracking=True, states=READONLY_STATES,)
     statement_line_ids = fields.One2many('account.bank.statement.line', 'expense_id')
     move_ids = fields.Many2many('account.move', string='Account Move')
-    is_expense_approver = fields.Boolean(string="Is Approver",
-        compute="_compute_is_expense_approver",
-    )
+    is_expense_approver = fields.Boolean(string="Is Approver", compute="_compute_is_expense_approver",)
     expense_approver = fields.Many2one('res.users', string="Valideur", states=READONLY_STATES)
     balance_amount = fields.Monetary('Solde Caisse', currency_field='currency_id', related='statement_id.balance_end')
-    """
+    
+    
+    @api.depends('line_ids.amount')
+    def _compute_amount(self):
+        for request in self:
+            request.total_amount = sum(request.line_ids.mapped('amount'))

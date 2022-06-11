@@ -22,3 +22,4 @@ class ExpenseLine(models.Model):
     
     name = fields.Char(string='Description')
     request_id = fields.Many2one('expense.request')
+    amount = fields.Float("Montant", required=True, digits='Product Price')
