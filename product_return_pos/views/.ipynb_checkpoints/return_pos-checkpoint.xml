@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_pos_new_form_return_product">
+            <field name="name">pos.order.form.extend</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <field name="state" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,paid,return,done" />
+                </field>
+                <xpath expr="//header/button[@name='490']" position="after">
+                   <button name="buuton_retunr_order"
+                    string="Retour"
+                    type="object"
+                    class="oe_highlight"
+                    attrs="{'invisible': ['|', ('state','!=','draft')]}"
+                    />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
