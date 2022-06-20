@@ -92,7 +92,6 @@ class PosOrderReturn(models.Model):
         else:
             pass
     
-    
 
     @api.model
     def _prepare_stock_return_picking_line_vals_from_move(self, stock_move):

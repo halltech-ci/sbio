@@ -14,7 +14,7 @@
                     string="Retour"
                     type="object"
                     class="oe_highlight"
-                    attrs="{'invisible': ['|', ('state','!=','draft')]}"
+                    attrs="{'invisible': [('state','!=','draft')]}"
                     />
                 </xpath>
             </field>

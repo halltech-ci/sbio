@@ -31,7 +31,7 @@
     'website': 'https://www.cybrosys.com',
     'depends': ['point_of_sale','stock'],
     'data': [
-             'views/return.xml',
+             #'views/return.xml',
             'views/return_pos.xml',
             ],
     'license': 'AGPL-3',
