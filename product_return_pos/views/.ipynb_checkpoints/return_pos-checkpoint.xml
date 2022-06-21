@@ -9,14 +9,15 @@
                 <field name="state" position="replace">
                     <field name="state" widget="statusbar" statusbar_visible="draft,paid,return,done" />
                 </field>
-                <xpath expr="//header/button[@name='490']" position="after">
-                   <button name="buuton_retunr_order"
+                <button name="refund" position="replace">
+                    <button name="refund" string="Return Products" type="object" attrs="{'invisible':['|', ('state','in',['draft','return']), ('has_refundable_lines', '=', False)]}"/>
+                    <button name="buuton_retunr_order"
                     string="Retour"
                     type="object"
                     class="oe_highlight"
                     attrs="{'invisible': [('state','!=','draft')]}"
                     />
-                </xpath>
+                </button>
             </field>
         </record>
     </data>
