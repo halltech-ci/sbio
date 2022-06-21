@@ -24,4 +24,5 @@
         "views/product_template_view.xml",
         "views/mrp_production_view.xml",
     ],
+    'license': 'LGPL-3',
 }

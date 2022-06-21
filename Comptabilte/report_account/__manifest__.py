@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "mrp_reproduction",
+    'name': "report_account",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','account_accountant','sale'],
 
     # always loaded
     'data': [
@@ -32,5 +32,4 @@
     'demo': [
         'demo/demo.xml',
     ],
-    'license': 'LGPL-3',
 }
