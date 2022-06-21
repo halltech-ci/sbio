@@ -1,0 +1,11 @@
+<odoo>
+  <data>
+    <menuitem 
+        id="menu_account_analytic_report_wizard"
+        action="sale_enterprise.sale_report_action_dashboard"
+        name = "RAPPORT VENTE"
+        sequence="12"
+        parent="account.account_reports_management_menu"
+        />
+  </data>
+</odoo>

@@ -29,9 +29,10 @@
     'maintainer': 'Cybrosys Techno Solutions',
     'images': ['static/description/banner.png'],
     'website': 'https://www.cybrosys.com',
-    'depends': ['point_of_sale'],
+    'depends': ['point_of_sale','stock'],
     'data': [
-             'views/return.xml',
+             #'views/return.xml',
+            'views/return_pos.xml',
             ],
     'license': 'AGPL-3',
     'installable': True,
