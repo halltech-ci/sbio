@@ -82,6 +82,12 @@ class ExpenseRequest(models.Model):
                     req.is_expense_approver = False
             else:
                 req.is_expense_approver = False
+                
+    def action_submit(self):
+        for line in self.line_ids:
+            line.action_submit()
+        self.state = "submit"
+        return True
     
     def button_to_cancel(self):        
         return self.write({'state': 'to_cancel'})#Annuler
@@ -90,7 +96,7 @@ class ExpenseRequest(models.Model):
         if self.state not in  ['approve']:
             raise UserError(
                     _(
-                        "Vous ne pouvez pas autoriser un dépense non approuvée!"
+                        "Vous ne pouvez pas autoriser une dépense non approuvée!"
                     )
                 )
         for line in self.line_ids:
@@ -165,6 +171,120 @@ class ExpenseRequest(models.Model):
                     )
                     % rec.balance_amount
                 )
+    
+    
+    def action_post(self):
+        date = datetime.date.today()
+        month = date.month
+        if self.state == 'post':
+            raise UserError(
+                    _(
+                        "Vous ne pouvez pas payer une note déja payée"
+                    )
+                )
+        res = self.env['account.bank.statement'].search([]).filtered(lambda l:l.date.month==month and l.journal_id.type in ('cash'))
+        if not res:
+            raise UserError(
+                    _(
+                        "Il n'y a pas de journal caisse"
+                    )
+                )
+        if res.id != self.statement_id.id:
+            self.write({'statement_id': self.get_default_statement_id()})
+        post = self.create_bank_statement()
+        if post:
+            #st_lines = self.env['account.bank.statement.line'].search([('expense_id', '=', rec.id)]).ids
+            for line in self.line_ids:
+                line.action_post()
+            return self.write({'state': 'post',})
+        return True
+    
+    """This create account_bank_statetment_line in bank_statement given in expense request"""
+    def create_bank_statement(self):
+        self.ensure_one()
+        for request in self:
+            ref = request.description
+            statement_id = request.statement_id
+            journal_id = request.journal.id
+            company = request.company_id.id
+            expense_lines = request.mapped('line_ids')
+            value = []
+            for line in expense_lines:
+                #ref = line.name
+                name = line.name
+                partner_id = line.employee_id.address_home_id.id
+                if line.amount < 0:
+                    amount = line.amount
+                else:
+                    amount = -line.amount
+                #amount = line.amount
+                project_id = line.project.id
+                lines = (0, 0, {
+                    "name": line.name,
+                    #"partner_id": line.employee_id.address_home_id.id,
+                    'amount': amount,
+                    #'project_id': line.project.id,
+                    'analytic_account_id': line.analytic_account.id,
+                    'expense_id': line.request_id.id,
+                    'credit_account': line.request_id.journal.default_credit_account_id.id,
+                })
+                value.append(lines)
+            statement_id.write({'line_ids': value})
+        return True
+    
+    
+    def create_move_values(self):
+        self.ensure_one()
+        for request in self:
+            account_src = request.journal.default_credit_account_id.id
+            ref = request.statement_id.name
+            journal = request.journal
+            company = request.company_id
+            account_date = fields.Date.today()
+            
+            lines = self.mapped('statement_line_ids')
+            move_lines = []
+            for line in lines:
+                partner = line.partner_id
+                debit_account = line.debit_account
+                move_value = {
+                    'ref': ref,
+                    'date': account_date,
+                    'journal_id': journal.id,
+                    'company_id': company.id,
+                }
+                debit_line = (0, 0, {
+                    'name': line.name,
+                    'account_id': debit_account.id,
+                    'debit': line.p_amount > 0.0 and line.p_amount or 0.0,
+                    'credit': line.p_amount < 0.0 and -line.p_amount or 0.0, 
+                    'partner_id': partner.id,
+                    'journal_id': journal.id,
+                    'date': account_date,
+                    'statement_id': self.statement_id.id,
+                    'statement_line_id': line.id,
+                    'analytic_account_id': line.analytic_account_id.id
+                })
+                move_lines.append(debit_line)
+                credit_line = (0, 0, {
+                    'name': line.name,
+                    'account_id': account_src,
+                    'debit': line.p_amount < 0.0 and -line.p_amount or 0.0,
+                    'credit': line.p_amount > 0.0 and line.p_amount or 0.0, 
+                    'partner_id': partner.id,
+                    'journal_id': journal.id,
+                    'date': account_date,
+                    'statement_id': self.statement_id.id,
+                    'statement_line_id': line.id,
+                })
+                move_lines.append(credit_line)
+                move_value['line_ids'] = move_lines
+                move = self.env['account.move'].create(move_value)
+                for line in lines:
+                    line.write({'move_id': move.id})
+                move.post()
+            request.write({'state': 'reconcile'})
+        return True
     
     @api.model
     def create(self, vals):

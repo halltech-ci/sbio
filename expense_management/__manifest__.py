@@ -27,6 +27,10 @@
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        #views
+        'views/res_config_settings_views.xml',
+        'views/expense_management_views.xml',
+        'views/expense_management_menu.xml',
         #data
         'data/expense_management_seq.xml',
     ],
