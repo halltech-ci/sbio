@@ -21,7 +21,7 @@
                 </div>
                     <group>
                         <group>
-                            <field name="src_product_id" attrs="{'readonly':[('state','in',('done','cancel'))]}" domain="[('type', '=', 'product')]" required="1"/>
+                            <field name="src_product_id" attrs="{'readonly':[('state','in',('done','cancel'))]}" domain="[('type', '=', 'product'),('bom_ids','!=',False),('bom_ids.type','!=','phantom')]" required="1"/>
                             <field name="src_lot" attrs="{'readonly':['|',('state','in',('reserved', 'done','cancel')),('src_product_tracking', '!=', 'lot')]}" domain="[('product_id', '=', src_product_id)]"/>
                             <field name="qty_to_convert" required="1" attrs="{'readonly':['|',('state','in',('reseved', 'done','cancel')),('src_lot','=',False)]}"/>
                             <field name="qty_used" required="1" attrs="{'readonly':['|',('state','in',('reseved', 'done','cancel')),('src_lot','=',False)]}"/>
@@ -59,6 +59,10 @@
                     </page>
                 </notebook>
 	        </sheet>
+            <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
         </form>
       </field>
     </record>
@@ -81,9 +85,30 @@
       <field name="name">Product Conversion</field>
       <field name="res_model">product.conversion</field>
       <field name="view_mode">tree,form</field>
+      <field name="context">{&quot;search_default_todo&quot;:1}</field>
+      <field name="help" type="html">
+            <p
+                class="oe_view_nocontent_create"
+            >Click to start a new packaging process.
+          </p>
+            <p>
+          </p>
+        </field>
     </record>
-        
-    <menuitem action="action_product_conversion" id="menu_product_conversion" name="Product Conversion" parent="mrp.menu_mrp_manufacturing" sequence="99"/>
+    
+    <menuitem id="product_convertion"
+              web_icon="hta_product_conversion,static/src/icon/odoo_icon.png"
+              name="Emballage"
+              sequence="15"/>
+    <menuitem id="conversion_menu"
+              name="Conversion"
+              parent="product_convertion"
+              sequence="2"/>
+    <menuitem id="conversion_report_menu"
+              name="Rapport"
+              parent="product_convertion"
+              sequence="5"/>
+    <menuitem action="action_product_conversion" id="menu_product_conversion" name="Product Conversion" parent="conversion_menu" sequence="3"/>
       
     <record id="view_product_product_form_view" model="ir.ui.view">
         <field name="name">product.product.form.simplified</field>

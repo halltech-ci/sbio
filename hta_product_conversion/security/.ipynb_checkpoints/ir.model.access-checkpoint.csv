@@ -1,4 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_conversion,product_conversion,model_product_conversion,base.group_user,1,1,1,1
-access_product_conversion_line,product_conversion_line,model_product_conversion_line,base.group_user,1,0,0,0
-access_product_line,product_line,model_product_line,base.group_user,1,0,0,0
+access_mrp_conversion_product_user,mrp.conversion.user,model_product_conversion,group_mrp_conversion_user,1,1,1,1
+access_mrp_conversion_product_manager,mrp.conversion.manager,model_product_conversion,group_mrp_conversion_product_manager,1,1,1,1
+access_product_conversion,product_conversion,model_product_conversion,group_mrp_conversion_product_manager,1,1,1,1
+access_product_conversion_line,product_conversion_line,model_product_conversion_line,group_mrp_conversion_product_manager,1,1,1,1
+access_product_line,product_line,model_product_line,group_mrp_conversion_product_manager,1,1,1,1

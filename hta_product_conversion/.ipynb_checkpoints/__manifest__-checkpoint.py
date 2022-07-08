@@ -20,15 +20,18 @@
     'version': '15.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock', 'product'],
+    'depends': ['base', 'stock', 'mrp', 'hta_product_barcode'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'security/mrp_conversion_security.xml',
         'views/views.xml',
         'views/templates.xml',
         #views
         'views/product_conversion_views.xml',
+        #data
+        'data/product_conversion_sequence.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
