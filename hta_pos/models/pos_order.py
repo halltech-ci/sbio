@@ -3,7 +3,8 @@
 from odoo import models, fields, api
 
 class HtaPos(models.Model):
-    _inherit = 'pos.order'
+    _name = 'pos.order'
+    _inherit = ['pos.order', 'mail.thread']
     
 
     delivery_person = fields.Many2one(
