@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_expense_request_user,access_expense_request_user,model_expense_request,expense_management.group_expense_user,1,1,1,1
+access_expense_line_user,access_expense_line_user,model_expense_line,expense_management.group_expense_user,1,1,1,1
+access_mail_activity_type_expense_request,mail.activity.type.expense.request,mail.model_mail_activity_type,expense_management.group_expense_user,1,1,1,1

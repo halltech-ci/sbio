@@ -1,0 +1,17 @@
+Version 15.0.0.1 : (12/01/22)
+		- Solved issue now we can scan product using lot name.
+
+Version 15.0.0.2 : (21/01/22)
+		- Now when we scan product lot name that time we can add lot directly.
+
+Version 15.0.0.3 : (06/04/22)
+		- Added Improvement if product if out of stock and it is not a lot product then it will add into the cart.
+
+Version 15.0.0.4 : (07/04/22)
+Fixed issue:- When we change state of action pad from quantity to discount that time in get 			  warning Lot Quantity is out of stock.
+
+Version 15.0.0.5 : (22/04/22)
+        - Improve user have the option to remove the product when Lot/Serial Number Expired.
+        - Improve user can Auto Disable product once its not is Stock.
+
+=> 15.0.0.6 : Improved an index as per latest improvements.
