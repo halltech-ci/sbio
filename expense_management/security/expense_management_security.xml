@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+   <data>
+       
+    <record model="ir.module.category" id="base.module_category_human_resources_expenses">
+        <field name="description">Helps you manage expenses.</field>
+        <field name="sequence">17</field>
+    </record>
+    <record id="group_expense_user" model="res.groups">
+        <field name="name">Expense Management User</field>
+        <field name="implied_ids" eval="[(3, ref('base.group_user'))]"/>
+        <field name="category_id" ref="base.module_category_human_resources_expenses"/>
+    </record>
+    <!-- This group approve expense before this expense can be send to accounting-->  
+    <record id="group_expense_valider" model="res.groups">
+        <field name="name">Expense Management Valideur</field>
+        <field name="implied_ids" eval="[(3, ref('expense_management.group_expense_user'))]"/>
+        <field name="category_id" ref="base.module_category_human_resources_expenses"/>
+    </record>
+    <record id="group_expense_payer" model="res.groups">
+        <field name="name">Expense Management Payer</field>
+        <field name="implied_ids" eval="[(4, ref('expense_management.group_expense_user'))]"/>
+        <field name="category_id" ref="base.module_category_human_resources_expenses"/>
+    </record>
+    <record id="group_expense_approver_1" model="res.groups">
+        <field name="name">Expense Management Approver 1</field>
+        <field name="implied_ids" eval="[(3, ref('expense_management.group_expense_valider'))]"/>
+        <field name="category_id" ref="base.module_category_human_resources_expenses"/>
+    </record>
+    
+    <record id="group_expense_approver_2" model="res.groups">
+        <field name="name">Expense Management Approver 2</field>
+        <field name="implied_ids" eval="[(3, ref('expense_management.group_expense_approver_1'))]"/>
+        <field name="category_id" ref="base.module_category_human_resources_expenses"/>
+    </record>
+    
+    <record id="group_expense_approver_3" model="res.groups">
+        <field name="name">Expense Management Approver 3</field>
+        <field name="implied_ids" eval="[(3, ref('expense_management.group_expense_approver_2'))]"/>
+        <field name="category_id" ref="base.module_category_human_resources_expenses"/>
+    </record>
+    <record id="group_expense_management_manager" model="res.groups">
+        <field name="name">Expense Management Administrator</field>
+        <field name="implied_ids" eval="[(3, ref('expense_management.group_expense_approver_3'))]"/>
+        <field name="category_id" ref="base.module_category_human_resources_expenses"/>
+    </record>
+    <record id="group_expense_authorize" model="res.groups">
+        <field name="name">Expense Management Authorize</field>
+        <field name="implied_ids" eval="[(3, ref('expense_management.group_expense_management_manager'))]"/>
+        <field name="category_id" ref="base.module_category_human_resources_expenses"/>
+    </record>    
+    <record id="group_expense_group_payer" model="res.groups">
+        <field name="name">Expense Management Payer Group</field>
+        <field name="implied_ids" eval="[(3, ref('expense_management.group_expense_authorize'))]"/>
+        <field name="category_id" ref="base.module_category_human_resources_expenses"/>
+    </record> 
+    </data>
+</odoo>
