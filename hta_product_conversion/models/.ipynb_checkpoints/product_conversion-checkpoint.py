@@ -9,6 +9,7 @@ import time
 
 class ProductConversion(models.Model):
     _name = "product.conversion"
+    _inherit = "mail.thread"
     _description = "Model for product unit of mesure conversion"
     
     name = fields.Text(string="Name", default='/')
