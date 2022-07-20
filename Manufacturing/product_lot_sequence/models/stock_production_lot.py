@@ -10,6 +10,7 @@ class ProductionLot(models.Model):
     def onchange_product_id(self):
         if self.product_id and self.product_id.product_tmpl_id.lot_sequence_id:
             self.name = self.product_id.product_tmpl_id.lot_sequence_id._next()
+            
 
     @api.model_create_multi
     def create(self, vals_list):
