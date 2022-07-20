@@ -1,11 +1,11 @@
 # Copyright 2017-19 ForgeFlow S.L.
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
-    "name": "MRP Production Request",
+    "name": "MRP Request Production",
     "summary": "Allows you to use Manufacturing Request as a previous "
     "step to Manufacturing Orders for better manufacture "
     "planification.",
-    "version": "13.0.1.0.1",
+    "version": "15.0.1.0.1",
     "development_status": "Production/Stable",
     "maintainers": ["LoisRForgeFlow"],
     "category": "Manufacturing",
