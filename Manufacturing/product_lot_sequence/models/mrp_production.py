@@ -13,7 +13,7 @@ class MrpProduction(models.Model):
         self.lot_producing_id = self.env['stock.production.lot'].create({
             'product_id': self.product_id.id,
             'company_id': self.company_id.id,
-            'name': self.env['stock.production.lot']._get_next_serial(self.company_id, self.product_id) or self.env['ir.sequence'].next_by_code(self.product_id.lot_sequence_id),
+            'name': self.env['stock.production.lot']._get_next_serial(self.company_id, self.product_id) or self.env['ir.sequence'].next_by_code(self.product_id.lot_sequence_id.code) or self.env['ir.sequence'].next_by_code('stock.lot.serial'),
             #'name': self.env['stock.production.lot']._get_next_serial(self.company_id, self.product_id) or self.env['ir.sequence'].next_by_code('stock.lot.serial'),
         })
         if self.move_finished_ids.filtered(lambda m: m.product_id == self.product_id).move_line_ids:
