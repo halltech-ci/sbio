@@ -166,7 +166,7 @@ class MrpProductionRequest(models.Model):
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
-    routing_id = fields.Many2one(
+    """routing_id = fields.Many2one(
         comodel_name="mrp.routing",
         string="Routing",
         ondelete="setnull",
@@ -176,7 +176,7 @@ class MrpProductionRequest(models.Model):
         "the finished product. The routing is mainly used to compute "
         "work center costs during operations and to plan future loads "
         "on work centers based on production plannification.",
-    )
+    )"""
     location_src_id = fields.Many2one(
         comodel_name="stock.location",
         string="Raw Materials Location",

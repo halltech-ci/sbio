@@ -21,14 +21,12 @@
                 </div>
                     <group>
                         <group>
-                            <field name="src_product_id" attrs="{'readonly':[('state','in',('done','cancel'))]}" domain="[('type', '=', 'product'),('bom_ids','!=',False),('bom_ids.type','!=','phantom')]" required="1" string="Produit"/>
-                            <field name="src_lot" attrs="{'readonly':['|',('state','in',('reserved', 'done','cancel')),('src_product_tracking', '!=', 'lot')]}" domain="[('product_id', '=', src_product_id)]" string="Lot"/>
-                            <field name="qty_to_convert" required="1" attrs="{'readonly':['|',('state','in',('reseved', 'done','cancel')),('src_lot','=',False)]}" string="Quantité à Convertir"/>
-                            <field name="qty_used" required="1" attrs="{'readonly':['|',('state','in',('draft','reseved', 'done','cancel')),('src_lot','=',False)]}" string="Quantité utilisé"/>
-                            <field name="qty_lost" attrs="{'readonly':['|',('state','in',('draft','reseved', 'done','cancel')),('src_lot','=',False)]}" string="Quantité perdu"/>
-                            
-                            <field name="src_product_tracking" invisible="1"/>
-                            
+                            <field name="src_product_id" attrs="{'readonly':[('state','in',('done','cancel'))]}" domain="[('type', '=', 'product'),('bom_ids','!=',False),('bom_ids.type','!=','phantom')]" required="1"/>
+                            <field name="src_lot" attrs="{'readonly':['|',('state','in',('reserved', 'done','cancel')),('src_product_tracking', '!=', 'lot')]}" domain="[('product_id', '=', src_product_id)]"/>
+                            <field name="qty_to_convert" required="1" attrs="{'readonly':['|',('state','in',('reseved', 'done','cancel')),('src_lot','=',False)]}"/>
+                            <field name="qty_used" required="1" attrs="{'readonly':['|',('state','in',('reseved', 'done','cancel')),('src_lot','=',False)]}"/>
+                            <field name="qty_lost" attrs="{'readonly':['|',('state','in',('reseved', 'done','cancel')),('src_lot','=',False)]}"/>
+                            <field name="src_product_tracking" invisible="1"/>                            
                             <field name="date" readonly='1' required="1"/>
                         </group>
                         <group>
