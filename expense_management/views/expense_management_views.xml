@@ -1,0 +1,291 @@
+<odoo>
+  <data>
+      
+    <record model="ir.ui.view" id="expense_request_view">
+      <field name="name">expense_request_view</field>
+      <field name="model">expense.request</field>
+      <field name="arch" type="xml">
+        <form string="Exepnse Request">
+          <header>
+            <button name="action_submit"
+                    string="Soumettre"
+                    type="object"
+                    class="oe_highlight"
+                    states="draft"
+                    groups="expense_management.group_expense_user"
+            />
+            <button name="button_to_cancel"
+                    string="Annuler"
+                    type="object"
+                    class="oe_highlight"
+                    states="submit"
+                    groups="expense_management.group_expense_valider"
+            />
+            <button name="button_rejected"
+                    string='Rejeter'
+                    type='object'
+                    class="oe_highlight"
+                    states="submit"
+                    groups="expense_management.group_expense_valider"
+            />
+            
+            <button name="to_validate"
+                    string="Valider"
+                    type="object"
+                    class="oe_highlight"
+                    states="submit"
+                    groups="expense_management.group_expense_valider"
+            />
+            <button name="button_to_approve"
+                    string="A Approuver"
+                    type="object"
+                    class="oe_highlight"
+                    states="validate"
+                    groups="expense_management.group_expense_valider"
+            />
+            <button name="button_approve"
+                    string="Approuver"
+                    type="object"
+                    class="oe_highlight"
+                    states="to_approve"
+                    groups="expense_management.group_expense_approver_1"
+            />
+            <button name="button_authorize"
+                    string="Autoriser"
+                    type="object"
+                    class="oe_highlight"
+                    states="approve"
+                    groups="expense_management.group_expense_authorize"
+            />
+            <button name="action_post"
+                    string="Payer"
+                    type="object"
+                    class="oe_highlight"
+                    states="authorize"
+                    groups="expense_management.group_expense_group_payer"
+            />
+            <button name="create_move_values"
+                    string="Lettrer"
+                    type="object"
+                    class="oe_highlight"
+                    states="post"
+                    groups="account.group_account_manager"
+                    
+            />
+            <button name="button_to_cancel"
+                    string="Annuler"
+                    confirm='Voulez-vous vraiment annuler ce devis ? Il ne sera plus modifiable'
+                    type="object"
+                    class="oe_highlight"
+                    states="authorize"
+                    groups="expense_management.group_expense_group_payer"
+            />
+            <button name="button_to_cancel"
+                    string="Annuler"
+                    confirm='Voulez-vous vraiment annuler ce devis ? Il ne sera plus modifiable'
+                    type="object"
+                    class="oe_highlight"
+                    states="to_approve,approve,authorize"
+                    groups="expense_management.group_expense_approver_1"
+            />
+            <button name="button_rejected"
+                    string='Rejeter'
+                    confirm='Voulez-vous vraiment rejeter ce devis ?'
+                    type='object'
+                    class="oe_highlight"
+                    states="to_approve,approve,authorize,cancel"
+                    groups="expense_management.group_expense_approver_1"
+            />
+            <button name="button_rejected"
+                    string='Rejeter'
+                    confirm='Voulez-vous vraiment rejeter ce devis ?.'
+                    type='object'
+                    class="oe_highlight"
+                    states="to_cancel"
+                    groups="expense_management.group_expense_management_manager"
+            />
+            <field name="state"
+                 widget="statusbar"
+                 statusbar_visible="draft,submit,validate,to_approve,approved,authorize,post,reconcile,to_cancel,cancel"
+                 statusbar_colors='{"approved":"blue"}'
+             />
+          </header>
+          <sheet>
+              <div class="oe_title">
+                    <h1>
+                        <field name="name" readonly="1" attrs="{'readonly': [('state', 'in',['to_cancel'])]}"/>
+                    </h1>
+              </div>
+
+              <div class="oe_edit_only">
+                 <label for="description" class="oe_inline" />
+              </div>
+               <h1>
+                    <field name="description" class="oe_inline" attrs="{'readonly': [('state', 'in',['to_cancel'])]}"/>
+                </h1>
+              <group>
+                  <group>
+                      <field name="expense_approver" options="{'no_create': True}" required='True' 
+                             attrs="{'readonly': [('state', 'in', ['post', 'approve','to_cancel'])]}"
+                      />
+                      <field name='journal' options="{'no_create': True}" attrs="{'readonly': [('state', 'in', ['post','to_cancel'])],'invisible': [('state', 'in', ['draft','submit','validate','to_approve'])],'required': [('state', 'in', ['approve'])]}"/>
+                      <field name="statement_id" string="Journal Caisse" options="{'no_create': True}"
+                             attrs="{'readonly': [('state', 'in', ['post','to_cancel'])],'invisible': [('state', 'in', ['draft','submit','validate','to_approve'])],'required': [('state', 'in', ['approve'])]}"
+                      />
+                 </group>
+                  <group>
+                      <field name="date"/>
+                      <field name="company_id" readonly='True' groups="base.group_multi_company"/>
+                      <field name="requested_by" readonly='True'/>
+                      <field name="total_amount" readonly='True'/>
+                      <field name="balance_amount" readonly='True' attrs="{'invisible': [('state','!=', 'to_approve'),('requested_by','!=', 'expense_approver')]}"/>
+                  </group>
+              </group>
+              <notebook>
+                  <page string='Expense lines'>
+                      <field name="line_ids"  attrs="{'readonly': [('state', 'in', ['approve', 'post','to_cancel',])]}">
+                          <tree>
+                              <field name='name'/>
+                              <field name='date'/>
+                              <field name='employee_id'/>
+                              <field name="expense_product" options="{'no_create_edit': True}"/>
+                              <field name='amount'/>
+                              <field name='analytic_account'/>
+                              <field name='request_state'/>
+                          </tree>
+                      </field>
+                  </page>
+                  <page id='aml_tab' string='Ecritures Comptables' groups="account.group_account_user" attrs="{'invisible':[('state', 'not in', ['post', 'reconcile'])]}">
+                      <field name='statement_line_ids'>
+                          <tree editable='bottom'>
+                              <field name="ref"/>
+                              <field name='name'/>
+                              <field name='analytic_account_id' string="Compte Analytique"/>
+                              <field name="partner_id"/>
+                              <!--<field name='p_amount'/>-->
+                              <field name='debit_account' required='1'/>
+                              <field name='credit_account' required='1'/>
+                          </tree>
+                      </field>
+                  </page>
+              </notebook>
+              <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+              </div>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    
+    <record id="view_expense_request_tree" model="ir.ui.view">
+          <field name="name">hr.expense.request.tree</field>
+          <field name="model">expense.request</field>
+          <field name="arch" type="xml">
+              <tree string="Expense Request" decoration-warning="state=='draft'" decoration-danger="state=='cancel'">
+                    <field name="name" string="Expense Request"/>
+                      <field name="description" string="Description" />
+                    <field name="date"/>
+                    <field name="requested_by"/>
+                    <field name="expense_approver" string="Approbateur"/>
+                    <field name="total_amount" sum="Total Amount"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="state"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+               </tree>
+          </field>
+     </record>
+      
+    <!-- Expense line tree view-->
+     <record id='view_expense_line_tree' model='ir.ui.view'>
+         <field name="name">hr.expense.line.tree</field>
+         <field name="model">expense.line</field>
+         <field name="arch" type="xml">
+             <tree>
+                 <field name="name" string="Description" readonly="1"/>
+                 <field name="date"/>
+                 <field name="expense_type" invisible='1'/>
+                 <field name="expense_product"/>
+                 <field name="requested_by"/>
+                 <field name="partner_id"/>
+                 <field name="amount" sum="Total" widget="monetary"/>
+                 <field name="analytic_account"/>
+                 <field name="currency_id" invisible="1"/>
+                 <field name="request_state"/>
+                 <field name="company_id" groups="base.group_multi_company"/>
+             </tree>
+         </field>
+     </record>
+      
+    <!-- Expense line search view-->
+     <record id="view_expense_line_filter" model="ir.ui.view">
+            <field name="name">expense.line.filter</field>
+            <field name="model">expense.line</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search expense">
+                    <field name="analytic_account" string="Analytic" filter_domain="[('analytic_account.name', 'ilike', self)]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter string="Analytic" name="analytic" domain="[]" context="{'group_by': 'analytic_account'}"/>
+                        <filter string="Order Date" name="date" domain="[]" context="{'group_by': 'date'}"/>
+                        <!--<filter string="Valideur" name="valideur" domain="[]" context="{'group_by': 'expense_approver'}"/>-->
+                    </group>
+                </search>
+            </field>
+    </record>
+    
+    <record id="view_expense_line_form" model="ir.ui.view">
+            <field name="name">expense.line.form</field>
+            <field name="model">expense.line</field>
+            <field name="arch" type="xml">
+                <form string="Expense Line" create="false" duplicate="false">
+                    <header>
+                        <field name="request_state" widget="statusbar" invisible='1'/>
+                    </header>
+                    <sheet>
+                        <h1>
+                            <field name="request_id" invisible='1'/>
+                            <label for='name' class="oe_inline"/>
+                            <field name='name' class="oe_inline" attrs="{'readonly': [('request_state', 'not in', ['draft', 'submit'])]}"/>
+                        </h1>
+                        <group>
+                            <group>
+                              <field name="partner_id" options="{'no_create_edit': True, 'no_create':True}"/>
+                              <field name='employee_id' options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly': [('request_state', 'in', ['post', 'approve'])]}"/>
+                              <field name='amount' 
+                                     attrs="{'readonly': [('request_state', 'in', ['approve', 'post'])]}"
+                              />
+                              <field name="expense_type" widget='boolean_button'/>
+                              <field name="analytic_account" options="{'no_create': True}"
+                                     attrs="{'readonly': [('request_state', 'in', ['approve', 'post'])], 'invisible': [('expense_type', '=', True)], 'required': [('expense_type', '!=', True)]}"
+                              />
+                              
+                              <field name='request_state' invisible='1'/>
+                            </group>
+                            <group>
+                              <field name='date'/>
+                              <field name='requested_by' attrs="{'readonly': [('request_state', 'not in', ['draft', 'submit'])]}"/>
+                              <field name="company_id" groups="base.group_multi_company"/> 
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+      
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="expense_management_action_window">
+      <field name="name">Expense Management</field>
+      <field name="res_model">expense.request</field>
+      <field name="view_mode">tree,form</field>
+    </record>  
+    
+    <record model="ir.actions.act_window" id="expense_line_action_window">
+      <field name="name">Expense Reports</field>
+      <field name="res_model">expense.line</field>
+      <field name="view_mode">tree</field>
+    </record>
+  </data>
+</odoo>

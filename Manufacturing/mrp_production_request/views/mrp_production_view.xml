@@ -3,10 +3,16 @@
      License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0) -->
 <odoo>
     <record id="mrp_production_form_view" model="ir.ui.view">
-        <field name="name">mrp.production.form - mrp_production_request</field>
+        <field name="name">mrp.production.form.request</field>
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_form_view" />
         <field name="arch" type="xml">
+            <field name="product_id" position="inside">
+                <field domain="[('bom_ids','!=',False),('bom_ids.type','!=','phantom')]"
+                        name="product_id"
+                            />
+            </field>
+            
             <xpath expr="//form/sheet/notebook/page[3]/field" position="after">
                 <group>
                     <field name="mrp_production_request_id" />

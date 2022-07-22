@@ -5,11 +5,11 @@
     "summary": "Allows you to use Manufacturing Request as a previous "
     "step to Manufacturing Orders for better manufacture "
     "planification.",
-    "version": "13.0.1.0.1",
+    "version": "15.0.1.0.1",
     "development_status": "Production/Stable",
     "maintainers": ["LoisRForgeFlow"],
     "category": "Manufacturing",
-    "website": "https://github.com/OCA/manufacture",
+    #"website": "https://github.com/OCA/manufacture",
     "author": "ForgeFlow," "Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "application": False,
@@ -24,4 +24,5 @@
         "views/product_template_view.xml",
         "views/mrp_production_view.xml",
     ],
+    'license': 'LGPL-3',
 }

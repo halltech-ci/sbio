@@ -18,6 +18,7 @@
                     <button
                         class="oe_highlight"
                         name="button_to_approve"
+                        groups="mrp_production_request.group_mrp_production_request_user"
                         states="draft"
                         string="Request approval"
                         type="object"
@@ -34,6 +35,7 @@
                         name="%(mrp_production_request_create_mo_action)d"
                         groups="mrp_production_request.group_mrp_production_request_manager"
                         states="approved"
+                        class="oe_highlight"
                         string="Create Manufacturing Order"
                         type="action"
                     />
@@ -284,10 +286,22 @@
           </p>
         </field>
     </record>
+    <menuitem id="request_mrp"
+              web_icon="mrp_production_request,static/src/icon/odoo_icon.png"
+              name="Demande Fabrication"
+              sequence="10"/>
+    <menuitem id="mrp_request_menu"
+              name="Demande"
+              parent="request_mrp"
+              sequence="2"/>
+    <menuitem id="mrp_request_report"
+              name="Rapport"
+              parent="request_mrp"
+              sequence="3"/>
     <menuitem
         action="mrp_production_request_action"
         id="menu_mrp_production_request_act"
-        parent="mrp.menu_mrp_manufacturing"
+        parent="mrp_request_menu"
         sequence="10"
     />
     <!--Sever actions-->

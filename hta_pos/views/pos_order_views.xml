@@ -8,7 +8,12 @@
             <field name="delivery_person" readonly="True"/>
             <field name="date_delivery" readonly="True"/>  
           </xpath>
-          
+          <xpath expr="//sheet" position="after">
+                   <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+          </xpath>
       </field>
     </record>
       <record id="view_pos_hta_filter" model="ir.ui.view">
@@ -65,6 +70,7 @@
                 <field name="customer_Phone" string="Telephone Client"/>
           </field>
       </field>
+
     </record> 
 
   </data>

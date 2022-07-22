@@ -1,0 +1,13 @@
+<odoo>
+  <data>
+    <menuitem id="expense_management.menu_root"  name="Expense Management" groups="hr.group_hr_user" sequence="100" web_icon="hr_expense,static/description/icon.png"/>
+      
+    <menuitem name="Expenses" id="expense_management.expense" parent="expense_management.menu_root" action="expense_management_action_window"/>
+      
+    <menuitem name="Reports" id="expense_management.report" parent="expense_management.menu_root" action="expense_line_action_window"/>
+      
+    <menuitem action="expense_management_action_window" id="menu_expense_request_request_expense" sequence="01" parent="expense_management.expense"/>
+    
+    <menuitem id="menu_expense_management_config" name="Settings" parent="expense_management.menu_root" sequence="999" action="action_expense_management_config" groups="base.group_system"/>
+  </data>
+</odoo>

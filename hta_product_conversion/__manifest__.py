@@ -20,10 +20,11 @@
     'version': '15.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock', 'mrp', 'hta_product_barcode'],
+    'depends': ['base', 'stock', 'mrp',],
 
     # always loaded
     'data': [
+        'security/mrp_conversion_security.xml',
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
