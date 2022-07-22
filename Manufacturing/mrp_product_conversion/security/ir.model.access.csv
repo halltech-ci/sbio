@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_product_conversion_mrp_product_conversion,mrp_product_conversion.mrp_product_conversion,model_mrp_product_conversion_mrp_product_conversion,base.group_user,1,1,1,1

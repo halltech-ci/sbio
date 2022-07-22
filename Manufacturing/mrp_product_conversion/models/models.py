@@ -3,9 +3,9 @@
 # from odoo import models, fields, api
 
 
-# class mrp_production(models.Model):
-#     _name = 'mrp_production.mrp_production'
-#     _description = 'mrp_production.mrp_production'
+# class mrp_product_conversion(models.Model):
+#     _name = 'mrp_product_conversion.mrp_product_conversion'
+#     _description = 'mrp_product_conversion.mrp_product_conversion'
 
 #     name = fields.Char()
 #     value = fields.Integer()
