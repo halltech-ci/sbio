@@ -29,14 +29,14 @@ class MrpProductionRequest(models.Model):
         string="Requested by",
         default=lambda self: self._get_default_requested_by(),
         required=True,
-        track_visibility="onchange",
+        tracking=4,
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
     assigned_to = fields.Many2one(
         comodel_name="res.users",
         string="Approver",
-        track_visibility="onchange",
+        tracking=3,
         readonly=True,
         states={"draft": [("readonly", False)]},
         domain=lambda self: [
@@ -89,7 +89,7 @@ class MrpProductionRequest(models.Model):
             ("cancel", "Cancelled"),
         ],
         index=True,
-        track_visibility="onchange",
+        tracking=4,
         required=True,
         copy=False,
         default="draft",
@@ -108,7 +108,7 @@ class MrpProductionRequest(models.Model):
         string="Product",
         required=True,
         domain=[("type", "in", ["product", "consu"])],
-        track_visibility="onchange",
+        tracking=4,
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
@@ -120,7 +120,7 @@ class MrpProductionRequest(models.Model):
     product_qty = fields.Float(
         string="Required Quantity",
         required=True,
-        track_visibility="onchange",
+        tracking=3,
         digits="Product Unit of Measure",
         default=1.0,
         readonly=True,
@@ -166,17 +166,17 @@ class MrpProductionRequest(models.Model):
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
-    routing_id = fields.Many2one(
+    """routing_id = fields.Many2one(
         comodel_name="mrp.routing",
         string="Routing",
-        on_delete="setnull",
+        ondelete="setnull",
         readonly=True,
         states={"draft": [("readonly", False)]},
         help="The list of operations (list of work centers) to produce "
         "the finished product. The routing is mainly used to compute "
         "work center costs during operations and to plan future loads "
         "on work centers based on production plannification.",
-    )
+    )"""
     location_src_id = fields.Many2one(
         comodel_name="stock.location",
         string="Raw Materials Location",

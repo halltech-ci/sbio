@@ -17,7 +17,7 @@ class MrpProductionRequestCreateMo(models.TransientModel):
             self.env["mrp.production.request.create.mo.line"].create(
                 self._prepare_product_line(line)
             )
-        self._get_mo_qty()
+        #self._get_mo_qty()
         # The wizard must be reloaded in order to show the new product lines
         action = self.env.ref(
             "mrp_production_request.mrp_production_request_create_mo_action"
@@ -39,12 +39,12 @@ class MrpProductionRequestCreateMo(models.TransientModel):
             self.mrp_production_request_id.product_id, factor / bom_point.product_qty
         )
 
-    def _get_mo_qty(self):
-        """Propose a qty to create a MO available to produce."""
-        for rec in self:
-            bottle_neck = min(rec.product_line_ids.mapped("bottle_neck_factor"))
-            bottle_neck = max(min(1, bottle_neck), 0)
-            rec.mo_qty = rec.pending_qty * bottle_neck
+#     def _get_mo_qty(self):
+#         """Propose a qty to create a MO available to produce."""
+#         for rec in self:
+#             bottle_neck = min(rec.product_line_ids.mapped("bottle_neck_factor"))
+#             bottle_neck = max(min(1, bottle_neck), 0)
+#             rec.mo_qty = rec.pending_qty * bottle_neck
 
     mrp_production_request_id = fields.Many2one(
         comodel_name="mrp.production.request", readonly=True
@@ -110,6 +110,7 @@ class MrpProductionRequestCreateMo(models.TransientModel):
             "location_src_id": request_id.location_src_id.id,
             "location_dest_id": request_id.location_dest_id.id,
             "picking_type_id": request_id.picking_type_id.id,
+            #"move_dest_ids": self.product_line_ids,
             #"routing_id": request_id.routing_id.id,
             "date_planned_start": self.date_planned_start,
             "date_planned_finished": self.date_planned_finished,
@@ -140,22 +141,22 @@ class MrpProductionRequestCreateMoLine(models.TransientModel):
     _name = "mrp.production.request.create.mo.line"
     _description = "Wizard to create Manufacturing Orders Line"
 
-    def _compute_available_qty(self):
-        for rec in self:
-            product_available = rec.product_id.with_context(
-                location=rec.location_id.id
-            )._compute_product_available_not_res_dict()[rec.product_id.id][
-                "qty_available_not_res"
-            ]
-            res = rec.product_id.product_tmpl_id.uom_id._compute_quantity(
-                product_available, rec.product_uom_id
-            )
-            rec.available_qty = res
+#     def _compute_available_qty(self):
+#         for rec in self:
+#             product_available = rec.product_id.with_context(
+#                 location=rec.location_id.id
+#             )._compute_product_available_not_res_dict()[rec.product_id.id][
+#                 "qty_available_not_res"
+#             ]
+#             res = rec.product_id.product_tmpl_id.uom_id._compute_quantity(
+#                 product_available, rec.product_uom_id
+#             )
+#             rec.available_qty = res
 
-    def _compute_bottle_neck_factor(self):
-        for rec in self:
-            if rec.product_qty:
-                rec.bottle_neck_factor = rec.available_qty / rec.product_qty
+#     def _compute_bottle_neck_factor(self):
+#         for rec in self:
+#             if rec.product_qty:
+#                 rec.bottle_neck_factor = rec.available_qty / rec.product_qty
 
     product_id = fields.Many2one(
         comodel_name="product.product", string="Product", required=True
@@ -169,10 +170,10 @@ class MrpProductionRequestCreateMoLine(models.TransientModel):
     mrp_production_request_create_mo_id = fields.Many2one(
         comodel_name="mrp.production.request.create.mo"
     )
-    available_qty = fields.Float(
-        string="Quantity Available",
-        compute="_compute_available_qty",
-        digits="Product Unit of Measure",
-    )
-    bottle_neck_factor = fields.Float(compute="_compute_bottle_neck_factor")
+#     available_qty = fields.Float(
+#         string="Quantity Available",
+#         compute="_compute_available_qty",
+#         digits="Product Unit of Measure",
+#     )
+#     bottle_neck_factor = fields.Float(compute="_compute_bottle_neck_factor")
     location_id = fields.Many2one(comodel_name="stock.location", required=True)

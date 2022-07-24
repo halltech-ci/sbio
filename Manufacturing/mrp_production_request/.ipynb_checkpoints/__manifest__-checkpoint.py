@@ -19,10 +19,10 @@
         "security/mrp_production_request_security.xml",
         "security/ir.model.access.csv",
         "data/mrp_production_request_sequence.xml",
-        "wizards/mrp_production_request_create_mo_view.xml",
-        "views/mrp_production_request_view.xml",
         "views/product_template_view.xml",
         "views/mrp_production_view.xml",
+        "wizards/mrp_production_request_create_mo_view.xml",
+        "views/mrp_production_request_view.xml",
     ],
     'license': 'LGPL-3',
 }

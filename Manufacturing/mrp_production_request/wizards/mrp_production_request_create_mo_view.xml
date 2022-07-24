@@ -25,8 +25,8 @@
                                 <field name="product_id" />
                                 <field name="product_uom_id" />
                                 <field name="product_qty" />
-                                <field name="available_qty" />
-                                <field name="bottle_neck_factor" />
+<!--                                 <field name="available_qty" /> -->
+<!--                                 <field name="bottle_neck_factor" /> -->
                             </tree>
                         </field>
                     </group>
