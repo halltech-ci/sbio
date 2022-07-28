@@ -123,11 +123,16 @@ class MrpProductionRequestCreateMo(models.TransientModel):
         self.ensure_one()
         vals = self._prepare_manufacturing_order()
         mo = self.env["mrp.production"].create(vals)
+        mpr = self.mrp_production_request_id
         move = mo._get_moves_raw_values()
         component_ids = []
         for rec in move:
             component_ids.append((0, 0, rec))
         mo.write({"move_raw_ids": component_ids})
+        if mo.move_raw_ids:
+            for item in mo.move_raw_ids:
+                item.write({"created_mrp_production_request_id": self.mrp_production_request_id})
+#                 item.created_mrp_production_request_id = self.mrp_production_request_id
         # Open resulting MO:
         action = self.env.ref("mrp.mrp_production_action").read()[0]
         res = self.env.ref("mrp.mrp_production_form_view")
