@@ -103,11 +103,11 @@ class MrpProductionRequestCreateMo(models.TransientModel):
             "product_qty": self.mo_qty,
             "product_uom_id": self.product_uom_id.id,
             "mrp_production_request_id": self.mrp_production_request_id.id,
-            "origin": request_id.origin,
+#             "origin": request_id.origin,
             "location_src_id": request_id.location_src_id.id,
             "location_dest_id": request_id.location_dest_id.id,
             "picking_type_id": request_id.picking_type_id.id,
-            "routing_id": request_id.routing_id.id,
+#             "routing_id": request_id.routing_id.id,
             "date_planned_start": self.date_planned_start,
             "date_planned_finished": self.date_planned_finished,
             "procurement_group_id": request_id.procurement_group_id.id,
@@ -119,19 +119,66 @@ class MrpProductionRequestCreateMo(models.TransientModel):
         self.ensure_one()
         vals = self._prepare_manufacturing_order()
         mo = self.env["mrp.production"].create(vals)
-        move = mo._get_moves_raw_values()
-        component_ids = []
-        for rec in move:
-            component_ids.append((0, 0, rec))
-        mo.write({"move_raw_ids": component_ids})
+#         mo = mo._onchange_move_raw()
+#         mo = mo._onchange_move_finished()
+        
+#         component_ids = [(5,)]
+
+        mo.move_raw_ids = [(5,)]
+        if mo.bom_id and mo.product_id and mo.product_qty > 0:
+            # keep manual entries
+            list_move_raw = [(4, move.id) for move in mo.move_raw_ids.filtered(lambda m: not m.bom_line_id)]
+            moves_raw_values = mo._get_moves_raw_values()
+            move_raw_dict = {move.bom_line_id.id: move for move in mo.move_raw_ids.filtered(lambda m: m.bom_line_id)}
+            for move_raw_values in moves_raw_values:
+                if move_raw_values['bom_line_id'] in move_raw_dict:
+                    # update existing entries
+                    list_move_raw += [(1, move_raw_dict[move_raw_values['bom_line_id']].id, move_raw_values)]
+                else:
+                    # add new entries
+                    list_move_raw += [(0, 0, move_raw_values)]
+            mo.move_raw_ids = list_move_raw
+        else:
+            mo.move_raw_ids = [(2, move.id) for move in mo.move_raw_ids.filtered(lambda m: m.bom_line_id)]
+        (mo.move_raw_ids | mo.move_finished_ids).write({
+            'group_id': mo.procurement_group_id.id,
+            'origin': mo.name
+        })
+#         for rec in move:
+#             component_ids.append((0, 0, rec))
+#         mo.write({"move_raw_ids": mo._onchange_move_raw()})
         # Open resulting MO:
+        mo._generate_finished_moves()
         action = self.env.ref("mrp.mrp_production_action").read()[0]
         res = self.env.ref("mrp.mrp_production_form_view")
         action.update(
             {"res_id": mo and mo.id, "views": [(res and res.id or False, "form")]}
         )
         return action
-
+    
+#     @api.onchange('bom_id', 'product_id', 'product_qty', 'product_uom_id')
+#     def _onchange_move_raw(self):
+#         if not self.bom_id and not self._origin.product_id:
+#             return
+#         # Clear move raws if we are changing the product. In case of creation (self._origin is empty),
+#         # we need to avoid keeping incorrect lines, so clearing is necessary too.
+#         if self.product_id != self._origin.product_id:
+#             self.move_raw_ids = [(5,)]
+#         if self.bom_id and self.product_id and self.product_qty > 0:
+#             # keep manual entries
+#             list_move_raw = [(4, move.id) for move in self.move_raw_ids.filtered(lambda m: not m.bom_line_id)]
+#             moves_raw_values = self._get_moves_raw_values()
+#             move_raw_dict = {move.bom_line_id.id: move for move in self.move_raw_ids.filtered(lambda m: m.bom_line_id)}
+#             for move_raw_values in moves_raw_values:
+#                 if move_raw_values['bom_line_id'] in move_raw_dict:
+#                     # update existing entries
+#                     list_move_raw += [(1, move_raw_dict[move_raw_values['bom_line_id']].id, move_raw_values)]
+#                 else:
+#                     # add new entries
+#                     list_move_raw += [(0, 0, move_raw_values)]
+#             self.move_raw_ids = list_move_raw
+#         else:
+#             self.move_raw_ids = [(2, move.id) for move in self.move_raw_ids.filtered(lambda m: m.bom_line_id)]
 
 class MrpProductionRequestCreateMoLine(models.TransientModel):
     _name = "mrp.production.request.create.mo.line"
@@ -141,9 +188,7 @@ class MrpProductionRequestCreateMoLine(models.TransientModel):
         for rec in self:
             product_available = rec.product_id.with_context(
                 location=rec.location_id.id
-            )._compute_product_available_not_res_dict()[rec.product_id.id][
-                "qty_available_not_res"
-            ]
+            )._compute_show_qty_status_button()
             res = rec.product_id.product_tmpl_id.uom_id._compute_quantity(
                 product_available, rec.product_uom_id
             )
