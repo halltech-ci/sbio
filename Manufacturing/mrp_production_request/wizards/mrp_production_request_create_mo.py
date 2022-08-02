@@ -100,10 +100,11 @@ class MrpProductionRequestCreateMo(models.TransientModel):
         return {
             "product_id": request_id.product_id.id,
             "bom_id": request_id.bom_id.id,
-            "product_qty": self.mo_qty,
+            #"product_qty": self.mo_qty,
+            #"product_uom_qty":self.mo_qty,
             "product_uom_id": self.product_uom_id.id,
             "mrp_production_request_id": self.mrp_production_request_id.id,
-#             "origin": request_id.origin,
+            "origin": request_id.origin,
             "location_src_id": request_id.location_src_id.id,
             "location_dest_id": request_id.location_dest_id.id,
             "picking_type_id": request_id.picking_type_id.id,
@@ -148,7 +149,7 @@ class MrpProductionRequestCreateMo(models.TransientModel):
 #             component_ids.append((0, 0, rec))
 #         mo.write({"move_raw_ids": mo._onchange_move_raw()})
         # Open resulting MO:
-        mo._generate_finished_moves()
+#         mo._generate_finished_moves()
         action = self.env.ref("mrp.mrp_production_action").read()[0]
         res = self.env.ref("mrp.mrp_production_form_view")
         action.update(
