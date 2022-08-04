@@ -4,6 +4,7 @@
       <field name="model">pos.order</field>
       <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
       <field name="arch" type="xml">
+        
           <xpath expr="//sheet//group[@name='order_fields']/field[@name='user_id']" position="after">
             <field name="delivery_person" readonly="True"/>
             <field name="date_delivery" readonly="True"/>  
