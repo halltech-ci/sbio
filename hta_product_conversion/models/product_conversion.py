@@ -247,9 +247,7 @@ class ProductConversionLinem(models.Model):
         for line in self:
             if line.conversion_ratio != 0:
                 line.converted_qty = int(line.allocate_quantity / line.conversion_ratio)
-                
-    
-        
+                     
     """
     @api.onchange('dest_product_id')
     def _onchange_dest_product_id(self):
