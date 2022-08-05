@@ -71,7 +71,7 @@
 			<field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
 			<field name="arch" type="xml">
 				<xpath expr="//field[@name='partner_id']" position="after">
-					<field name="pos_order_date"/>
+					<field name="pos_order_date" string='Date Commande'/>
 				</xpath>
 
 				<field name="pos_reference" position="after">

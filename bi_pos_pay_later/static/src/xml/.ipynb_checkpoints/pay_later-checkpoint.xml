@@ -89,7 +89,7 @@
 				<div class="button back"
 					t-on-click="click_back">
 					<i class="fa fa-angle-double-left fa-fw"></i>
-					<span class="back_text">Rtour</span>
+					<span class="back_text">Retour</span>
 				</div>
 			</xpath>
 		</t>

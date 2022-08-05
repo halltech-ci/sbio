@@ -9,7 +9,7 @@ import random
 class pos_order(models.Model):
 	_inherit = 'pos.order'
 
-	pos_order_date = fields.Date('Oder Date', compute='get_order_date')
+	pos_order_date = fields.Date('Order Date', compute='get_order_date')
 	barcode = fields.Char(string="Order Barcode")
 	barcode_img = fields.Binary('Order Barcode Image')
 
