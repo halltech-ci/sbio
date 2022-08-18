@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="barcode_product.list">
+      <field name="name">barcode_product list</field>
+      <field name="model">barcode_product.barcode_product</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="barcode_product.action_window">
+      <field name="name">barcode_product window</field>
+      <field name="res_model">barcode_product.barcode_product</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="barcode_product.action_server">
+      <field name="name">barcode_product server</field>
+      <field name="model_id" ref="model_barcode_product_barcode_product"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="barcode_product" id="barcode_product.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="barcode_product.menu_1" parent="barcode_product.menu_root"/>
+    <menuitem name="Menu 2" id="barcode_product.menu_2" parent="barcode_product.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="barcode_product.menu_1_list" parent="barcode_product.menu_1"
+              action="barcode_product.action_window"/>
+    <menuitem name="Server to list" id="barcode_product" parent="barcode_product.menu_2"
+              action="barcode_product.action_server"/>
+-->
+  </data>
+</odoo>
