@@ -28,6 +28,7 @@
         'views/views.xml',
         'views/templates.xml',
         'report/product_label.xml',
+        'report/stock_lot_label.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

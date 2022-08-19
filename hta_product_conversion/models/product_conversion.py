@@ -41,10 +41,17 @@ class ProductConversion(models.Model):
             if self.src_product_tracking != 'lot':
                 raise ValidationError(_('Le suivi par lot n\'est pas activé pour cet article'))
     
+#     @api.onchange('src_lot')
+#     def _onchange_src_lot(self):
+#         for rec in self:
+#             if rec.src_product_id and rec.from_location:
+#                 rec.qty_to_convert = rec.src_lot.product_qty
+    
+    
     @api.onchange('src_lot')
     def _onchange_src_lot(self):
         for rec in self:
-            if rec.src_product_id and rec.from_location:
+            if rec.src_product_id:
                 rec.qty_to_convert = rec.src_lot.product_qty
     
     """                

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-    		<template id="report_barcode_inherit_pos">
+    		<template id="report_barcode_inherit_stock_lot">
 			<div style="width: 30%; display: inline-table; height:10%;">
 				<table class="table table-bordered mb-0" style="border: 2px solid black;">
 					<tr>
@@ -39,39 +39,27 @@
 				</table>
 			</div>
 		</template>
-        		<template id="report_product_barcode_lot_label_inherit">
+        		<template id="report_stock_lot_barcode_lot_label_inherit">
 			<t t-call="web.basic_layout">
 				<div class="page">
-					<t t-foreach="docs" t-as="product">
-						<t t-if="len(product.barcode_ids) > 0">
-							<t t-foreach="product.barcode_ids" t-as="pbl">
-                                <t t-if="(pbl.product_qty) > 0">
-                                    <t t-call="barcode_product.report_barcode_inherit_pos">
+					<t t-foreach="docs" t-as="pbl">
+                                <t t-call="barcode_product.report_barcode_inherit_stock_lot">
 									<t t-set="pbl" t-value="pbl"/>
-								</t>
                                 </t>
 								
-							</t>
 						</t>
-						<t t-else=''>
-							<!--<t t-call="product.report_simple_label">-->
-                            <t t-call="product.report_productlabel">
-								<t t-set="product" t-value="product"/>
-							</t>
-						</t>
-					</t>
 				</div>
 			</t>
 		</template>
         
-        <record id="report_product_lot_barcode_inherit" model="ir.actions.report">
+        <record id="report_stock_lotproduct_lot_barcode_inherit" model="ir.actions.report">
 			<field name="name">Code Bar LOT(PDF)</field>
-			<field name="model">product.product</field>
+			<field name="model">stock.production.lot</field>
 			<field name="report_type">qweb-pdf</field>
-			<field name="report_name">barcode_product.report_product_barcode_lot_label_inherit</field>
-			<field name="report_file">barcode_product.report_product_barcode_lot_label_inherit</field>
+			<field name="report_name">barcode_product.report_stock_lot_barcode_lot_label_inherit</field>
+			<field name="report_file">barcode_product.report_stock_lot_barcode_lot_label_inherit</field>
 			<field name="print_report_name">'barcode Lot - %s' % (object.name)</field>
-			<field name="binding_model_id" ref="product.model_product_product"/>
+			<field name="binding_model_id" ref="stock.model_stock_production_lot"/>
 			<field name="binding_type">report</field>
 		</record>
     </data>
