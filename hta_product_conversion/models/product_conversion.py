@@ -29,6 +29,7 @@ class ProductConversion(models.Model):
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env['res.company']._company_default_get('product.conversion'))
     date = fields.Date(string='Date', index=True, default=time.strftime('%Y-%m-%d'))
     
+
     def _check_availlable_qty(self):
         qty = 0
         
