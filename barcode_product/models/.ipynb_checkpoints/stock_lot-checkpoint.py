@@ -8,8 +8,8 @@ class barcode_product(models.Model):
     _inherit = 'stock.production.lot'
     
 
-    date_create = fields.Datetime(string='Create Date', default=datetime.today())
-    time_expire = fields.Datetime(string='Date Expirate',default=lambda self: self._compute_exp_date())
+    date_create = fields.Datetime(string='Create Date', default=lambda self: fields.Datetime.now())
+    time_expire = fields.Datetime(string='Date Expirate',default=lambda self: fields.Datetime.now()+timedelta(730))
     
     @api.depends('date_create')
     def _compute_exp_date(self):
