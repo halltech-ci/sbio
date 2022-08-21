@@ -13,9 +13,9 @@ class pos_order(models.Model):
 	barcode = fields.Char(string="Order Barcode")
 	barcode_img = fields.Binary('Order Barcode Image')
 
-	def get_order_date(self):
-		for order in self:
-			order.pos_order_date = order.date_order.date()
+# 	def get_order_date(self):
+# 		for order in self:
+# 			order.pos_order_date = order.date_order.date()
 
 	@api.model
 	def _order_fields(self, ui_order):
