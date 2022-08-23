@@ -94,7 +94,7 @@
                             <field name="product_ids" force_save="1" widget="many2many_tags" invisible="1" />
                         </group>
                         <group>
-                            <field name="product_qty" />
+                            <field name="product_qty" attrs="{'readonly':[('state','in',('done','cancel','approved'))]}"/>
                             <field name="done_qty" />
                             <field name="manufactured_qty" />
                             <field name="pending_qty" />
@@ -114,7 +114,7 @@
                     </group>
                     <notebook>
                         <page string="Line de Conversion">   
-                            <field name="conversion_line" widget="one2many_list">
+                            <field name="conversion_line" widget="one2many_list" attrs="{'readonly':[('state','in',('done','cancel','approved'))]}">
                                 <tree editable="bottom">
                                     <field name="dest_product_id" required="1" force_save='1' domain="[('type', '=', 'product'), ('id','in', parent.product_ids)]" attrs="{'readonly':[('parent.state','in',('reserved', 'done','cancel'))]}" string="Produit"/>
                                     <field name="dest_uom" readonly="1" force_save="1" required="1" string="Unité"/>
@@ -132,9 +132,9 @@
                         <page name="extra" string="Extra information">
                             <group>
                                 <group>
-                                    <field name="location_src_id" />
-                                    <field name="location_dest_id" />
-                                    <field name="picking_type_id" />
+                                    <field name="location_src_id" attrs="{'readonly':[('state','in',('done','cancel','approved'))]}"/>
+                                    <field name="location_dest_id" attrs="{'readonly':[('state','in',('done','cancel','approved'))]}"/>
+                                    <field name="picking_type_id" attrs="{'readonly':[('state','in',('done','cancel','approved'))]}"/>
                                 </group>
                                 <group>
                                     <field name="origin" />

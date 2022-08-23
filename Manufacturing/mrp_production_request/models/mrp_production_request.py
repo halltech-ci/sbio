@@ -124,7 +124,7 @@ class MrpProductionRequest(models.Model):
         digits="Product Unit of Measure",
         default=1.0,
         readonly=True,
-        states={"draft": [("readonly", False)]},
+        
     )
     product_uom_id = fields.Many2one(
         comodel_name="uom.uom",
@@ -185,7 +185,7 @@ class MrpProductionRequest(models.Model):
         ),
         required=True,
         readonly=True,
-        states={"draft": [("readonly", False)]},
+        
     )
     location_dest_id = fields.Many2one(
         comodel_name="stock.location",
@@ -195,7 +195,7 @@ class MrpProductionRequest(models.Model):
         ),
         required=True,
         readonly=True,
-        states={"draft": [("readonly", False)]},
+        
     )
     picking_type_id = fields.Many2one(
         comodel_name="stock.picking.type",
@@ -205,7 +205,7 @@ class MrpProductionRequest(models.Model):
         ),
         required=True,
         readonly=True,
-        states={"draft": [("readonly", False)]},
+        
     )
     move_dest_ids = fields.One2many(
         comodel_name="stock.move",
