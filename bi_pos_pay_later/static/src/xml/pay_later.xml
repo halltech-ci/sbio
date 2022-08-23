@@ -58,13 +58,13 @@
 						<t t-if="props.order.state != 'draft'">
 							<t t-esc='env.pos.format_currency(0)' />
 						</t>
-						<t t-if="props.order.state == 'draft'">
+						<t t-if="props.order.state == 'paid'">
 							<t t-esc='env.pos.format_currency(props.order.amount_due)' />
 						</t>
 					</td>
 					<td  class='order-pay' t-att-data-id='props.order.id' 
 					t-on-click.stop="trigger('click-pay',props.order)">
-						<t t-if="props.order.state == 'draft'">
+						<t t-if="props.order.state == 'paid'">
 							<button class="odoo-theme-button" t-att-id='props.order.id' ><i class="fa fa-credit-card"></i> Payer</button>
 						</t>
 						<t t-else="">
@@ -89,7 +89,7 @@
 				<div class="button back"
 					t-on-click="click_back">
 					<i class="fa fa-angle-double-left fa-fw"></i>
-					<span class="back_text">Rtour</span>
+					<span class="back_text">Retour</span>
 				</div>
 			</xpath>
 		</t>

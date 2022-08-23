@@ -124,7 +124,7 @@ class MrpProductionRequest(models.Model):
         digits="Product Unit of Measure",
         default=1.0,
         readonly=True,
-        states={"draft": [("readonly", False)]},
+        
     )
     product_uom_id = fields.Many2one(
         comodel_name="uom.uom",
@@ -185,7 +185,7 @@ class MrpProductionRequest(models.Model):
         ),
         required=True,
         readonly=True,
-        states={"draft": [("readonly", False)]},
+        
     )
     location_dest_id = fields.Many2one(
         comodel_name="stock.location",
@@ -195,7 +195,7 @@ class MrpProductionRequest(models.Model):
         ),
         required=True,
         readonly=True,
-        states={"draft": [("readonly", False)]},
+        
     )
     picking_type_id = fields.Many2one(
         comodel_name="stock.picking.type",
@@ -205,7 +205,7 @@ class MrpProductionRequest(models.Model):
         ),
         required=True,
         readonly=True,
-        states={"draft": [("readonly", False)]},
+        
     )
     move_dest_ids = fields.One2many(
         comodel_name="stock.move",
@@ -215,7 +215,9 @@ class MrpProductionRequest(models.Model):
     orderpoint_id = fields.Many2one(
         comodel_name="stock.warehouse.orderpoint", string="Orderpoint"
     )
-
+    
+    conversion_line = fields.One2many('mrp.request.line', 'conversion_id', string='Conversion Line')
+    product_ids = fields.Many2many('product.product', string='product ids', compute="_compute_store_convertible_products", store=True)
     _sql_constraints = [
         (
             "name_uniq",
@@ -223,7 +225,7 @@ class MrpProductionRequest(models.Model):
             "Reference must be unique per Company!",
         )
     ]
-
+    
     @api.model
     def _get_mo_valid_states(self):
         return ["planned", "confirmed", "progress", "done"]
@@ -363,3 +365,145 @@ class MrpProductionRequest(models.Model):
             result["views"] = [(form and form.id or False, "form")]
             result["res_id"] = mos[0].id
         return result
+    
+    @api.depends('product_id')
+    def _compute_store_convertible_products(self):
+        lst = []
+        if self.product_id:
+            lst = self.env["product.line"].search([('prod_id', '=', self.product_id.id)]).mapped('convertible_product')
+            self.product_ids = lst
+    
+    @api.onchange('conversion_line','product_id')
+    @api.depends('conversion_line','product_id')
+    def _onchange_qty_used(self):
+        qty_done = 0
+        for prod in self:
+            if len(prod.conversion_line.ids) > 0:
+                for line in prod.conversion_line:
+                    qty_done += line.converted_qty
+                self.product_qty = qty_done
+    
+#     @api.onchange("product_id")
+#     def _onchange_type_product_id(self):
+#         if self.product_id:
+#             type_products = self.product_id.conversion_line.ids
+#             if type_products: 
+#                 domain = [('id','in',type_products)]
+#                 return  {'domain':{'conversion_line':domain}}
+#         return  {'domain':{'conversion_line':[('id', 'in', [])]}}
+
+            
+#     @api.onchange('product_id')
+#     @api.depends('product_id')
+#     def _onchange_conversion_line(self):
+#         lst = []
+#         for rec in self:
+#             if rec.product_id.conversion_line:
+#                 for rs in rec.product_id.conversion_line:
+#                     lst.append(
+#                     self.env["mrp.request.line"].create({
+#                             'conversion_id': rec.id,
+#                             'dest_product_id': rs.convertible_product,
+#                             'conversion_ratio': rs.conversion_ratio,
+#                         })) 
+#             self.conversion_line = lst
+
+    
+
+    
+        
+class ProductConversionLines(models.Model):
+    _name = "mrp.request.line"
+    _description = "Line for product conversion"
+    
+    conversion_id = fields.Many2one('mrp.production.request', string='Conversion id')
+    conversion_ratio = fields.Float(string='Conversion Ratio',)
+    dest_product_id = fields.Many2one('product.product', string="Product")
+    dest_uom = fields.Many2one('uom.uom', string="Unit of measure", related="dest_product_id.uom_id")
+    allocate_quantity = fields.Float(string='Allocate Qty', digits='Product Price')
+    converted_qty = fields.Float(string='Converted Qty')
+    company_id = fields.Many2one(related='conversion_id.company_id', string='Company', store=True, readonly=True)
+    qty_done = fields.Integer(string='Qty Done',)
+    
+    
+    
+#     @api.onchange('conversion_line')
+#     def _onchange_qty_used(self):
+#         for prod in self:
+#             qty_done = 0
+#             if len(prod.conversion_line.ids) > 0:
+#                 for line in prod.conversion_line:
+#                     qty_done += line.allocate_quantity
+#                 self.qty_used = qty_done
+                
+                
+#     @api.onchange('qty_used')
+#     def _onchange_qty_lost(self):
+#         for prod in self:
+#             qty_lost = 0
+#             if len(prod.conversion_line.ids) > 0:
+#                 for line in prod.conversion_line:
+#                     qty_lost += line.conversion_ratio * line.qty_done
+#                 self.qty_lost = qty_lost - self.qty_used
+
+    @api.depends('conversion_id.product_id')
+    def _get_conversion_ration(self):
+        for line in self:
+            line.conversion_ratio = self.env['product.line'].search([('convertible_product', "=", line.dest_product_id.id), ('prod_id', '=', self.conversion_id.product_id.id)]).conversion_ratio
+            
+    @api.onchange('dest_product_id')
+    @api.depends('conversion_id.product_id')
+    def _onchange_product_id(self):
+        for line in self:
+            line.conversion_ratio = self.env['product.line'].search([('convertible_product', "=", line.dest_product_id.id), ('prod_id', '=', self.conversion_id.product_id.id)]).conversion_ratio
+            
+    @api.onchange('allocate_quantity')
+    @api.depends('conversion_ratio')
+    def _onchange_allocate_quantity(self):
+        for line in self:
+            if line.conversion_ratio != 0:
+                line.converted_qty = int(line.allocate_quantity * line.conversion_ratio)
+                     
+    """
+    @api.onchange('dest_product_id')
+    def _onchange_dest_product_id(self):
+        for line in self:
+            if line.dest_product_id:
+                if line.dest_product_id.tracking == 'lot':
+                    line.dest_lot = line.conversion_id.src_lot.id
+                else:
+                    raise UserError(_('Veuillez activer le suivi par lot sur l\'article:' + str(line.dest_product_id.name)))
+    """
+# class ProductProduct(models.Model):
+#     _inherit = "product.product"
+
+#     conversion_line = fields.One2many('product.line', 'prod_id', string='Conversion')
+#     duplicate_product_check = fields.Boolean(string='Duplicate Product Check', compute="_compute_check_duplicate_convertible_product")
+    
+    
+#     @api.depends('conversion_line.convertible_product')
+#     def _compute_check_duplicate_convertible_product(self):
+#         lst = []
+#         self.duplicate_product_check = False
+#         for conversion in self.conversion_line:
+#             if conversion.convertible_product not in lst:
+#                 lst.append(conversion.convertible_product)
+#             else:
+#                 raise UserError(_('Conversion Ratio for ' + str(conversion.convertible_product.name) + ' has already been set'))
+#         self.duplicate_product_check = True
+
+
+# class ProductLine(models.Model):
+#     _name = "mrp.product.line"
+#     _description = "product conversion product line"
+
+#     prod_id = fields.Many2one('product.product', string="Prod id")
+#     conversion_ratio = fields.Float(string='Conversion Ratio')
+#     convertible_product = fields.Many2one('product.product', string='Convertible Product')
+#     uom_id = fields.Many2one('uom.uom', string="UOM")
+
+#     @api.onchange('convertible_product')
+#     def onchange_uom(self):
+#         if self.convertible_product:
+#             self.uom_id = self.convertible_product.uom_id.id
+#         return {}
