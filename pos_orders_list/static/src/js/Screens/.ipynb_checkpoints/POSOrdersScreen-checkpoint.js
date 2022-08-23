@@ -146,15 +146,15 @@ odoo.define('pos_orders_list.POSOrdersScreen', function (require) {
 				{
 					if(pos_config.show_posted == true)
 					{
-						return [['state', 'in', ['draft','done']]]; 
+						return [['state', 'in', ['draft','done','paid','invoiced',]]]; 
 					}
 					else{
-						return [['state', 'in', ['draft']]]; 
+						return [['state', 'in', ['draft','paid','invoiced',]]]; 
 					}
 				}
 				else if(pos_config.show_posted == true)
 				{
-					return [['state', 'in', ['done']]];
+					return [['state', 'in', ['done','paid','invoiced',]]];
 				}
 				else{
 					return [['state', 'in', ['draft','done','paid','invoiced','cancel']]]; 
@@ -166,15 +166,15 @@ odoo.define('pos_orders_list.POSOrdersScreen', function (require) {
 				{
 					if(pos_config.show_posted == true)
 					{
-						return [['state', 'in', ['draft','done','paid']],['session_id', 'in',[current,current-1,current-2,current-3]]]; 
+						return [['state', 'in', ['draft','done','paid','invoiced',]],['session_id', 'in',[current,current-1,current-2,current-3]]]; 
 					}
 					else{
-						return [['state', 'in', ['draft']],['session_id', 'in',[current,current-1,current-2,current-3]]]; 
+						return [['state', 'in', ['draft','paid','invoiced',]],['session_id', 'in',[current,current-1,current-2,current-3]]]; 
 					}
 				}
 				else if(pos_config.show_posted == true)
 				{
-					return [['state', 'in', ['done']],['session_id', 'in',[current,current-1,current-2,current-3]]];
+					return [['state', 'in', ['done','paid','invoiced',]],['session_id', 'in',[current,current-1,current-2,current-3]]];
 				}
 				else{
 					return [['session_id', 'in',[current,current-1,current-2,current-3]]]; 
@@ -186,15 +186,15 @@ odoo.define('pos_orders_list.POSOrdersScreen', function (require) {
 				{
 					if(pos_config.show_posted == true)
 					{
-						return [['state', 'in', ['draft','done','paid']],['session_id', 'in',[current,current-1,current-2,current-3,current-4,current-5]]]; 
+						return [['state', 'in', ['draft','done','paid','invoiced',]],['session_id', 'in',[current,current-1,current-2,current-3,current-4,current-5]]]; 
 					}
 					else{
-						return [['state', 'in', ['draft','paid']],['session_id', 'in',[current,current-1,current-2,current-3,current-4,current-5]]]; 
+						return [['state', 'in', ['draft','paid','invoiced',]],['session_id', 'in',[current,current-1,current-2,current-3,current-4,current-5]]]; 
 					}
 				}
 				else if(pos_config.show_posted == true)
 				{
-					return [['state', 'in', ['done','paid']],['session_id', 'in',[current,current-1,current-2,current-3,current-4,current-5]]];
+					return [['state', 'in', ['done','paid','invoiced',]],['session_id', 'in',[current,current-1,current-2,current-3,current-4,current-5]]];
 				}
 				else{
 					return [['session_id', 'in',[current,current-1,current-2,current-3,current-4,current-5]]]; 
@@ -207,15 +207,15 @@ odoo.define('pos_orders_list.POSOrdersScreen', function (require) {
 				{
 					if(pos_config.show_posted == true)
 					{
-						return [['state', 'in', ['draft','done','paid']],['session_id', 'in',[current]]]; 
+						return [['state', 'in', ['draft','done','paid','invoiced',]],['session_id', 'in',[current]]]; 
 					}
 					else{
-						return [['state', 'in', ['draft','paid']],['session_id', 'in',[current]]]; 
+						return [['state', 'in', ['draft','paid','invoiced',]],['session_id', 'in',[current]]]; 
 					}
 				}
 				else if(pos_config.show_posted == true)
 				{
-					return [['state', 'in', ['done','paid']],['session_id', 'in',[current]]];
+					return [['state', 'in', ['done','paid','invoiced',]],['session_id', 'in',[current]]];
 				}
 				else{
 					return [['session_id', 'in',[current]]]; 

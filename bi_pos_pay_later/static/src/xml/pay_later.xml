@@ -37,7 +37,7 @@
 						<i class='fa fa-credit-card'></i> Payé
 					</div>
 					<div class="button draft  odoo-theme-color" t-on-click="changeFilter('done')">
-						<i class='fa fa-check'></i> Posté
+						<i class='fa fa-check'></i> Comptabilisé
 					</div>
 					<div class="button draft odoo-theme-color" t-on-click="changeFilter('invoiced')">
 						<i class='fa fa-dollar'></i> Facturé
