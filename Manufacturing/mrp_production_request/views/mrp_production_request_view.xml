@@ -91,6 +91,7 @@
                                 domain="['&amp;', '|', ('product_id','=',product_id),                                '&amp;', ('product_tmpl_id.product_variant_ids','=',product_id),                                ('product_id','=',False), ('type', '=', 'normal')]"
                                 name="bom_id"
                             />
+                            <field name="product_ids" force_save="1" widget="many2many_tags" invisible="1" />
                         </group>
                         <group>
                             <field name="product_qty" />
@@ -112,6 +113,19 @@
                         </group>
                     </group>
                     <notebook>
+                        <page string="Line de Conversion">   
+                            <field name="conversion_line" widget="one2many_list">
+                                <tree editable="bottom">
+                                    <field name="dest_product_id" required="1" force_save='1' domain="[('type', '=', 'product'), ('id','in', parent.product_ids)]" attrs="{'readonly':[('parent.state','in',('reserved', 'done','cancel'))]}" string="Produit"/>
+                                    <field name="dest_uom" readonly="1" force_save="1" required="1" string="Unité"/>
+                                    <field name="conversion_ratio" readonly="1" force_save="1" required="1" string="Taux"/>
+                                    <field name="allocate_quantity" attrs="{'readonly':[('parent.state','in',('reserved', 'done','cancel'))]}" required="1" string="Qté Allouer" />
+                                    <field name="converted_qty" readonly="1" force_save="1" required="1" string="Qté Prevue"/>
+
+                                    <field name="company_id" force_save="1" invisible="1" />
+                                </tree>
+                            </field>
+                        </page>
                         <page name="mrp_production" string="Manufacturing Orders">
                             <field name="mrp_production_ids" />
                         </page>

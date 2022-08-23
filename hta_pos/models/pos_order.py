@@ -16,7 +16,10 @@ class HtaPos(models.Model):
 
     customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True)
     delivery_phone = fields.Char(related='delivery_person.phone', store=True)
-
+    user_return = fields.Many2one(
+        comodel_name="res.users",
+        string="Gestionnaire stock",
+    )
     
     def assign_command_wizard(self):
     	#view_id = self.env.ref('point_of_sale.assign_command_wizard').id

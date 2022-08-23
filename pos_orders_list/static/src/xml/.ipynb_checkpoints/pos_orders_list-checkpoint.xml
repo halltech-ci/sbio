@@ -96,7 +96,7 @@
 				t-on-click.stop="trigger('click-showDetails',props.order)">
 				<t t-if="props.order.state == 'draft'">Brouillon/Nouveau</t>
 				<t t-if="props.order.state == 'invoiced'">Facturé</t>
-				<t t-if="props.order.state == 'paid'">Paid</t>
+				<t t-if="props.order.state == 'paid'">Payé</t>
 				<t t-if="props.order.state == 'done'">Posté</t>
 				<t t-if="props.order.state == 'cancel'">Annulé</t>
 			</td>
