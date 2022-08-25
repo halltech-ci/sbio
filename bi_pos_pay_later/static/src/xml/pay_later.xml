@@ -37,7 +37,7 @@
 						<i class='fa fa-credit-card'></i> Payé
 					</div>
 					<div class="button draft  odoo-theme-color" t-on-click="changeFilter('done')">
-						<i class='fa fa-check'></i> Posté
+						<i class='fa fa-check'></i> Comptabilisé
 					</div>
 					<div class="button draft odoo-theme-color" t-on-click="changeFilter('invoiced')">
 						<i class='fa fa-dollar'></i> Facturé
@@ -64,8 +64,8 @@
 					</td>
 					<td  class='order-pay' t-att-data-id='props.order.id' 
 					t-on-click.stop="trigger('click-pay',props.order)">
-						<t t-if="props.order.state == 'paid'">
-							<button class="odoo-theme-button" t-att-id='props.order.id' ><i class="fa fa-credit-card"></i> Payer</button>
+						<t t-if="props.order.state == 'draft'">
+<!-- 							<button class="odoo-theme-button" t-att-id='props.order.id' ><i class="fa fa-credit-card"></i> Payer</button> --> <span class="next_text">A Payé</span>
 						</t>
 						<t t-else="">
 							<span> - </span>
