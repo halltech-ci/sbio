@@ -86,7 +86,7 @@
 			</td>
 			<td class='order-date' t-att-data-id='props.order.id' 
 				t-on-click.stop="trigger('click-showDetails',props.order)">
-				<t t-esc='props.order.pos_order_date' />
+				<t t-esc='props.order.date_order' />
 			</td>
 			<td class='order-tot' t-att-data-id='props.order.id' 
 				t-on-click.stop="trigger('click-showDetails',props.order)">
@@ -94,10 +94,10 @@
 			</td>
 			<td class='order-state' t-att-data-id='props.order.id' 
 				t-on-click.stop="trigger('click-showDetails',props.order)">
-				<t t-if="props.order.state == 'draft'">Brouillon/Nouveau</t>
+				<t t-if="props.order.state == 'draft'">Livraison/Nouveau</t>
 				<t t-if="props.order.state == 'invoiced'">Facturé</t>
 				<t t-if="props.order.state == 'paid'">Payé</t>
-				<t t-if="props.order.state == 'done'">Posté</t>
+				<t t-if="props.order.state == 'done'">Comptabilisé</t>
 				<t t-if="props.order.state == 'cancel'">Annulé</t>
 			</td>
 		</tr>
@@ -149,10 +149,10 @@
 								<td style='width:20%; '><strong>Statut:</strong>
 								</td>
 								<td style='width:30%; '>
-									<t t-if="order['state'] == 'draft'">Brouillon/Nouveau</t>
+									<t t-if="order['state'] == 'draft'">Livraison/Nouveau</t>
 									<t t-if="order['state'] == 'invoiced'">Facturé</t>
 									<t t-if="order['state'] == 'paid'">Payé</t>
-									<t t-if="order['state'] == 'done'">Posté</t>
+									<t t-if="order['state'] == 'done'">Comptabilisé</t>
 									<t t-if="order['state'] == 'cancel'">Annulé</t>    
 								</td>
 							</tr>

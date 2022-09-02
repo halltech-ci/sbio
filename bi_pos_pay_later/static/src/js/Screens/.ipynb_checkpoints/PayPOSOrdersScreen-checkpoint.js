@@ -28,7 +28,7 @@ odoo.define('bi_pos_pay_later.PayPOSOrdersScreen', function (require) {
 				}else if(state == 'invoiced'){
 					this.state.filter_state  = 'Invoiced';
 				}else{
-					this.state.filter_state  = 'paid';
+					this.state.filter_state  = 'done';
 				}
 				this.state.query = state;
 				const pos_orders = this.pos_orders;

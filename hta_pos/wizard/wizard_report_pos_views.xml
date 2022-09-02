@@ -7,7 +7,10 @@
             <form string="Rapport Client/Articles">
                 <group>
                     <group>
-                        <field name="product_id" domain="[('available_in_pos', '=', True)]"/>
+                        <field name="locations" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="product_id" domain="[('available_in_pos', '=', True)]" widget="many2many_tags"/>
                     </group>
                     <group>
                         <field name="date_start"/>
@@ -39,5 +42,13 @@
         name = "Client(e)s/Articles "
         sequence="5"
         parent="point_of_sale.menu_point_rep"
+              
+        />
+    <menuitem 
+        id="menu_pos_report_report_wizard"
+        action="action_pos_report_report_wizard"
+        name = "Client(e)s/Articles "
+        sequence="7"
+        parent="crm.crm_menu_report"
         />
 </odoo>
