@@ -23,6 +23,7 @@
     'depends': ['point_of_sale',
                 'stock',
                 'report_xlsx',
+                'crm',
                 
                 #'report_xlsx'
                ],
