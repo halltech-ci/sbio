@@ -23,9 +23,10 @@ class ReportTimeSheetReportView(models.AbstractModel):
                     INNER JOIN res_partner AS rp ON rp.id = rpo.partner_id
                     INNER JOIN product_product AS prod ON prod.id = rpo.product_id
                     INNER JOIN pos_config AS pos_conf ON pos_conf.id = rpo.config_id
-                    INNER JOIN stock_warehouse AS sw ON sw.id = pos_conf.warehouse_id
+                    INNER JOIN stock_picking_type AS spt ON spt.id = pos_conf.picking_type_id
+                    INNER JOIN stock_warehouse AS sw ON sw.id = spt.warehouse_id
                     WHERE
-                        (sw.id = """+entrepot+""")
+                        (spt.warehouse_id = """+entrepot+""")
                         AND
                        (prod.id = """+product_id+""")
                         AND
@@ -104,9 +105,10 @@ class ReportPosReporttXlsxGenerate(models.AbstractModel):
                     INNER JOIN res_partner AS rp ON rp.id = rpo.partner_id
                     INNER JOIN product_product AS prod ON prod.id = rpo.product_id
                     INNER JOIN pos_config AS pos_conf ON pos_conf.id = rpo.config_id
-                    INNER JOIN stock_warehouse AS sw ON sw.id = pos_conf.warehouse_id
+                    INNER JOIN stock_picking_type AS spt ON spt.id = pos_conf.picking_type_id
+                    INNER JOIN stock_warehouse AS sw ON sw.id = spt.warehouse_id
                     WHERE
-                        (sw.id = """+entrepot+""")
+                        (spt.warehouse_id = """+entrepot+""")
                         AND
                        (prod.id = """+product_id+""")
                         AND
