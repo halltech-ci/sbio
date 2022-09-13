@@ -28,6 +28,21 @@ class PosPaymentCommands(models.TransientModel):
         init_data = self.read()[0]
         for record in self._context.get('active_ids'):
             pos_order = self.env[self._context.get('active_model')].browse(record)
+            order_lines = pos_order.lines
+            for rs in order_lines:
+                if 'ivraison' in rs.full_product_name:
+                    line = {
+                        "price_unit": 0,
+                        "price_subtotal": 0,
+                        'price_subtotal_incl': 0,
+                    }
+                    
+                    rs.write(line)
+                rs._onchange_amount_line_all()
+            
+#             pos_order._onchange_amount_line_all()
+            pos_order._onchange_amount_all()
+                    
             pos_order.add_payment({
 				'pos_order_id': pos_order.id,
 				'amount': pos_order._get_rounded_amount(pos_order.amount_total),
