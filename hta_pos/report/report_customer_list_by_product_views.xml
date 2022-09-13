@@ -83,6 +83,7 @@
                                 <th class='text-center'>Date Commande</th>
                                 <th class='text-center'>Produit</th>
                                 <th class='text-center'>Qté</th>
+                                <th class='text-center'>Entrepôt</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -98,6 +99,7 @@
                                                     <span t-esc="lines['name']"/> 
                                                 </th>
                                                 <td class='text-center'><span t-esc="line.get('product_qty')" /> </td>
+                                                <td><span t-esc="line.get('entrepot')" /> </td>
                                             </tr>   
                                         </t>
                                         </t>     

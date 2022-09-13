@@ -25,6 +25,7 @@
             <field name="binding_model_id" ref="model_pos_assign_commands_wizard"/>
             <field name="binding_type">report</field>
         </record>
+    
 <!--     <report id="pos_report_assign_order"
         model="pos.assign.commands.wizard"
         string="Commande Assigner"
