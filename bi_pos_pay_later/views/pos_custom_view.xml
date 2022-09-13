@@ -37,6 +37,11 @@
 			<field name="model">pos.order</field>
 			<field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
 			<field name="arch" type="xml">
+                <xpath expr="//header/button[@name='action_pos_order_invoice']" position="after">
+                    <button name="action_pos_order_invoice" string="Invoice" type="object"
+                            attrs="{'invisible': ['|', ('invoice_group', '=', False), ('state','!=',['paid','done'])]}"/>
+                </xpath>
+                
 				<xpath expr="//field[@name='partner_id']" position="after">
 					<field name="is_partial" invisible="1"/>
 					<field name="amount_due" invisible="1"/>
