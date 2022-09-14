@@ -54,6 +54,7 @@ class PosPaymentCommands(models.TransientModel):
                     'is_partial' : False,
                     })
                 pos_order._compute_total_cost_in_real_time()
+                pos_order.action_pos_order_invoice()
             
             bank_statment = self.env['account.bank.statement']
             if pos_order.session_id.state == 'closed':
