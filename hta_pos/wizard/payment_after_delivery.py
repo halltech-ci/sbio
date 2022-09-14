@@ -29,7 +29,7 @@ class PosPaymentCommands(models.TransientModel):
         for record in self._context.get('active_ids'):
             pos_order = self.env[self._context.get('active_model')].browse(record)
             order_lines = pos_order.lines
-            if pos_order.state != 'draft' or pos_order.amount_paid < pos_order.amount_total:
+            if pos_order.state != 'draft' or pos_order.amount_paid >= pos_order.amount_total:
                  raise UserError(_("La commande Ref: "+str(pos_order.name) + " du client(e) "+str(pos_order.partner_id.name)+" a été  déjà Payée ou Facturée"))
             else:
                 for rs in order_lines:
