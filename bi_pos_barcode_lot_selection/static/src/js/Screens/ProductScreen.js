@@ -50,7 +50,7 @@ odoo.define('bi_pos_barcode_lot_selection.productScreen', function(require) {
 
 			async _clickProduct(event) {
 				const product = event.detail;
-                if(product){
+                if(product.qty_available >= 0 || product.qty_available < 0){
                     if (['serial', 'lot'].includes(product.tracking) && (this.env.pos.picking_type.use_create_lots || this.env.pos.picking_type.use_existing_lots)) {
                         if (!this.currentOrder) {
                             this.env.pos.add_new_order();
