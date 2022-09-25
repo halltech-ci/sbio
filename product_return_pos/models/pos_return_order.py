@@ -25,6 +25,7 @@ from odoo.tools.float_utils import float_round
 class PosOrderReturn(models.Model):
     _inherit = 'pos.order'
     state = fields.Selection(selection_add=[('draft','Livraison'),('paid',),('return','Retour')])
+    lines = fields.One2many('pos.order.line', 'order_id', string='Order Lines', states={'draft': [('readonly', False)],'return': [('readonly', False)]}, readonly=True, copy=True)
 
     def order_lines_writting(self):
         #pos_order=self.env['pos.order'].search([('id', '=', self.id)])
@@ -32,7 +33,7 @@ class PosOrderReturn(models.Model):
         if lines:
             for line in lines:
                 new_vals = {
-                        'price_unit': 0,
+                        
                         'price_subtotal':0,
                 }
                 line.write(new_vals)
@@ -117,8 +118,16 @@ class PosOrderReturn(models.Model):
         retour_stock = self.retunr_stock_picking()
         self.order_lines_writting()
         self.state = "return"
+        
+    def buuton_state_new(self):
+        lines = self.env['pos.order.line'].search([('order_id', '=', self.id)])
+        if lines:
+            for line in lines:
+                line._onchange_amount_line_all()
+
+        self._onchange_amount_all()
+        self.state = "draft"
     
-        return retour_stock
 #     def _order_fields(self, ui_order):
 #         order = super(PosOrderReturn, self)._order_fields(ui_order)
 #         if 'return_ref' in ui_order.keys() and ui_order['return_ref']:

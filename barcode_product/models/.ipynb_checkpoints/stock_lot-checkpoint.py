@@ -49,5 +49,19 @@ class barcode_product(models.Model):
                     ))
                 rec.quant_text = json.dumps(aa)
 
+            
+            
+    def button_barcode_wizard(self):
+        return {
+                'type': 'ir.actions.act_window',
+                'name': 'Barcode Imp',
+                'target': 'new', #use 'current' for not opening in a dialog
+                'res_model': 'account.cash.report.wizard',
+                #'res_id': self.env['stock.request.order'].search([('project_task', '=', self.id)]).id,
+                #'view_id': 'view_xml_id',#optional
+                'view_type': 'form',
+                'views': [[False,'form']],
+                };
+
         
             

@@ -43,7 +43,8 @@
 							</t>
 						</t>
 						<t t-else=''>
-							<t t-call="product.report_simple_label">
+							<!--<t t-call="product.report_simple_label">-->
+                            <t t-call="product.report_productlabel">
 								<t t-set="product" t-value="product"/>
 							</t>
 						</t>
@@ -65,7 +66,8 @@
 								</t>
 							</t>
 							<t t-else=''>
-								<t t-call="product.report_simple_label">
+								<!--<t t-call="product.report_simple_label">-->
+                                <t t-call="product.report_productlabel">
 									<t t-set="product" t-value="product"/>
 								</t>
 							</t>

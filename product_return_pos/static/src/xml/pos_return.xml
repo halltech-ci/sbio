@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-
+    
     <t t-name="ReturnButton" owl="1">
         <div class='control-button'>
             <i class='fa fa-rotate-left'/>
-            Return
+            Retour
         </div>
     </t>
 
@@ -17,7 +17,7 @@
             </t></td>
             <td><t t-esc='order.partner_id[1]' /></td>
             <td><t t-esc='order.date_order' /></td>
-            <td><span class="return-button return_order" t-on-click="return_click">Return</span></td>
+            <td><span class="return-button return_order" t-on-click="return_click">Retour</span></td>
         </tr>
         </div>
     </t>
@@ -28,23 +28,23 @@
                 <section class="top-content">
                     <span class='button back' t-on-click="back">
                         <i class='fa fa-angle-double-left'></i>
-                        Cancel
+                        Annuler
                     </span>
 
                     <SearchBar config="searchBarConfig" style="right: auto; margin-left: 90px; margin-top:8px;" placeholder="'Search Orders...'" />
 
                     <span class='button refresh refreshbutton' t-on-click="reload" style="right: auto; margin-left: 180px; margin-top:8px; left: 85%;">
                         <i class="fa fa-refresh"></i>
-                        Refresh
+                        Rafraîchir
                     </span>
 
                 </section>
                 <div class="orders">
                     <div class="header-row">
                         <div class="col start wide">Date</div>
-                        <div class="col start wide">Receipt Number</div>
-                        <div class="col start">Customer</div>
-                        <div class="col start">Return Ref</div>
+                        <div class="col start wide">Numéro de reçu</div>
+                        <div class="col start">Client</div>
+                        <div class="col start">Réf retour</div>
                     </div>
                     <t t-foreach="ordersList" t-as="order" t-key="order.cid">
                         <div class="order-row pointer" t-on-click="return_click(order)">
@@ -81,12 +81,12 @@
                         <thead>
                             <tr>
                                 <td>ID</td>
-                                <td>Price</td>
-                                <td>Name</td>
-                                <td>Qty</td>
-                                <td>Dis</td>
-                                <td>Line ID</td>
-                                <td>Returned Quantity</td>
+                                <td>Prix</td>
+                                <td>Nom</td>
+                                <td>Qté</td>
+                                <td>Rem</td>
+                                <td>Id de ligne</td>
+                                <td>Quantité retournée</td>
                             </tr>
                         </thead>
                         <tbody id="table-body">
@@ -95,10 +95,10 @@
                 </div>
                 <div class="footer">
                     <div class="button confirm" t-on-click="click_confirm">
-                            Return
+                            Retour
                         </div>
                     <div class="button cancel" t-on-click="cancel">
-                        Cancel
+                        Annuler
                     </div>
                 </div>
             </div>
