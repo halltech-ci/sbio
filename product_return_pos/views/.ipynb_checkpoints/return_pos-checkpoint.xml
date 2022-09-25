@@ -18,7 +18,15 @@
                     class="oe_highlight"
                     attrs="{'invisible': [('state','!=','draft')]}"
                     />
+                    <button name="buuton_state_new"
+                    string="Nouveau"
+                    type="object"
+                    groups="point_of_sale.group_pos_manager"        
+                    class="oe_highlight"
+                    attrs="{'invisible': [('state','!=','return')]}"
+                    />
                 </button>
+                
             </field>
         </record>
     </data>
