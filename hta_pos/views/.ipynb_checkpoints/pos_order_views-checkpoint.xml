@@ -26,6 +26,7 @@
                     <field name="name" string="Reference Commande"/>
                     <field name="date_order" string="Date commande"/>
                     <field name="partner_id" string="Client"/>
+                    <field name="customer_Phone" string="Numéro Client"/>
                     <field name="user_return" string="Gestionnaire stock"/>
                     <field name="pos_reference" string="Numero du reçu"/>
                     <field name="delivery_person" string="Livreur"/>
@@ -55,7 +56,7 @@
           
           
           <field name="partner_id" position="after">
-<!--                 <field name="customer_Phone" string="Telephone Client"/> -->
+                <field name="customer_Phone" string="Telephone Client"/>
                 <field name="delivery_person"/>
                 <field name="delivery_phone" string="Telephone Livreur"/>
           </field>
