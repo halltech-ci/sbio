@@ -25,7 +25,7 @@ from odoo.tools.float_utils import float_round
 class PosOrderReturn(models.Model):
     _inherit = 'pos.order'
     state = fields.Selection(selection_add=[('draft','Livraison'),('paid',),('return','Retour')])
-    lines = fields.One2many('pos.order.line', 'order_id', string='Order Lines', states={'draft': [('readonly', False)],'return': [('readonly', False)]}, readonly=True, copy=True)
+#     lines = fields.One2many('pos.order.line', 'order_id', string='Order Lines', states={'draft': [('readonly', False)],'return': [('readonly', False)]}, readonly=True, copy=True)
 
     def order_lines_writting(self):
         #pos_order=self.env['pos.order'].search([('id', '=', self.id)])

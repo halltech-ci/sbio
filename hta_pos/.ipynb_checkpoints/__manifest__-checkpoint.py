@@ -45,11 +45,11 @@
         'report/report_pos_print_order_delivery.xml',
         
     ],
-#     'assets': {
-#         'web.assets_qweb': [
-#             'hta_pos/static/src/xml/pos_refund.xml',
-#         ],
-#     },
+    'assets': {
+        'web.assets_qweb': [
+            'hta_pos/static/src/xml/pos_refund.xml',
+        ],
+    },
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
