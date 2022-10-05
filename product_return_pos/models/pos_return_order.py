@@ -87,11 +87,11 @@ class PosOrderReturn(models.Model):
 
     def retunr_stock_picking(self):
         lines = self.env['stock.picking'].search([('pos_order_id', '=', self.id)])
-        
         if len(lines)<2:
             return self.display_form_return_stock(lines)
         else:
             pass
+
     
 
     @api.model
@@ -114,10 +114,11 @@ class PosOrderReturn(models.Model):
 
 
     
-    def buuton_retunr_order(self):
+    def buton_retunr_order(self):
         retour_stock = self.retunr_stock_picking()
         self.order_lines_writting()
         self.state = "return"
+        return retour_stock
         
     def buuton_state_new(self):
         lines = self.env['pos.order.line'].search([('order_id', '=', self.id)])
