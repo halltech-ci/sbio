@@ -100,7 +100,7 @@ class MrpProductionRequestCreateMo(models.TransientModel):
         return {
             "product_id": request_id.product_id.id,
             "bom_id": request_id.bom_id.id,
-            #"product_qty": self.mo_qty,
+            "product_qty_request": self.mo_qty,
             #"product_uom_qty":self.mo_qty,
             "product_uom_id": self.product_uom_id.id,
             "mrp_production_request_id": self.mrp_production_request_id.id,

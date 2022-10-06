@@ -16,6 +16,8 @@ class PosAssignCommands(models.TransientModel):
     )
     date_delivery = fields.Date(string='Date Livraison', required=True, default=fields.Date.today)
     
+#     state = fields.Selection(selection_add=[('')])
+    
     def print_order_assigner(self):
         docs = []
         
@@ -53,6 +55,7 @@ class PosAssignCommands(models.TransientModel):
                 
                 pos_order.delivery_person = self.delivery_person
                 pos_order.date_delivery = self.date_delivery
+                pos_order.state = 'delivery'
                 
         data = {
                     'model':'pos.assign.commands.wizard',
