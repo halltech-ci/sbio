@@ -13,7 +13,7 @@ class HtaPos(models.Model):
     )
 
     date_delivery = fields.Datetime()
-
+    date_order = fields.Datetime(compute='_compute_hours')
     customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True)
     delivery_phone = fields.Char(related='delivery_person.phone', store=True)
     user_return = fields.Many2one(
@@ -21,6 +21,11 @@ class HtaPos(models.Model):
         string="Gestionnaire stock",
     )
     
+    @api.depends('create_date')
+    def _compute_hours(self):
+        for record in self:
+            record.date_order = record.create_date
+            
     def assign_command_wizard(self):
     	#view_id = self.env.ref('point_of_sale.assign_command_wizard').id
     	context = self._context.copy()
