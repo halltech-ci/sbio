@@ -13,7 +13,7 @@ class HtaPos(models.Model):
     )
 
     date_delivery = fields.Datetime()
-    date_order = fields.Datetime(compute='_compute_hours')
+    date_order = fields.Datetime(default=fields.Datetime.now(),compute='_compute_hours', )
     customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True)
     delivery_phone = fields.Char(related='delivery_person.phone', store=True)
     user_return = fields.Many2one(
@@ -21,7 +21,11 @@ class HtaPos(models.Model):
         string="Gestionnaire stock",
     )
     
-    @api.depends('create_date')
+    @api.onchange('partner_id')
+    def _onchange_hours(self):
+        now = datetime.now()
+        self.date_order = now
+    
     def _compute_hours(self):
         for record in self:
             record.date_order = record.create_date
