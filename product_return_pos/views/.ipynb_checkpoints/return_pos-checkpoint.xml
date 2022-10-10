@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
             <field name="arch" type="xml">
                 <field name="state" position="replace">
-                    <field name="state" widget="statusbar" statusbar_visible="draft,delivery,return,paid,done" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,delivery,return,paid,done,cancel" readonly="1"/>
                 </field>
                 <button name="refund" position="replace">
                     <button name="refund" string="Return Products" type="object" attrs="{'invisible':['|', ('state','in',['draft','return']), ('has_refundable_lines', '=', False)]}"/>
@@ -30,7 +30,7 @@
             </field>
         </record>
         
-        <record model="ir.ui.view" id="view_pos_new_tree_in">
+<!--         <record model="ir.ui.view" id="view_pos_new_tree_in">
             <field name="name">pos.order.form.extend</field>
             <field name="model">pos.order</field>
             <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
@@ -41,6 +41,6 @@
                 </field>
                 
             </field>
-        </record>
+        </record> -->
     </data>
 </odoo>
