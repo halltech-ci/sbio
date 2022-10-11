@@ -16,7 +16,7 @@
                     type="object"
                     groups="point_of_sale.group_pos_manager"        
                     class="oe_highlight"
-                    attrs="{'invisible': [('state','!=','draft')]}"
+                    attrs="{'invisible': [('state','not in',['draft','delivery'])]}"
                     />
                     <button name="buuton_state_new"
                     string="Nouveau"
