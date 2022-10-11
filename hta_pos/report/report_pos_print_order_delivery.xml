@@ -81,13 +81,11 @@
                     </div>
                  <table class="table table-sm table-condensed table-bordered" >
                      <t t-foreach="orders" t-as="lines">
-                        <t t-set="number" t-value="lines['pos_reference']"/>
-                        <t t-set="date_delivery" t-value="lines['pos_order_date']"/>
-                         <t t-set="amount_total" t-value="lines['amount_total']"/>
+                    
                         <thead class="thead-dark">
                             <tr>
-                                <th class='text-center'>Commande: <t t-esc="number"/></th>
-                                <th class='text-center'>Date Livraison: <t t-esc="date_delivery"/></th>
+                                <th class='text-center'>Commande: <t t-esc="lines['pos_reference']"/></th>
+                                <th class='text-center'>Date Livraison: <t t-esc="lines['pos_order_date']"/></th>
                             </tr>
                             <tr>
                                 <th class='text-center'>Produit</th>
@@ -105,9 +103,9 @@
                                 </tr>   
                             </t>
                             <tr class="border-black o_total">
-                                <td><strong>Total Montant</strong></td>
-                                    <td class="text-right">
-                                        <span class="text-nowrap"  t-esc="amount_total"/>
+                                <td class="text-center"><strong>Total Montant</strong></td>
+                                    <td class="text-center">
+                                        <span class="text-nowrap"  t-esc="lines['amount_total']"/>
                                     </td>
                             </tr>
                         </tbody>

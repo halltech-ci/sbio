@@ -31,7 +31,7 @@ class PosAssignCommands(models.TransientModel):
                 })
             docs.append({
                     'pos_reference':pos_order.pos_reference,
-                    'pos_order_date':pos_order.pos_order_date,
+                    'pos_order_date':self.date_delivery,
                     'amount_total': pos_order.amount_total,
                     'line_docs':line_docs,
                 })
@@ -46,8 +46,18 @@ class PosAssignCommands(models.TransientModel):
         docs = []
         for record in self._context.get('active_ids'):
             pos_order = self.env[self._context.get('active_model')].browse(record)
+            line_docs = []
+            for rs in pos_order.lines:
+                line_docs.append({
+                    'full_product_name':rs.full_product_name,
+                    'qty':rs.qty,
+                })
             docs.append ({
                 'pos_order': pos_order,
+                'pos_reference':pos_order.pos_reference,
+                'pos_order_date':self.date_delivery,
+                'amount_total': pos_order.amount_total,
+                'line_docs':line_docs,
             })
             if pos_order.delivery_person:
                 raise UserError(_("LES COMMANDES SONT DEJA ASSIGNER"))
