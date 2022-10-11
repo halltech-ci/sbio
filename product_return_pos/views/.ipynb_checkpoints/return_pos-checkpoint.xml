@@ -10,7 +10,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,delivery,return,paid,done,cancel" readonly="1"/>
                 </field>
                 <button name="refund" position="replace">
-                    <button name="refund" string="Return Products" type="object" attrs="{'invisible':['|', ('state','in',['draft','return']), ('has_refundable_lines', '=', False)]}"/>
+                    <button name="refund" string="Return Products" type="object" attrs="{'invisible':['|', ('state','in',['draft','return','delivery']), ('has_refundable_lines', '=', False)]}"/>
                     <button name="buton_retunr_order"
                     string="Retour"
                     type="object"
