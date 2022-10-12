@@ -13,7 +13,7 @@ class HtaPos(models.Model):
     )
 
     date_delivery = fields.Datetime()
-#     date_order = fields.Datetime(default=fields.Datetime.now(),compute='_compute_hours', )
+    date_order = fields.Datetime(default=fields.Datetime.now(),compute='_compute_hours', )
     customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True)
     delivery_phone = fields.Char(related='delivery_person.phone', store=True)
     user_return = fields.Many2one(
