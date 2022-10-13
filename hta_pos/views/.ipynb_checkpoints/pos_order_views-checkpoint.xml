@@ -24,7 +24,7 @@
             <field name="arch" type="xml">
                 <search string="Search expense">
                     <field name="name" string="Reference Commande"/>
-                    <field name="date_order" string="Date commande"/>
+                    <field name="order_date" string="Date commande"/>
                     <field name="partner_id" string="Client"/>
                     <field name="customer_Phone" string="Numéro Client"/>
                     <field name="user_return" string="Gestionnaire stock"/>
@@ -33,6 +33,7 @@
                     <filter name="state" string="Facturé" domain="[('state','=','invoiced')]"/>
                     <filter name="date_order" string="Date de la commande"/>
                     <group expand="1" string="Grouper par">
+                        
                         <filter name="session_id" string="Session" context="{'group_by':'session_id'}"/>
                         <filter name="delivery_person" string="Livreur" context="{'group_by':'delivery_person'}"/>
                         <filter name="user_id" string="Caissier" context="{'group_by':'user_id'}"/>
@@ -52,7 +53,7 @@
                 <field name="currency_id" invisible="1"/>
                 <field name="name" decoration-bf="1"/>
                 <field name="session_id" />
-                <field name="date_order"/>
+                <field name="order_date"/>
                 <field name="pos_reference"/>
                 <field name="partner_id"/>
                  <field name="customer_Phone" string="Telephone Client"/>
@@ -82,7 +83,7 @@
                 <field name="delivery_phone" string="Telephone Livreur"/>
           </field>
           <field name="date_order" position="replace">
-                <field name="date_order" string="Date" readonly="False"/>
+                <field name="order_date" string="Date"/>
           </field>
 <!--           <field name="partner_id" position="after">
                 <field name="customer_Phone" string="Telephone Client"/>

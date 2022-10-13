@@ -86,7 +86,7 @@
 			</td>
 			<td class='order-date' t-att-data-id='props.order.id' 
 				t-on-click.stop="trigger('click-showDetails',props.order)">
-				<t t-esc='props.order.date_order' />
+				<t t-esc='props.order.order_date' />
 			</td>
 			<td class='order-tot' t-att-data-id='props.order.id' 
 				t-on-click.stop="trigger('click-showDetails',props.order)">
