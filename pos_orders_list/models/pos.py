@@ -9,13 +9,13 @@ import random
 class pos_order(models.Model):
 	_inherit = 'pos.order'
 
-	pos_order_date = fields.Datetime('Oder Date', compute='get_order_date')
+	pos_order_date = fields.Date('Order Date', compute='get_order_date')
 	barcode = fields.Char(string="Order Barcode")
 	barcode_img = fields.Binary('Order Barcode Image')
 
 	def get_order_date(self):
 		for order in self:
-			order.pos_order_date = order.date_order
+			order.pos_order_date = order.create_date.date()
 
 	@api.model
 	def _order_fields(self, ui_order):
