@@ -1,11 +1,26 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-
+import datetime
 class HtaPos(models.Model):
     _name = 'pos.order'
     _inherit = ['pos.order', 'mail.thread']
+    _order = "order_date desc, id desc,name desc"
     
+#     def _default_date_create(self):
+#         for order in self:
+#             order.date_order = order.create_date
+    
+    def _default_date_create(self):
+        for order in self:
+            if order.create_date:
+                order.order_date = order.create_date
+            elif order.date_order:
+                order.order_date = order.date_order
+            else:
+                order.order_date = datetime.now()
+                
+        
 
     delivery_person = fields.Many2one(
         comodel_name="res.partner",
@@ -13,7 +28,7 @@ class HtaPos(models.Model):
     )
 
     date_delivery = fields.Datetime()
-    date_order = fields.Datetime(default=fields.Datetime.now(),compute='_compute_hours', )
+    order_date = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_default_date_create')
     customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True)
     delivery_phone = fields.Char(related='delivery_person.phone', store=True)
     user_return = fields.Many2one(
@@ -21,14 +36,12 @@ class HtaPos(models.Model):
         string="Gestionnaire stock",
     )
     
-    @api.onchange('partner_id')
-    def _onchange_hours(self):
-        now = datetime.now()
-        self.date_order = now
+#     @api.onchange('partner_id')
+#     def _onchange_date_create(self):
+#         now = datetime.now()
+#         self.date_order = now
     
-    def _compute_hours(self):
-        for record in self:
-            record.date_order = record.create_date
+
             
     def assign_command_wizard(self):
     	#view_id = self.env.ref('point_of_sale.assign_command_wizard').id
