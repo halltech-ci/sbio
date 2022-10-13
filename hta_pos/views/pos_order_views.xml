@@ -82,9 +82,9 @@
           <field name="delivery_person" position="after">
                 <field name="delivery_phone" string="Telephone Livreur"/>
           </field>
-<!--           <field name="date_order" position="replace">
-                <field name="date_order" string="Date" readonly="False"/>
-          </field> -->
+          <field name="date_order" position="replace">
+                <field name="order_date" string="Date"/>
+          </field>
 <!--           <field name="partner_id" position="after">
                 <field name="customer_Phone" string="Telephone Client"/>
           </field> -->
