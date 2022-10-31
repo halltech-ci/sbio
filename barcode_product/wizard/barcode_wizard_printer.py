@@ -10,6 +10,7 @@ class PosPaymentCommands(models.TransientModel):
 
 
     number = fields.Integer()
+    stock_lot = fields.Many2one('stock.production.lot', required=True)
     
 
     def printer_barcode(self):
