@@ -20,7 +20,7 @@ class PosPaymentCommands(models.TransientModel):
                     'form': self.read()[0],
 
                     }
-        return self.env.ref('barcode_product.pos_report_assign_order').with_context(landscape=True).report_action(self, data=data)
+        return self.env.ref('barcode_product.barcode_printer_number').with_context(landscape=True).report_action(self, data=data)
 
         
 
