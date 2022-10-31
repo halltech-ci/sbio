@@ -29,7 +29,7 @@
         'report/product_label.xml',
         'report/stock_lot_label.xml',
         'wizard/wizard_barcode.xml',
-        'wizard/stock_lot_label_wizard.xml',
+        'report/stock_lot_label_wizard.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
