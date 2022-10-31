@@ -24,11 +24,12 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/views.xml',
-        'views/templates.xml',
         'report/product_label.xml',
         'report/stock_lot_label.xml',
+        'wizard/wizard_barcode.xml',
+        'report/stock_lot_label_wizard.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

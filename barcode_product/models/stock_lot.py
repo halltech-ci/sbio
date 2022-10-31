@@ -28,7 +28,8 @@ class barcode_product(models.Model):
         else:
             date_create = self.date_create
             self.time_expire = datetime(date_create.year,date_create.month,date_create.day) + timedelta(730)
-    
+            
+
     
     @api.depends('quant_ids','quant_ids.location_id','quant_ids.quantity')
     def _compute_avail_location(self):
@@ -52,16 +53,21 @@ class barcode_product(models.Model):
             
             
     def button_barcode_wizard(self):
-        return {
-                'type': 'ir.actions.act_window',
-                'name': 'Barcode Imp',
-                'target': 'new', #use 'current' for not opening in a dialog
-                'res_model': 'account.cash.report.wizard',
-                #'res_id': self.env['stock.request.order'].search([('project_task', '=', self.id)]).id,
-                #'view_id': 'view_xml_id',#optional
-                'view_type': 'form',
-                'views': [[False,'form']],
-                };
+        action = self.env["ir.actions.actions"]._for_xml_id("barcode_product.print_barcode_wizard_action_print")
+        action['context'] = dict(self.env.context, default_stock_lot=self.id)
+        return action
+    
+    
+#         return {
+#                 'type': 'ir.actions.act_window',
+#                 'name': 'Barcode Imp',
+#                 'target': 'new', #use 'current' for not opening in a dialog
+#                 'res_model': 'barcode.printer.wizard',
+#                 #'res_id': self.env['stock.request.order'].search([('project_task', '=', self.id)]).id,
+#                 #'view_id': 'view_xml_id',#optional
+#                 'view_type': 'form',
+#                 'views': [[False,'form']],
+#                 };
 
         
             

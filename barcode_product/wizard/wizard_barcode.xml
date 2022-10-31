@@ -10,7 +10,10 @@
                 </p>
                 <group>
                     <group>
-                        <field name="number"/>
+                        <field name="number" string="Nombre"/>
+                    </group>
+                    <group>
+                        <field name="stock_lot" string="Numero de Lot"/>
                     </group>
                     
                 </group>
@@ -22,13 +25,23 @@
         </field>
     </record>
     
+    
+
     <record id="print_barcode_wizard_action" model="ir.actions.act_window">
             <field name="name">Impression code barre</field>
             <field name="res_model">barcode.printer.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-            <field name="binding_model_id" ref="point_of_sale.model_stock_production_lot"/>
+            <field name="binding_model_id" ref="stock.model_stock_production_lot"/>
             <field name="binding_view_types">form</field>
+    </record>
+    <record id="print_barcode_wizard_action_print" model="ir.actions.act_window">
+            <field name="name">Impression code barre</field>
+            <field name="res_model">barcode.printer.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="target">new</field>
+     
     </record>
 
 </odoo>
