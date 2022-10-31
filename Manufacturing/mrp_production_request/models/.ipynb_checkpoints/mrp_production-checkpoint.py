@@ -20,7 +20,6 @@ class MrpProduction(models.Model):
         digits="Product Unit of Measure",
         default=1.0,
         readonly=True,
-        
     )
 
     def _generate_finished_moves(self):
