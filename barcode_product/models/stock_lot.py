@@ -54,7 +54,7 @@ class barcode_product(models.Model):
             
     def button_barcode_wizard(self):
         action = self.env["ir.actions.actions"]._for_xml_id("barcode_product.print_barcode_wizard_action_print")
-        action['context'] = dict(self.env.context, default_stock_lot=self.id)
+        action['context'] = dict(self.env.context, default_stock_lot=self.id,default_number=self.product_qty)
         return action
     
     

@@ -20,20 +20,18 @@ class ReportBarcodeReportView(models.AbstractModel):
         number = data['form']['number']
         
         docs = []
-        if data['form']['stock_lot']:
-            stock_lot = data['form']['stock_lot']
-            lines = self.env['stock.production.lot'].search([('id','in',stock_lot)])
-        for wh in lines:
-            number_lot = wh.name
-            id_entre = str(entrep)
-            docs.append ({
-                        'lot': number_lot,
+        stock_lot = data['form']['stock_lot'][0]
+        lines = self.env['stock.production.lot'].search([('id','=',stock_lot)])
+       
+        docs.append ({
+                    'lines': lines,
                 })
              
         return {
             'doc_model': 'barcode.printer.wizard',
             'numbers': number,
             'docs': docs,
+            'lines':lines
         }
     
 

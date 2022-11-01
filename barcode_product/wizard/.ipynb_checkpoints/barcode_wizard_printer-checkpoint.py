@@ -18,7 +18,6 @@ class PosPaymentCommands(models.TransientModel):
         data = {
                     'model':'barcode.printer.wizard',
                     'form': self.read()[0],
-
                     }
         return self.env.ref('barcode_product.barcode_printer_number').with_context(landscape=True).report_action(self, data=data)
 
