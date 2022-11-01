@@ -20,7 +20,7 @@ class ReportBarcodeReportView(models.AbstractModel):
         number = data['form']['number']
         
         docs = []
-        stock_lot = data['form']['stock_lot']
+        stock_lot = data['form']['stock_lot'][0]
         lines = self.env['stock.production.lot'].search([('id','=',stock_lot)])
        
         docs.append ({
