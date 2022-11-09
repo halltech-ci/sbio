@@ -85,10 +85,13 @@ class PosOrderReturn(models.Model):
                }
 
 
+
     def retunr_stock_picking(self):
-        lines = self.env['stock.picking'].search([('pos_order_id', '=', self.id)])
-        if len(lines)<2:
-            return self.display_form_return_stock(lines)
+        picking_id = self.env['stock.picking'].search([('pos_order_id', '=', self.id)])
+        if len(picking_id)<2:
+            stock_return = self.env['stock.return.picking'].create({'picking_id':picking_id.id})
+            stock_return._onchange_picking_id()
+            return stock_return.create_returns()
         else:
             pass
 
@@ -116,8 +119,9 @@ class PosOrderReturn(models.Model):
     
     def buton_retunr_order(self):
         retour_stock = self.retunr_stock_picking()
-        self.order_lines_writting()
-        self.state = "return"
+        if retour_stock:
+            self.order_lines_writting()
+            self.state = "return"
         return retour_stock
         
     def buuton_state_new(self):
