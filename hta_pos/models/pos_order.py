@@ -37,10 +37,10 @@ class HtaPos(models.Model):
         string="Gestionnaire stock",
     )
     
-#     @api.onchange('partner_id')
-#     def _onchange_date_create(self):
-#         now = datetime.now()
-#         self.date_order = now
+    @api.onchange('partner_id')
+    def _onchange_date_create(self):
+        now = datetime.now()
+        self.date_order = now
     
 
     def _compute_date_create(self):
