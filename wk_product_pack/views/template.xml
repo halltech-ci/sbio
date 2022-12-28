@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+        <template id="product_inherited" inherit_id="website_sale.product">
+            <xpath expr="//div[@id='wrap']//div[hasclass('js_main_product')]" position="attributes" priority="16">
+                <attribute name="t-attf-class">js_product js_main_product #{'hide_variants' if product.is_pack else ''}</attribute>
+            </xpath>
+        </template>
+    </data>
+</odoo>
