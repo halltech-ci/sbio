@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<odoo>
+    <data noupdate="1">
+
+        <record id="pos_product_pack_cat" model="pos.category">
+            <field name="name">Product Pack</field>
+            <field name="image_128" type="base64" file="pos_product_pack/static/description/pack.jpg"/>
+        </record>
+
+        <record model="pos.config" id="point_of_sale.pos_config_main">
+            <field name="start_category">True</field>
+            <field name="iface_start_categ_id" ref="pos_product_pack_cat"></field>
+        </record>
+
+        <record model="product.template" id="wk_product_pack.product_pack_two">
+            <field name="pos_categ_id" ref="pos_product_pack_cat"/>
+                <field name="available_in_pos">True</field>
+        </record>
+
+        <record model="product.template" id="wk_product_pack.product_pack_one">
+           <field name="pos_categ_id" ref="pos_product_pack_cat"/>
+            <field name="available_in_pos">True</field>           
+        </record>
+        
+    </data>
+</odoo>

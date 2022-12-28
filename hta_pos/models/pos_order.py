@@ -28,10 +28,10 @@ class HtaPos(models.Model):
     )
 
     date_delivery = fields.Datetime()
-    order_date = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_default_date_create')
+    order_date = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_default_date_create',store=True)
     customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True)
     delivery_phone = fields.Char(related='delivery_person.phone', store=True)
-    # date_order = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_compute_date_create')
+    date_order = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_compute_date_create', store=True)
     user_return = fields.Many2one(
         comodel_name="res.users",
         string="Gestionnaire stock",
@@ -43,10 +43,10 @@ class HtaPos(models.Model):
 #         self.date_order = now
     
 
-    # def _compute_date_create(self):
-    #     for order in self:
-    #         if order.create_date:
-    #             order.date_order = order.create_date
+    def _compute_date_create(self):
+        for order in self:
+            if order.create_date:
+                order.date_order = order.create_date
             
     def assign_command_wizard(self):
     	#view_id = self.env.ref('point_of_sale.assign_command_wizard').id
