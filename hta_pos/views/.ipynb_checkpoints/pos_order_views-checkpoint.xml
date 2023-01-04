@@ -53,7 +53,7 @@
                 <field name="currency_id" invisible="1"/>
                 <field name="name" decoration-bf="1"/>
                 <field name="session_id" />
-                <field name="order_date"/>
+                <field name="date_order"/>
                 <field name="pos_reference"/>
                 <field name="partner_id"/>
                  <field name="customer_Phone" string="Telephone Client"/>
@@ -70,6 +70,8 @@
                 <button string="Assigner la commande" type="object" name="assign_command_wizard"/>
                 <button string="Passer au paiement" type="object" name="payment_wizard_order"/>
                 <button string="Facturé" type="object" name="invoice_order_"/>
+                <button string="DATE COMMANDE" type="object" name="create_date_order_"/>
+                <button string="Retour" type="object" name="return_order_"/>
             </header>
           </xpath>
       </field>
