@@ -87,6 +87,25 @@ class HtaPos(models.Model):
             else:
                 raise UserError(_("La commande Ref: "+str(pos_order.name) + " du client(e) "+str(pos_order.partner_id.name)+" n'est encore payée ou facturée"))
     
+    
+    def create_date_order_(self):
+    	#view_id = self.env.ref('point_of_sale.payment_command_wizard').id
+    	for record in self._context.get('active_ids'):
+            order = self.env[self._context.get('active_model')].browse(record)
+            if order.create_date:
+                order.date_order = order.create_date
+            else:
+                order.date_order = datetime.now()
+    
+    def return_order_(self):
+    	#view_id = self.env.ref('point_of_sale.payment_command_wizard').id
+    	for record in self._context.get('active_ids'):
+            order = self.env[self._context.get('active_model')].browse(record)
+            if order.state == 'return':
+                for rs in order.lines:
+                    rs.price_subtotal = 0
+                    rs.price_subtotal_incl = 0
+    
 
 # class AssignPos(models.Model):
 #     _name = 'assign.commands'
