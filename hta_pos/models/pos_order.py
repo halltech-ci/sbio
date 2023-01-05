@@ -82,10 +82,10 @@ class HtaPos(models.Model):
     	#view_id = self.env.ref('point_of_sale.payment_command_wizard').id
     	for record in self._context.get('active_ids'):
             order = self.env[self._context.get('active_model')].browse(record)
-            if order.state != 'draft' or order.amount_paid >= pos_order.amount_total:
+            if order.state != 'draft' or order.amount_paid >= order.amount_total:
                 order.action_pos_order_invoice()
             else:
-                raise UserError(_("La commande Ref: "+str(pos_order.name) + " du client(e) "+str(pos_order.partner_id.name)+" n'est encore payée ou facturée"))
+                raise UserError(_("La commande Ref: "+str(order.name) + " du client(e) "+str(order.partner_id.name)+" n'est encore payée ou facturée"))
     
     
     def create_date_order_(self):
