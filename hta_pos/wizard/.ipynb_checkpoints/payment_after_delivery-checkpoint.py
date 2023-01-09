@@ -29,8 +29,19 @@ class PosPaymentCommands(models.TransientModel):
         for record in self._context.get('active_ids'):
             pos_order = self.env[self._context.get('active_model')].browse(record)
             order_lines = pos_order.lines
-            if pos_order.amount_paid >= pos_order.amount_total:
+            if pos_order.amount_paid >= pos_order.amount_total and pos_order.state in ['invoiced','done','paid']:
                  raise UserError(_("La commande Ref: "+str(pos_order.name) + " du client(e) "+str(pos_order.partner_id.name)+" a été  déjà Payée ou Facturée"))
+            
+            elif pos_order.state not in ['invoiced','done','paid'] and pos_order.amount_paid >= pos_order.amount_total:
+                if pos_order._is_pos_order_paid():
+                    pos_order.action_pos_order_paid()
+                    pos_order.write({
+                        'is_partial' : False,
+                        })
+                    pos_order._compute_total_cost_in_real_time()
+                    pos_order.action_pos_order_invoice()
+                else:
+                    pos_order.state = 'invoiced'
             else:
                 for rs in order_lines:
                     if 'ivraison' in rs.full_product_name:
