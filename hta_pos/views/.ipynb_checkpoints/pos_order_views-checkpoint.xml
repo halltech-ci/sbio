@@ -70,7 +70,7 @@
                 <button string="Assigner la commande" type="object" name="assign_command_wizard"/>
                 <button string="Passer au paiement" type="object" name="payment_wizard_order"/>
                 <button string="Facturé" type="object" name="invoice_order_"/>
-<!--                 <button string="DATE COMMANDE" type="object" name="create_date_order_"/> -->
+                <button string="VALIDE LIVRAISON" type="object" name="livraison_"/>
 <!--                 <button string="Retour" type="object" name="return_order_"/> -->
             </header>
           </xpath>
