@@ -106,6 +106,23 @@ class HtaPos(models.Model):
                     rs.price_subtotal = 0
                     rs.price_subtotal_incl = 0
     
+    
+    def livraison_(self):
+    	#view_id = self.env.ref('point_of_sale.payment_command_wizard').id
+    	for record in self._context.get('active_ids'):
+            order = self.env[self._context.get('active_model')].browse(record)
+            if order.state in ['invoiced','done','paid']:
+                for rs in order.lines:
+                    if 'ivraison' in rs.full_product_name:
+                        line = {
+                            "price_unit": 0,
+                            "price_subtotal": 0,
+                            'price_subtotal_incl': 0,
+                            }
+
+                        rs.write(line)
+                    rs._onchange_amount_line_all()
+    
 
 # class AssignPos(models.Model):
 #     _name = 'assign.commands'
