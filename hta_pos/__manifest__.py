@@ -36,6 +36,7 @@
         'views/pos_order_views.xml',
         'views/stock_picking.xml',
         'views/produit_views.xml',
+        'views/res_partner_views.xml',
         # 'views/pos_views_pivot.xml',
         # WIZARD
         'wizard/assign_commands.xml',
