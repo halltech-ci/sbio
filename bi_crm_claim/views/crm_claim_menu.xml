@@ -233,7 +233,7 @@
 
         <!-- Claims -->
 		<menuitem id="menu_after_sale" name="After-Sale" 
-			action="crm_claim_stage_act" parent="crm.crm_menu_config"/>
+			action="crm_claim_stage_act" parent="crm.crm_menu_sales"/>
 
 <!-- 	<menuitem id="service_menu" name="Services" 
 			action="crm_claim_view_act1" groups="base.group_no_one" parent="bi_crm_claim.menu_after_sale" sequence="1"/> -->
@@ -244,7 +244,7 @@
 
 		<!-- Claim Category and Stages -->
 		<menuitem id="menu_config_claim" name="Claim" 
-			 parent="crm.crm_menu_config"/>
+			 parent="crm.crm_menu_sales"/>
 
 		<menuitem action="crm_claim_categ_action" name="Categories"
 			id="menu_crm_case_claim-act" parent="menu_config_claim"/>
