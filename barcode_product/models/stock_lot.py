@@ -42,8 +42,8 @@ class barcode_product(models.Model):
                 aa = dict(zip((rec.quant_ids.filtered(lambda x: x.quantity > 0 and x.location_id.usage == 'internal').mapped('location_id.id')),(rec.quant_ids.filtered(lambda x: x.quantity > 0 and x.location_id.usage == 'internal').mapped('quantity'))))
                 rec.quant_text = json.dumps(aa)
             else:
-#                 locations = rec.quant_ids.filtered(lambda x: x.location_id.usage == 'internal').mapped('location_id')
-#                 rec.avail_locations = [(6,0,locations.ids)]
+                locations = rec.quant_ids.filtered(lambda x: x.location_id.usage == 'internal').mapped('location_id')
+                rec.avail_locations = [(6,0,locations.ids)]
                 rec.quant_text = ''
                 aa = dict(zip(
                     (rec.quant_ids.filtered(lambda x: x.location_id.usage == 'internal').mapped('location_id.id'))
