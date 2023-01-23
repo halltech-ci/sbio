@@ -39,11 +39,14 @@
         'views/res_partner_views.xml',
         # 'views/pos_views_pivot.xml',
         # WIZARD
+        'wizard/wizard_report_customer_sale_views.xml',
         'wizard/assign_commands.xml',
         'wizard/wizard_report_pos_views.xml',
+        
         # Report
         'report/report_customer_list_by_product_views.xml',
         'report/report_pos_print_order_delivery.xml',
+        'report/report_customer_sale_views.xml',
         
     ],
     'assets': {

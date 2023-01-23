@@ -1,0 +1,57 @@
+<odoo>
+    <record id="analytic_report_customer_sale_hta" model="ir.ui.view" >
+        <field name="name">Rapport Achat Client</field>
+        <field name="model">report.sale.customer.report.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Rapport Client">
+                <group>
+                    <group>
+                        <field name="date_start"/>
+                    </group>
+                    <group>
+                        <field name="date_end"/>
+                    </group>
+                    <group>
+                        <field name="filter_by"/>
+                    </group>
+                    <group>
+                        <field name="amount_min" attrs="{'invisible': [('filter_by', '!=', 'entre_deux')]}"/>
+                    </group>
+                    <group>
+                        <field name="amount"/>
+                    </group>
+                    
+                </group>
+                <footer>
+                    <button name="get_report" string="Rapport PDF" type="object" class="oe_highlight"/>
+                    <button name="get_generate_xlsx_report" string="Rapport Excel" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    
+    <record id="action_pos_report_sale_customer_hta" model="ir.actions.act_window">
+            <field name="name">Rapport Achat Client</field>
+            <field name="res_model">report.sale.customer.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+    </record>
+<!-- 
+    <menuitem 
+        id="menu_report_repor_custom_sale_pos"
+        action="action_pos_report_sale_customer"
+        name = "Rapport Client"
+        sequence="11"
+        parent="point_of_sale.menu_point_of_sale"    
+        /> -->
+    <menuitem id="menu_point_of_sale_customer_report"
+        name="Rapport Client"
+        parent="point_of_sale.menu_point_rep"
+        action="hta_pos.action_pos_report_sale_customer_hta"
+        sequence="11"/>
+
+
+</odoo>
