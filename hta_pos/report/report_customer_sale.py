@@ -20,6 +20,7 @@ class ReportTimeSheetReportView(models.AbstractModel):
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
         amount_min = data['form']['amount_min']
+        filtre = data["form"]['filter_by']
         amount = data['form']['amount']
         docs = []
         
@@ -35,21 +36,24 @@ class ReportTimeSheetReportView(models.AbstractModel):
             for line in pos_list:
                 montant = montant + line.amount_paid
             
-            if (amount_min > 0 and amount_min <= montant and amount > montant):
-            
-                docs.append ({
-                            'type':"Montant compris entre ",
-                            'partner_name': partner_name,
-                            'partner_phone':partner_phone,
-                            'montant':montant,
-                    })
-            elif(montant >= amount):
-                docs.append ({
-                            'type': "Montant Superieur à",
-                            'partner_name': partner_name,
-                            'partner_phone':partner_phone,
-                            'montant':montant,
-                    })
+            if filtre == 'entre_deux':
+                if (amount_min > 0 and amount_min <= montant < amount):
+                    docs.append ({
+                                'type':"Montant compris entre ",
+                                'partner_name': partner_name,
+                                'partner_phone':partner_phone,
+                                'montant':montant,
+                        })
+            elif(filtre == 'un_montant'):
+                if(montant >= amount):
+                    docs.append ({
+                                'type': "Montant Superieur à",
+                                'partner_name': partner_name,
+                                'partner_phone':partner_phone,
+                                'montant':montant,
+                        })
+            else:
+                docs = []
                 
              
         return {
@@ -112,6 +116,7 @@ class ReportPosReporttXlsxGenerate(models.AbstractModel):
         date_end = data.get('date_end')
         amount_min = data.get('amount_min')
         amount = data.get('amount')
+        filtre = data.get('filter_by')
         docs = []
         res_partner = self.env['res.partner'].search([])
         for res_p in res_partner:
@@ -123,28 +128,31 @@ class ReportPosReporttXlsxGenerate(models.AbstractModel):
             for line in pos_list:
                 montant = montant + line.amount_paid
             
-            if (amount_min > 0 and amount_min <= montant and montant < amount):
-            
-                docs.append ({
-                            'type':"Montant compris entre ",
-                            'partner_name': partner_name,
-                            'partner_phone':partner_phone,
-                            'montant':montant,
-                    })
-            elif(montant >= amount):
-                docs.append ({
-                            'type': "Montant Superieur à",
-                            'partner_name': partner_name,
-                            'partner_phone':partner_phone,
-                            'montant':montant,
-                    })
+            if filtre == 'entre_deux':
+                if (amount_min > 0 and amount_min <= montant < amount):
+                    docs.append ({
+                                'type':"Montant compris entre ",
+                                'partner_name': partner_name,
+                                'partner_phone':partner_phone,
+                                'montant':montant,
+                        })
+            elif(filtre == 'un_montant'):
+                if(montant >= amount):
+                    docs.append ({
+                                'type': "Montant Superieur à",
+                                'partner_name': partner_name,
+                                'partner_phone':partner_phone,
+                                'montant':montant,
+                        })
+            else:
+                docs = []
             
         sheet.set_column('A:A', 40)
         
         row = 2
         col = 0
         
-        sheet.merge_range(row, col, row+1, col+5, 'RAPPORT POINT DE VENTE', title)
+        sheet.merge_range(row, col, row+1, col+3, 'RAPPORT POINT DE VENTE', title)
             
         row += 5
         col = 0

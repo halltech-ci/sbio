@@ -11,7 +11,10 @@ class ReportCustomerSale(models.TransientModel):
 
     date_start = fields.Date(string='Date Debut', required=True, default=fields.Date.today)
     date_end = fields.Date(string='Date Fin', required=True, default=fields.Date.today)
+    
     filter_by = fields.Selection([('entre_deux', 'Entre deux montant'), ('un_montant', 'Superieur à un montant')], string='Filtre',default='entre_deux')
+    
+    
     amount_min = fields.Float(string='Montant Minimum')
     amount = fields.Float(string='Montant Superieur')
 
