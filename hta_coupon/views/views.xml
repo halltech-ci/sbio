@@ -1,0 +1,14 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="coupon_hta_inherit">
+      <field name="model">coupon.coupon</field>
+      <field name="inherit_id" ref="coupon.coupon_view_tree"/>
+      <field name="arch" type="xml">  
+          <field name="partner_id" position="after">
+                <field name="partner_Phone" string="Telephone"/>
+          </field>
+      </field>
+
+    </record> 
+  </data>
+</odoo>

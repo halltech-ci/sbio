@@ -36,16 +36,21 @@
             <field name="target">new</field>
     </record>
 
-    <menuitem 
+<!--     <menuitem 
         id="menu_pos_report_report_wizard"
         action="action_pos_report_report_wizard"
         name = "Client(e)s/Articles "
         sequence="5"
         parent="point_of_sale.menu_point_rep"
               
-        />
+        /> -->
+    <menuitem id="menu_point_of_sale_customer_report"
+        name="Rapport Client"
+        parent="crm.crm_menu_report"
+        action="hta_pos.action_pos_report_sale_customer_hta"
+        sequence="11"/>
     <menuitem 
-        id="menu_pos_report_report_wizard"
+        id="menu_crm_report_report_wizard"
         action="action_pos_report_report_wizard"
         name = "Client(e)s/Articles "
         sequence="7"
