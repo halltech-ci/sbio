@@ -46,6 +46,7 @@
         # Report
         'report/report_customer_list_by_product_views.xml',
         'report/report_pos_print_order_delivery.xml',
+        'report/report_customer_sale_views.xml',
         
     ],
     'assets': {
