@@ -21,8 +21,9 @@
         "data/mrp_production_request_sequence.xml",
         "views/product_template_view.xml",
         "views/mrp_production_view.xml",
-        "wizards/mrp_production_request_create_mo_view.xml",
         "views/mrp_production_request_view.xml",
+        "wizards/mrp_production_request_create_mo_view.xml",
+        
     ],
     'license': 'LGPL-3',
 }
