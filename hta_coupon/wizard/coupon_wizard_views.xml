@@ -1,0 +1,74 @@
+<odoo>
+    <record id="coupon_wizard_views" model="ir.ui.view" >
+        <field name="name">Coupon</field>
+        <field name="model">coupon.coupon.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Rapport Client">
+                <group>
+                    <group>
+                        <field name="nom_coupon"/>
+                    </group>
+                    
+                    <group>
+                        <field name="filter_recompense"/>
+                    </group>
+                    <group>
+                        <field name="filter_client"/>
+                    </group>
+                    
+                    <group>
+                        <field name="pourcentage" attrs="{'invisible': [('filter_recompense', '!=', 'remise')]}"/>
+                    </group>
+                    <group>
+                        <field name="produit" attrs="{'invisible': [('filter_recompense', '!=', 'produit')]}"/>
+                    </group>
+                    
+                    <group>
+                        <field name="date_start" attrs="{'invisible': [('filter_client', '!=', 'date')]}"/>
+                    </group>
+                    <group>
+                        <field name="date_end" attrs="{'invisible': [('filter_client', '!=', 'date')]}"/>
+                    </group>
+                    <group>
+                        <field name="partner_id" attrs="{'invisible': [('filter_client', '!=', 'client')]}"/>
+                    </group>
+                    <group>
+                        <field name="amount_min" attrs="{'invisible': [('filter_client', '!=', 'date')]}"/>
+                    </group>
+                    <group>
+                        <field name="amount_max" attrs="{'invisible': [('filter_client', '!=', 'date')]}"/>
+                    </group>
+                    
+                </group>
+                <footer>
+                    <button name="generate_coupon" string="GENERER" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    
+    <record id="action_pos_coupon_wizard" model="ir.actions.act_window">
+            <field name="name">Generer Coupon</field>
+            <field name="res_model">coupon.coupon.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+    </record>
+<!-- 
+    <menuitem 
+        id="menu_report_repor_custom_sale_pos"
+        action="action_pos_report_sale_customer"
+        name = "Rapport Client"
+        sequence="11"
+        parent="point_of_sale.menu_point_of_sale"    
+        /> -->
+    <menuitem id="menu_coupon_wizard"
+        name="Generer Coupon"
+        parent="point_of_sale.menu_point_config_product"
+        action="hta_coupon.action_pos_coupon_wizard"
+        sequence="45"/>
+
+
+</odoo>
