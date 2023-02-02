@@ -19,6 +19,14 @@
             </div>
             <br/>
         </xpath>
+        <xpath expr="//p[@t-if='not is_html_empty(doc.payment_term_id.note)']" position="replace">
+            <p t-if="not is_html_empty(doc.payment_term_id.note)">
+                <span>Condition de paiement:  </span>
+                <span t-field="doc.payment_term_id.name"/>
+            </p>
+        </xpath>
+
+            
         <!-- Change quotation name-->
 
         
@@ -27,7 +35,7 @@
             <attribute name="class">table table-sm o_main_table table-bordered</attribute>
         </xpath>
         <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table', 'table-bordered')]" position="attributes">
-            <attribute name="style">font:15px lucida-console,sans-serif</attribute>
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
         </xpath>
         
         <xpath expr="//div[hasclass('page')]" position="attributes">
