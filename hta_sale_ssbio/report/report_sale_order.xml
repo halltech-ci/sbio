@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
+        <!-- Changin VAT ID to N°CC-->
+        <xpath expr="//t[@t-set='address']" position="replace">
+            <div class="container">
+                <div class="row justify-content-end">
+                    <div class="col-2" style="font-style: italic; font-weight: bold;margin-right:2px; top:40px;">
+<!--                         <p style="text-decoration: underline;">CLIENT(e):</p> -->
+<!--                         <p style="margin-left: -408px; margin-top: -50px; font-style: italic; text-decoration: underline;">
+                            DATE : <span t-esc="doc.date_order.date()" style="text-decoration: none;"/>
+                        </p> -->
+                    </div>
+                     <div class="col-6" style="text-align: center;width: 300px; border:1px solid #000;border-radius:10px;margin-right:21px;">
+                        <p t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;,&quot;phone&quot;], &quot;no_marker&quot;: True}"/>
+                         <p t-if="doc.partner_id.vat"><t t-esc="'N°CC'"/>: <span t-field="doc.partner_id.vat"/></p>
+                    </div>
+                </div>
+            </div>
+            <br/>
+        </xpath>
+        <xpath expr="//p[@t-if='not is_html_empty(doc.payment_term_id.note)']" position="replace">
+            <p t-if="not is_html_empty(doc.payment_term_id.note)">
+                <span>Condition de paiement:  </span>
+                <span t-field="doc.payment_term_id.name"/>
+            </p>
+        </xpath>
+
+            
+        <!-- Change quotation name-->
+
+        
+        <!-- Adding table border-->
+        <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table')]" position="attributes">
+            <attribute name="class">table table-sm o_main_table table-bordered</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/table[hasclass('table', 'table-sm', 'o_main_table', 'table-bordered')]" position="attributes">
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
+        </xpath>
+        
+        <xpath expr="//div[hasclass('page')]" position="attributes">
+            <attribute name="style">font:14px lucida-console,sans-serif</attribute>
+        </xpath>
+    </template>
+</odoo>

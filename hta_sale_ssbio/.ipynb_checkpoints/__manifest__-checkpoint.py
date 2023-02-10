@@ -29,9 +29,10 @@
         'security/stock_security.xml',
         'views/views.xml',
         'views/templates.xml',
+        'report/report_sale_order.xml',
         
         #views
-        'views/sale_order_views.xml',
+        # 'views/sale_order_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
