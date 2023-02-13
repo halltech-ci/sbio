@@ -1,0 +1,17 @@
+<odoo>
+    <template id="report_notice_send">
+        <t t-call="web.basic_layout">
+            <div class="page">        
+                <t t-foreach="docs" t-as="doc">
+                    <h2>Rapport notice</h2>
+                    <h3>Nom</h3>
+                    <t t-esc="doc.name"/>
+                    <h3>Notice</h3>
+                    <t t-esc="doc.notice"/>     
+                </t>
+                
+            </div>
+        </t>
+     
+    </template>
+</odoo>
