@@ -36,11 +36,11 @@
 			<field name="view_id" ref="crm_claim_category_tree"/>
 			<field name="help" type="html">
 			  <p class="oe_view_nocontent_create">
-				Click to create a claim category.
+				Cliquez pour créer une catégorie de demande.
 			  </p><p>
-				Create claim categories to better manage and classify your
-				claims. Some example of claims can be: preventive action,
-				corrective action.
+				Créez des catégories de réclamations pour mieux gérer et classer vos
+réclamations. Voici quelques exemples de réclamations : action préventive,
+action corrective.
 			  </p>
 			</field>
 		</record>
@@ -81,11 +81,11 @@
 			<field name="view_id" ref="crm_claim_stage_tree"/>
 			<field name="help" type="html">
 			  <p class="oe_view_nocontent_create">
-				Click to setup a new stage in the processing of the claims. 
+				Cliquez pour paramétrer une nouvelle étape dans le traitement des réclamations.
 			  </p><p>
-				You can create claim stages to categorize the status of every
-				claim entered in the system. The stages define all the steps
-				required for the resolution of a claim.
+				Vous pouvez créer des étapes de réclamation pour catégoriser le statut de chaque
+demande saisie dans le système. Les étapes définissent toutes les étapes
+nécessaires à la résolution d'un sinistre.
 			  </p>
 			</field>
 		</record>
@@ -96,7 +96,7 @@
 			<field name="model">crm.claim</field>
 			<field name="arch" type="xml">
 				<tree string="Claims">
-					<field name="name"/>
+					<field name="name" />
 					<field name="partner_id"/>
 					<field name="user_id"/>
 					<field name="date"/>
@@ -115,13 +115,13 @@
 			<field name="name">CRM - Claims Form</field>
 			<field name="model">crm.claim</field>
 			<field name="arch" type="xml">
-				<form string="Claim">
+				<form string="Réclamation">
 				<header>
 					<field name="stage_id" widget="statusbar" options="{'clickable': '1'}"  />
 				</header>
-				<sheet string="Claims">
+				<sheet string="Réclamation">
 					<group>
-						<field name="name"/>
+						<field name="name" />
 						<field name="date"/>
 					</group>
 					<group colspan="4" col="4" groups="base.group_user">
@@ -132,28 +132,28 @@
 					</group>
 					<group colspan="4" col="4">
 						<notebook>
-							<page string="Claim Description" >
+							<page string="Description de la réclamation" >
 								<group colspan="2" col="2" groups="base.group_user">
-									<separator colspan="2" string="Claim Reporter"/>
-									<field name="partner_id" string="Partner"
+									<separator colspan="2" string="Reporter de réclamation"/>
+									<field name="partner_id" string="Client(e)"
 										/>
 									<field name="partner_phone"/>
 									<field name="email_from" widget="email"/>
 								</group>
 								<group colspan="2" col="2" groups="base.group_user">
-									<separator colspan="2" string="Responsibilities"/>
-									<field name="user_fault"/>
+									<separator colspan="2" string="Responsabilités"/>
+<!-- 									<field name="user_fault"/> -->
 									<field name="categ_id" options="{'no_create': True, 'no_open': True}"/>
 									<!--<field name="ref"/>-->
 								</group>
-								<separator colspan="4" string="Claim/Action Description" groups="base.group_user"/>
+								<separator colspan="4" string="Réclamation/Action Description" groups="base.group_user"/>
 								<field name="description" colspan="4" nolabel="1"/>
 							</page>
-							<page string="Follow Up" groups="base.group_user">
+							<page string="Suivi" groups="base.group_user">
 								<group colspan="2" col="2">
 									<separator colspan="2" string="Actions"/>
-									<field name="date_action_next"/>
-									<field name="action_next"/>
+									<field name="date_action_next" string="Date de la prochaine action"/>
+									<field name="action_next" string="Prochaine action"/>
 								</group>
 								<group colspan="2" col="2" groups="base.group_user">
 									<separator colspan="2" string="Dates"/>
@@ -163,13 +163,13 @@
 								</group>
 
 								<group colspan="2" col="2">
-									<separator colspan="2" string="Root Causes"/>
+									<separator colspan="2" string="Causes profondes"/>
 									<field name="cause" colspan="2" nolabel="1"/>
 								</group>
 								<group colspan="2" col="2">
-									<separator colspan="2" string="Resolution Actions"/>
+									<separator colspan="2" string="Mesures de résolution"/>
 									<field name="type_action"/>
-									<field name="resolution" colspan="2" nolabel="1" placeholder="Action Description..."/>
+									<field name="resolution" colspan="2" nolabel="1" placeholder="Description de l'action..."/>
 								</group>
 							</page>
 						</notebook>
@@ -204,7 +204,7 @@
 			<field name="view_id" ref="crm_case_claims_tree_view1"/>
 			<field name="help" type="html">
 				<p class="oe_view_nocontent_create">
-					Record and track your customers' claims. Claims may be linked to a sales order or a lot.You can send emails with attachments and keep the full history for a claim (emails sent, intervention type and so on).Claims may automatically be linked to an email address using the mail gateway module.
+					Enregistrez et suivez les réclamations de vos clients. Les réclamations peuvent être liées à une commande client ou à un lot. Vous pouvez envoyer des e-mails avec pièces jointes et conserver l'historique complet d'une réclamation (e-mails envoyés, type d'intervention, etc.). Les réclamations peuvent être automatiquement liées à une adresse e-mail à l'aide de la passerelle de messagerie. module.
 				</p>
 			</field>
 		</record>
@@ -232,24 +232,24 @@
 		      
 
         <!-- Claims -->
-		<menuitem id="menu_after_sale" name="After-Sale" 
+		<menuitem id="menu_after_sale" name="Après vente" 
 			action="crm_claim_stage_act" parent="crm.crm_menu_sales"/>
 
 <!-- 	<menuitem id="service_menu" name="Services" 
 			action="crm_claim_view_act1" groups="base.group_no_one" parent="bi_crm_claim.menu_after_sale" sequence="1"/> -->
 
-		<menuitem id="claims_menu" name="Claims" 
+		<menuitem id="claims_menu" name="Réclamations" 
 			action="crm_claim_view_act1" parent="bi_crm_claim.menu_after_sale" sequence="1"/>
 
 
 		<!-- Claim Category and Stages -->
-		<menuitem id="menu_config_claim" name="Claim" 
+		<menuitem id="menu_config_claim" name="Réclamations" 
 			 parent="crm.crm_menu_sales"/>
 
 		<menuitem action="crm_claim_categ_action" name="Categories"
 			id="menu_crm_case_claim-act" parent="menu_config_claim"/>
 
-		<menuitem id="menu_claim_stage_view" name="Stages" action="crm_claim_stage_act" parent="menu_config_claim" />
+		<menuitem id="menu_claim_stage_view" name="Étapes" action="crm_claim_stage_act" parent="menu_config_claim" />
 
 	</data>
 </odoo>

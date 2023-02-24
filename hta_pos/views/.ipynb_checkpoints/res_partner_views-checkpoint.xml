@@ -10,5 +10,19 @@
           
       </field>
     </record>
+    
+    <record id="view_res_partner_tree_inherit" model="ir.ui.view">
+        <field name="name">res.partner.tree.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="." position="inside">
+                <header>
+                   <button name="merge_duplicate_partners" string="Fusionner les clients dupliqués" type="object" icon="fa-exchange"/>
+                </header>
+              </xpath>
+       
+        </field>
+    </record>
   </data>
 </odoo>
