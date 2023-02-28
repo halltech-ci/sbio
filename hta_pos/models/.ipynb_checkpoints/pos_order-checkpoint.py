@@ -36,6 +36,7 @@ class HtaPos(models.Model):
         comodel_name="res.users",
         string="Gestionnaire stock",
     )
+    audit = fields.Selection([ ('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft')
     
     # @api.onchange('partner_id')
     # def _onchange_date_create(self):
@@ -122,6 +123,22 @@ class HtaPos(models.Model):
                             }
                         rs.write(line)
                     rs._onchange_amount_line_all()
+                    
+                    
+    def audit_valid(self):
+    	for record in self._context.get('active_ids'):
+            order = self.env[self._context.get('active_model')].browse(record)
+            order_lines = order.lines
+            if order.state != 'draft' or order.state != 'return':
+                order.write({'audit':'valide'})
+                
+                
+    def audit_invalid(self):
+    	for record in self._context.get('active_ids'):
+            order = self.env[self._context.get('active_model')].browse(record)
+            order_lines = order.lines
+            if order.state != 'draft' or order.state != 'return':
+                order.write({'audit':'no_valide'})
     
 
 # class AssignPos(models.Model):
