@@ -58,21 +58,22 @@
                 <field name="partner_id"/>
                  <field name="customer_Phone" string="Telephone Client"/>
                 <field name="delivery_person"/>
-                <field name="delivery_phone" string="Telephone Livreur"/>
+<!--                 <field name="delivery_phone" string="Telephone Livreur"/> -->
                 <field string="Cashier" name="user_id" widget="many2one_avatar_user"/>
                 <field name="amount_total" sum="Amount total" widget="monetary" decoration-bf="1"/>
                 <field name="state" widget="badge" decoration-warning="state == 'delivery'" decoration-muted="state == 'return'"
                     decoration-success="state == 'paid' or state == 'done' or state == 'invoiced'"/>
+                <field name="audit" widget="badge" decoration-warning="audit == 'draft'" decoration-danger="audit == 'no_valide'" decoration-success="audit == 'valide'"/>
             </tree>
           </xpath>
                     <xpath expr="." position="inside">
             <header>
-                <button string="Assigner la commande" type="object" name="assign_command_wizard"/>
-                <button string="Passer au paiement" type="object" name="payment_wizard_order"/>
-                <button string="Facturé" type="object" name="invoice_order_"/>
-                <button string="AUDIT VALIDÉE" type="object" name="audit_valid"/>
-                <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid"/>
-                <button string="AAAAAAAAAAAA" type="object" name="livraison_"/>
+                <button string="Assigner la commande" type="object" name="assign_command_wizard" />
+                <button string="Passer au paiement" type="object" name="payment_wizard_order" />
+<!--                 <button string="Facturé" type="object" name="invoice_order_"/> -->
+                <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="point_of_sale.group_pos_manager"/>
+                <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="point_of_sale.group_pos_manager"/>
+<!--                 <button string="AAAAAAAAAAAA" type="object" name="livraison_"/> -->
 
 <!--                 <button string="Retour" type="object" name="return_order_"/> -->
             </header>
