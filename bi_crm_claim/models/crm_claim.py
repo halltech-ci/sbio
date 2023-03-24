@@ -61,12 +61,12 @@ class crm_claim(models.Model):
     type_action = fields.Selection([('correction','Action corrective'),('prevention','Action préventive')], 'Type action')
     user_id = fields.Many2one('res.users', 'Responsable', default=_default_user)
     user_fault = fields.Char('Responsable des troubles')
-    team_id = fields.Many2one('crm.team', 'Sales Team',
+    team_id = fields.Many2one('crm.team', 'Équipe de vente',
                         help="Responsible sales team."\
                                 " Define Responsible user and Email account for"\
                                 " mail gateway.")
     company_id = fields.Many2one('res.company', 'Company',default=lambda self: self.env['res.company']._company_default_get('crm.case'))
-    partner_id = fields.Many2one('res.partner', 'Partner')
+    partner_id = fields.Many2one('res.partner', 'Client(e)')
     email_cc = fields.Text('Watchers Emails', help="These email addresses will be added to the CC field of all inbound and outbound emails for this record before being sent. Separate multiple email addresses with a comma")
     email_from = fields.Char('Email', help="Destination email for email gateway.",related='partner_id.email')
     partner_phone = fields.Char('Téléphone', related='partner_id.phone')

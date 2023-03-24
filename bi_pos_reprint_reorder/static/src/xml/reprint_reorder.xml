@@ -3,7 +3,7 @@
 
 		<t t-name="POSOrdersScreen" t-inherit="pos_orders_list.POSOrdersScreen" t-inherit-mode="extension" owl="1">
 			<xpath expr="//tr" position="inside">
-				<th>Nouvelle commande</th>
+<!-- 				<th>Nouvelle commande</th> -->
 				<th>Le reçu</th>
                 <th>Notice</th>
 			</xpath> 
@@ -11,10 +11,10 @@
 		
 		<t t-name="POSOrders" t-inherit="pos_orders_list.POSOrders" t-inherit-mode="extension" owl="1">
 			<xpath expr="//tr" position="inside">
-				<td class="print-order" t-att-data-id='props.order.id' 
+<!-- 				<td class="print-order" t-att-data-id='props.order.id' 
 					t-on-click.stop="trigger('click-reorder',props.order)">
 					<button class="odoo-theme-button"><i class="fa fa-refresh"></i> Nouvelle commande</button>
-				</td>
+				</td> -->
 				<td class="print-order" t-att-data-id='props.order.id' 
 					t-on-click.stop="trigger('click-reprint',props.order)">
 					<button class="odoo-theme-button"><i class="fa fa-print"></i>Impression</button>
@@ -109,7 +109,7 @@
 								delivery = "props.delivery"	                 
 								t-ref="order-receipt"			
 							/>
-                            <OrderNoticeReceipt 
+<!--                             <OrderNoticeReceipt 
 								order="props.order"
 								orderlines = "props.orderlines"
 								user_name = "props.user_name"
@@ -117,7 +117,7 @@
                                 partner_name = "props.partner_name"	
 								partner_phone = "props.partner_phone"	
 								t-ref="order-receipt"			
-							/>
+							/> -->
 						</div>
 					</div>
 				</div>
@@ -311,6 +311,7 @@
 				<div class='orderlines'>
 					<t t-foreach='props.orderlines' t-as='line'>
 						<div>
+                            
 							<t t-esc="line.product_id"/>
                             <br/>
 							<t t-esc="line.notice"/>

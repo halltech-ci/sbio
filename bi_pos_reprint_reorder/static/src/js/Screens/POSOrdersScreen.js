@@ -64,6 +64,18 @@ odoo.define('bi_pos_reprint_reorder.POSOrdersScreen', function (require) {
 				});
 
 			}
+            
+            async clickNoticeSelect(event){
+				var products = this.pos.db.get_product_by_category(0);
+                var list = [];
+                for (var i = 0, len = products.length; i < len; i++) {
+                    list.push({
+                        'label': products[i].display_name,
+                        'item': products[i],
+                    });
+                }
+
+			}
 		}
 		
 	Registries.Component.extend(POSOrdersScreen, BiPOSOrdersScreen);

@@ -109,7 +109,7 @@
 								delivery = "props.delivery"	                 
 								t-ref="order-receipt"			
 							/>
-                            <OrderNoticeReceipt 
+<!--                             <OrderNoticeReceipt 
 								order="props.order"
 								orderlines = "props.orderlines"
 								user_name = "props.user_name"
@@ -117,7 +117,7 @@
                                 partner_name = "props.partner_name"	
 								partner_phone = "props.partner_phone"	
 								t-ref="order-receipt"			
-							/>
+							/> -->
 						</div>
 					</div>
 				</div>

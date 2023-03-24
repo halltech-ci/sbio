@@ -71,8 +71,8 @@
                 <button string="Assigner la commande" type="object" name="assign_command_wizard" />
                 <button string="Passer au paiement" type="object" name="payment_wizard_order" />
 <!--                 <button string="Facturé" type="object" name="invoice_order_"/> -->
-                <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="point_of_sale.group_pos_manager"/>
-                <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="point_of_sale.group_pos_manager"/>
+                <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="account.group_account_manager"/>
+                <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="account.group_account_manager"/>
 <!--                 <button string="AAAAAAAAAAAA" type="object" name="livraison_"/> -->
 
 <!--                 <button string="Retour" type="object" name="return_order_"/> -->
@@ -96,7 +96,36 @@
           </field> -->
       </field>
 
-    </record> 
+    </record>
+      
+    
+    <record id="pos_custom_popup_view_form" model="ir.ui.view">
+      <field name="name">pos.custom.popup.form</field>
+      <field name="model">pos.custom.popup</field>
+      <field name="arch" type="xml">
+        <form>
+          <group>
+            <field name="product_id"/>
+          </group>
+          <footer>
+            <button type="button" name="print_selected_product" string="Print" class="btn-primary"/>
+            <button type="button" name="cancel" string="Cancel" class="btn-secondary" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+    
+    <template id="assets_backend" name="Point of Sale assets" inherit_id="point_of_sale.assets_backend" priority="1000">
+      <xpath expr="//div[@class='control-buttons']/button[@name='customer_button']" position="after">
+        <button type="button" name="custom_button" class="btn btn-primary" string="Select Product"/>
+      </xpath>
+    </template>
 
+    
+<!--       <template id="assets_backend" name="Point of Sale assets" inherit_id="point_of_sale.assets_backend">
+      <xpath expr="//div[@class='control-buttons']/button[@name='customer_button']" position="after">
+        <button type="button" name="custom_button" class="btn btn-primary" string="Select Product"/>
+      </xpath>
+    </template> -->
   </data>
 </odoo>
