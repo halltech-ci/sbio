@@ -10,6 +10,9 @@ from odoo.tools import float_is_zero, float_compare, DEFAULT_SERVER_DATETIME_FOR
 from odoo.tools.misc import formatLang
 from odoo.tools import html2plaintext
 import odoo.addons.decimal_precision as dp
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class crm_claim_stage(models.Model):
     _name = "crm.claim.stage"
@@ -72,14 +75,52 @@ class crm_claim(models.Model):
     partner_phone = fields.Char('Téléphone', related='partner_id.phone')
     stage_id = fields.Many2one ('crm.claim.stage', 'Stage',
                 domain="['|', ('team_ids', '=', team_id), ('case_default', '=', True)]")    
-    cause = fields.Text('Root Cause')
+    cause = fields.Text('Root Cause',help="Après analyse, la cause profonde du problème posé")
+    product_ids = fields.Many2many('product.product', string="Produits achetés",domain="[('sale_ok', '=', True)]")
+    
+    
+    
+    @api.depends('partner_id')
+    def _compute_product_ids(self):
+        for claim in self:
+            if claim.partner_id:
+                lines = self.env['pos.order'].search([
+                    ('partner_id', '=', claim.partner_id.id),
+                    ('state', 'in', ['done','paid','invoiced']),
+                ]).mapped('lines')
+                product_ids = lines.mapped('product_id')
+                claim.product_ids = product_ids
+            else:
+                claim.product_ids = False
+
+    @api.onchange('partner_id')
+    def onchange_product_ids(self):
+        if self.partner_id:
+            orders = self.env['pos.order'].search([('partner_id', '=', self.partner_id.id),('state', 'in', ['done','paid','invoiced'])])
+            product_ids = []
+            for order in orders:
+                product_ids += order.lines.filtered(lambda l: l.product_id).mapped('product_id').ids
+            self.product_ids = [(6, 0, product_ids)]
+        else:
+            self.product_ids = False
+        # for claim in self:
+        #     if claim.partner_id:
+        #         lines = self.env['pos.order'].search([
+        #             ('partner_id', '=', claim.partner_id.id),
+        #             ('state', 'in', ['done','paid','invoiced']),
+        #         ]).mapped('lines')
+        #         product_ids = lines.mapped('product_id')
+        #         claim.product_ids = [(6, 0, product_ids.ids)]
+        #     else:
+        #         claim.product_ids = False
+        
 
     @api.onchange('partner_id')
     def onchange_partner_id(self, email=False):
         if not self.partner_id:
             return {'value': {'email_from': False, 'partner_phone': False}}
         address = self.pool.get('res.partner').browse(self.partner_id)
-        return {'value': {'email_from': address.email, 'partner_phone': address.phone}}
+        return {'value': {'email_from': self.partner_id.email, 'partner_phone': self.partner_id.phone}}
 
     @api.model
     def create(self, vals):

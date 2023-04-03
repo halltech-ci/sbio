@@ -135,10 +135,17 @@ nécessaires à la résolution d'un sinistre.
 							<page string="Description de la réclamation" >
 								<group colspan="2" col="2" groups="base.group_user">
 									<separator colspan="2" string="Reporter de réclamation"/>
-									<field name="partner_id" string="Client(e)"
+									<field name="partner_id" string="Client(e)" options="{'no_create': True}"
 										/>
 									<field name="partner_phone"/>
 									<field name="email_from" widget="email"/>
+								</group>
+                                <group colspan="2" col="2" groups="base.group_user">
+									<separator colspan="2" string="Article"/>
+<!-- 									<field name="user_fault"/> -->
+                                       <field name="product_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}" placeholder="Produit acheté..." string="Produits"/>
+							
+									<!--<field name="ref"/>-->
 								</group>
 								<group colspan="2" col="2" groups="base.group_user">
 									<separator colspan="2" string="Responsabilités"/>
@@ -208,6 +215,22 @@ nécessaires à la résolution d'un sinistre.
 				</p>
 			</field>
 		</record>
+        <record id="view_pos_hta_filter" model="ir.ui.view">
+            <field name="name">Claims</field>
+            <field name="model">crm.claim</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Recherche">
+                    <field name="partner_id" string="Client(e)"/>
+                    <field name="partner_phone" string="Numéro Client(e)"/>
+                    <field name="action_next" string="Action (Produit)"/>
+                    <group expand="1" string="Grouper par">
+                        <filter name="partner_id" string="Client(e)" context="{'group_by':'partner_id'}"/>
+                        <filter name="partner_phone" string="Numéro Client(e)" context="{'group_by':'partner_phone'}"/>
+                    </group>
+                </search>
+            </field>
+      </record>
 
 		<record model="ir.actions.act_window.view" id="action_crm_tag_tree_claim0">
 			<field name="sequence" eval="1"/>
