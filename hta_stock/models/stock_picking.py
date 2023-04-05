@@ -11,6 +11,7 @@ class StockPicking(models.Model):
     receipt_user = fields.Many2one('res.users', string="Utlisateur Receip")
     
     def button_my_custom_action(self):
-        if self.receipt_user != self.env.user:
-            raise AccessError(_("Vous n'êtes pas autorisé à effectuer cette action."))
+        if self.receipt_user:
+            if self.receipt_user != self.env.user:
+                raise AccessError(_("Vous n'êtes pas autorisé à effectuer cette action."))
         return self.button_validate()
