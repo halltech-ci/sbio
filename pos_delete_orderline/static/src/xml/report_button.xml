@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="Report_tickets" owl="1">
+       <span class="control-button" style="color:blue">
+<!--            <i class="fa fa-report"> </i> -->
+           <span> </span>
+           <span>Ticket</span>
+       </span>
+   </t>
+</templates>
