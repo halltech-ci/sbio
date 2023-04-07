@@ -4,13 +4,12 @@
       <field name="model">stock.picking</field>
       <field name="inherit_id" ref="stock.view_picking_form"/>
       <field name="arch" type="xml">
-<!--    <button name="action_assign" position="after">
-              <button name="button_validate" type="object" class="oe_highlight" string="Valider" attrs="{'invisible': [('receipt_user', '!=', uid)]}" data-hotkey="v"/>
-
-          </button> -->
+        <xpath expr="//button[@name='button_validate']" position="replace">
+            <button name="button_my_custom_action" string="VALIDER" type="object" class="oe_highlight" attrs="{'invisible': [ ('state', 'not in', ('waiting', 'confirmed','assigned'))]}"/>
+        </xpath>
           
           <field name="location_dest_id" position="after">
-                <field name="receipt_user" attrs="{'invisible': [('picking_type_code', '!=', 'internal')],'required': [('picking_type_code', '=', 'internal')]}"/>
+                <field name="receipt_user" attrs="{'invisible': [('picking_type_code', '!=', 'internal')],'required': [('picking_type_code', '=', 'internal')], 'readonly': [('state', '!=', 'draft')]}"/>
           </field>
       
       </field>
