@@ -1,0 +1,39 @@
+<odoo>
+    <template id="report_ticket">
+
+			<div class="pos-receipt">
+<!-- 				<img class="pos-receipt-logo" t-att-src='env.pos.company_logo_base64' alt="Logo"/> -->
+				<br/>
+				<div class="pos-receipt-contact">
+                    <div class='cashier'>
+						<div>Client(e): <t t-esc='' /></div>
+                        <div>Phone: <t t-esc='' /></div>
+                        
+					</div>
+					<br/>
+					
+					<t t-if=''>
+						<div class='cashier'>
+							<div>--------------------------------</div>
+							<div>Servi par <t t-esc='' /></div>
+						</div>
+					</t>
+				</div>
+				<br /><br />
+				<div class='orderlines'>
+					<t t-foreach='' t-as='line'>
+						<div>
+							<t t-esc=""/>
+                            <br/>
+							<t t-esc=""/>
+						</div>
+                        <div>--------------------------------</div>
+                        <br/>
+					</t>
+				</div>
+
+			</div>
+	
+
+</template>
+</odoo>

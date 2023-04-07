@@ -1,19 +1,12 @@
-
 from odoo import api, fields, models
-
+from odoo.exceptions import UserError
+from odoo.tools.translate import _
 
 class CreateWizardReport(models.TransientModel):
     _name = "create.report.wizard"
     _description = "create report wizard"
-    
-    produits = fields.Many2many('product.product')
-    
-    @api.model
-    def _get_produits_selection(self):
-        produits = self.env['product.product'].search([])
-        return sorted([(p.id, p.name) for p in produits])
    
-    listProduct =  fields.Selection(selection=_get_produits_selection, string='Liste De Produit')
+    listProduct = fields.Many2many('product.product',string='Liste De Produit', domain="[('sale_ok', '=', True)]")
     
-    def action_print_report (self):
-        print("Yo le sang tu connais ou quoi")
+    def action_print_report(self):
+        return self.env.ref('pos_delete_orderline.report_ticket_print').report_action(self)

@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form style='width:100px'>
                 <group>
-                    <field name="listProduct" />
+                    <field name="listProduct" widget="many2many_tags" options='{"no_create": true}'/>
                 <footer style="display:flex;align-items: center; justify-content: center;">
                     <button string="cancel" special="cancel" style="background-color:red;border:none;margin-top:50px;color:white;font-weight:bold"/>
                     <button id="button_print_ticket"

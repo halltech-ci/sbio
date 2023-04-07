@@ -34,7 +34,9 @@
     'depends': ['base', 'point_of_sale'],
     'data':[
         'security/ir.model.access.csv',
-        'wizards/viewReportWizard.xml'
+        'wizards/viewReportWizard.xml',
+        'reports/report.xml',
+        'reports/ticket_product.xml'
     ],
     'assets': {
         'web.assets_backend': [

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- <odoo>
+    <record        
+        id="report_tickets"
+        string="Ticket Product"
+        model="create.report.wizard"
+        report_type="qweb-pdf"
+        name="pos_delete_orderline.report_ticket"
+        file="pos_delete_orderline.report_ticket"
+    />
+</odoo> -->
+<odoo>
+<!--     <data> -->
+<!--         <record
+            id="my_custom_report"
+            model="ir.actions.report"
+            name="My Custom Report"
+            report_type="qweb-pdf"
+            file="pos_delete_orderline.report_ticket"
+            print_report_name="My Custom Report"
+        /> -->
+<!--     </data> -->
+    <record id="report_ticket_print" model="ir.actions.report">
+            <field name="name">Ticket Product</field>
+            <field name="model">create.report.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">pos_delete_orderline.report_ticket</field>
+            <field name="report_file">pos_delete_orderline.report_ticket</field>
+    
+            <field name="print_report_name">Ticket Product</field>
+            <field name="binding_model_id" ref="model_create_report_wizard"/>
+            <field name="binding_type">report</field>
+        </record>
+</odoo>
