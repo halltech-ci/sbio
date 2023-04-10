@@ -10,7 +10,7 @@ class ReportTimeSheetReportView(models.AbstractModel):
         Abstract Model specially for report template.
         _name = Use prefix `report.` along with `module_name.report_name`
     """
-    _name = 'report.hta_pos.report_pos_custmer_product'
+    _name = 'report.hta_pos.report_pos_custmer_sale'
     
     _description = 'Rapport liste des client/Articles'
     
@@ -19,12 +19,9 @@ class ReportTimeSheetReportView(models.AbstractModel):
             params = [date_start,date_end]
             query = """
                     SELECT rp.name AS customer_name, rp.phone AS customer_phone,rpo.date AS date_order, SUM(rpo.price_sub_total) AS price_sub_total, SUM(rpo.product_qty) AS product_qty, sw.name AS entrepot
-                    FROM report_pos_order AS rpo
+                    FROM pos_order AS po
                     INNER JOIN res_partner AS rp ON rp.id = rpo.partner_id
-                    INNER JOIN product_product AS prod ON prod.id = rpo.product_id
-                    INNER JOIN pos_config AS pos_conf ON pos_conf.id = rpo.config_id
-                    INNER JOIN stock_picking_type AS spt ON spt.id = pos_conf.picking_type_id
-                    INNER JOIN stock_warehouse AS sw ON sw.id = spt.warehouse_id
+                    
                     WHERE
                         (spt.warehouse_id = """+entrepot+""")
                         AND
@@ -43,26 +40,21 @@ class ReportTimeSheetReportView(models.AbstractModel):
         
         date_start = data['form']['date_start']
         date_end = data['form']['date_end']
-        
+        amount_min = data['form']['amount_min']
+        amount = data['form']['amount']
         docs = []
-        if data['form']['locations']:
-            locations = data['form']['locations']
-            stok_locs = self.env['stock.warehouse'].search([('id','in',locations)])
-        else:
-            stok_locs = self.env['stock.warehouse'].search([])
-            
-        if data['form']['product_id']:
-            product_id = data['form']['product_id']
-            lines = self.env['product.product'].search([('id','in',product_id)])
-        else:
-            lines = self.env['product.product'].search([])
-        for wh in stok_locs:
-            entrep = wh.id
+        
+        pos_list = self.env['pos.order'].search([])
+        
+        res_partner = self.env['res.partner'].search([])
+        for res_p in res_partner:
+            id_partner = res_p.id
             id_entre = str(entrep)
-            for line in lines:
-                prod_id = line.id
-                id_pp = str(prod_id)
-                name = line.partner_ref
+            montant = 0
+            pos_list = self.env['pos.order'].search([('partner_id','=',id_partner),()])
+            for line in pos_list:
+                partner_name = line.partner_id.name
+                montant = montant + line.amount
                 get_lines = self.get_lines(id_entre,id_pp,date_start,date_end)
             
             
@@ -89,7 +81,7 @@ class ReportPosReporttXlsxGenerate(models.AbstractModel):
         Abstract Model specially for report template.
         _name = Use prefix `report.` along with `module_name.report_name`
     """
-    _name = 'report.hta_pos.pos_report_xlsx_generate'
+    _name = 'report.hta_pos.pos_customer_sale_xlsx_generate'
     _inherit = 'report.report_xlsx.abstract'
     
     _description = 'Report Account Cash XLM'

@@ -24,7 +24,8 @@ from odoo.tools.float_utils import float_round
 
 class PosOrderReturn(models.Model):
     _inherit = 'pos.order'
-    state = fields.Selection(selection_add=[('draft','Livraison'),('paid',),('return','Retour')])
+    state = fields.Selection(selection_add=[('delivery','En Livraison'),('return','Retour'),('paid',)])
+#     lines = fields.One2many('pos.order.line', 'order_id', string='Order Lines', states={'draft': [('readonly', False)],'return': [('readonly', False)]}, readonly=True, copy=True)
 
     def order_lines_writting(self):
         #pos_order=self.env['pos.order'].search([('id', '=', self.id)])
@@ -32,7 +33,7 @@ class PosOrderReturn(models.Model):
         if lines:
             for line in lines:
                 new_vals = {
-                        'price_unit': 0,
+                        
                         'price_subtotal':0,
                 }
                 line.write(new_vals)
@@ -84,13 +85,16 @@ class PosOrderReturn(models.Model):
                }
 
 
+
     def retunr_stock_picking(self):
-        lines = self.env['stock.picking'].search([('pos_order_id', '=', self.id)])
-        
-        if len(lines)<2:
-            return self.display_form_return_stock(lines)
+        picking_id = self.env['stock.picking'].search([('pos_order_id', '=', self.id)])
+        if len(picking_id)<2:
+            stock_return = self.env['stock.return.picking'].create({'picking_id':picking_id.id})
+            stock_return._onchange_picking_id()
+            return stock_return.create_returns()
         else:
             pass
+
     
 
     @api.model
@@ -113,12 +117,22 @@ class PosOrderReturn(models.Model):
 
 
     
-    def buuton_retunr_order(self):
+    def buton_retunr_order(self):
         retour_stock = self.retunr_stock_picking()
-        self.order_lines_writting()
-        self.state = "return"
-    
+        if retour_stock:
+            self.order_lines_writting()
+            self.state = "return"
         return retour_stock
+        
+    def buuton_state_new(self):
+        lines = self.env['pos.order.line'].search([('order_id', '=', self.id)])
+        if lines:
+            for line in lines:
+                line._onchange_amount_line_all()
+
+        self._onchange_amount_all()
+        self.state = "draft"
+    
 #     def _order_fields(self, ui_order):
 #         order = super(PosOrderReturn, self)._order_fields(ui_order)
 #         if 'return_ref' in ui_order.keys() and ui_order['return_ref']:

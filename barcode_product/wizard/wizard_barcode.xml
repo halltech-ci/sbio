@@ -1,0 +1,47 @@
+<odoo>
+    <record id="printer_barcode_wizard" model="ir.ui.view" >
+        <field name="name">Impression code barre</field>
+        <field name="model">barcode.printer.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Assign Commands">
+                <p>
+                Veuillez saisir le numbre de code barre que vous souhaitez imprimer
+                </p>
+                <group>
+                    <group>
+                        <field name="number" string="Nombre"/>
+                    </group>
+                    <group>
+                        <field name="stock_lot" string="Numero de Lot"/>
+                    </group>
+                    
+                </group>
+                <footer>
+                    <button name="printer_barcode" string="Print" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    
+
+    <record id="print_barcode_wizard_action" model="ir.actions.act_window">
+            <field name="name">Impression code barre</field>
+            <field name="res_model">barcode.printer.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="stock.model_stock_production_lot"/>
+            <field name="binding_view_types">form</field>
+    </record>
+    <record id="print_barcode_wizard_action_print" model="ir.actions.act_window">
+            <field name="name">Impression code barre</field>
+            <field name="res_model">barcode.printer.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="target">new</field>
+     
+    </record>
+
+</odoo>

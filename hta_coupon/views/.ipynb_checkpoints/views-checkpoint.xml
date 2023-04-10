@@ -1,0 +1,31 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="coupon_hta_inherit">
+      <field name="model">coupon.coupon</field>
+      <field name="inherit_id" ref="coupon.coupon_view_tree"/>
+      <field name="arch" type="xml">  
+          <field name="partner_id" position="after">
+                <field name="partner_Phone" string="Telephone"/>
+          </field>
+      </field>
+
+    </record>   
+    <record id="view_coupon_search_inherit" model="ir.ui.view">
+            <field name="name">coupon Coupon</field>
+            <field name="model">coupon.coupon</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Coupon">
+                    <field name="partner_Phone" string="Numéro Client"/>
+                    <field name="partner_id" string="Client"/>
+                    <field name="code" string="Code"/>
+                    <field name="expiration_date" string="Date de fin de validité"/>
+                    <filter name="state" string="Etat"/>
+                    <group expand="1" string="Grouper par">
+                        <filter name="partner_id" string="Client" context="{'group_by':'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+      </record>
+  </data>
+</odoo>

@@ -16,6 +16,8 @@ class PosAssignCommands(models.TransientModel):
     )
     date_delivery = fields.Date(string='Date Livraison', required=True, default=fields.Date.today)
     
+#     state = fields.Selection(selection_add=[('')])
+    
     def print_order_assigner(self):
         docs = []
         
@@ -29,7 +31,7 @@ class PosAssignCommands(models.TransientModel):
                 })
             docs.append({
                     'pos_reference':pos_order.pos_reference,
-                    'pos_order_date':pos_order.pos_order_date,
+                    'pos_order_date':self.date_delivery,
                     'amount_total': pos_order.amount_total,
                     'line_docs':line_docs,
                 })
@@ -44,8 +46,18 @@ class PosAssignCommands(models.TransientModel):
         docs = []
         for record in self._context.get('active_ids'):
             pos_order = self.env[self._context.get('active_model')].browse(record)
+            line_docs = []
+            for rs in pos_order.lines:
+                line_docs.append({
+                    'full_product_name':rs.full_product_name,
+                    'qty':rs.qty,
+                })
             docs.append ({
                 'pos_order': pos_order,
+                'pos_reference':pos_order.pos_reference,
+                'pos_order_date':self.date_delivery,
+                'amount_total': pos_order.amount_total,
+                'line_docs':line_docs,
             })
             if pos_order.delivery_person:
                 raise UserError(_("LES COMMANDES SONT DEJA ASSIGNER"))
@@ -53,6 +65,7 @@ class PosAssignCommands(models.TransientModel):
                 
                 pos_order.delivery_person = self.delivery_person
                 pos_order.date_delivery = self.date_delivery
+                pos_order.state = 'delivery'
                 
         data = {
                     'model':'pos.assign.commands.wizard',

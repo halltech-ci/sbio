@@ -13,6 +13,14 @@ class MrpProduction(models.Model):
         copy=False,
         readonly=True,
     )
+    
+    product_qty_request = fields.Float(
+        string="Quantité demander",
+        tracking=3,
+        digits="Product Unit of Measure",
+        default=1.0,
+        readonly=True,
+    )
 
     def _generate_finished_moves(self):
         """`move_dest_ids` is a One2many fields in mrp.production, thus we

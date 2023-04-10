@@ -5,3 +5,4 @@ from . import delivery_company
 from . import pos_order
 from . import stock_picking
 from . import produit
+from . import res_partner

@@ -9,10 +9,12 @@
         <field name="arch" type="xml">
             <field name="product_id" position="inside">
                 <field domain="[('bom_ids','!=',False),('bom_ids.type','!=','phantom')]"
-                        name="product_id"
-                            />
+                        name="product_id" />
             </field>
             
+            <xpath expr="//sheet/group/group[1]/field[@name='product_id']" position="after">
+                <field name="product_qty_request" string="Quantité demander" attrs="{'invisible': [('mrp_production_request_id', '=', False)]}"/>
+            </xpath>
             <xpath expr="//form/sheet/notebook/page[3]/field" position="after">
                 <group>
                     <field name="mrp_production_request_id" />

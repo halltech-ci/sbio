@@ -28,7 +28,8 @@ class barcode_product(models.Model):
         else:
             date_create = self.date_create
             self.time_expire = datetime(date_create.year,date_create.month,date_create.day) + timedelta(730)
-    
+            
+
     
     @api.depends('quant_ids','quant_ids.location_id','quant_ids.quantity')
     def _compute_avail_location(self):
@@ -41,13 +42,32 @@ class barcode_product(models.Model):
                 aa = dict(zip((rec.quant_ids.filtered(lambda x: x.quantity > 0 and x.location_id.usage == 'internal').mapped('location_id.id')),(rec.quant_ids.filtered(lambda x: x.quantity > 0 and x.location_id.usage == 'internal').mapped('quantity'))))
                 rec.quant_text = json.dumps(aa)
             else:
-#                 locations = rec.quant_ids.filtered(lambda x: x.location_id.usage == 'internal').mapped('location_id')
-#                 rec.avail_locations = [(6,0,locations.ids)]
+                locations = rec.quant_ids.filtered(lambda x: x.location_id.usage == 'internal').mapped('location_id')
+                rec.avail_locations = [(6,0,locations.ids)]
                 rec.quant_text = ''
                 aa = dict(zip(
                     (rec.quant_ids.filtered(lambda x: x.location_id.usage == 'internal').mapped('location_id.id'))
                     ))
                 rec.quant_text = json.dumps(aa)
+
+            
+            
+    def button_barcode_wizard(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("barcode_product.print_barcode_wizard_action_print")
+        action['context'] = dict(self.env.context, default_stock_lot=self.id,default_number=self.product_qty)
+        return action
+    
+    
+#         return {
+#                 'type': 'ir.actions.act_window',
+#                 'name': 'Barcode Imp',
+#                 'target': 'new', #use 'current' for not opening in a dialog
+#                 'res_model': 'barcode.printer.wizard',
+#                 #'res_id': self.env['stock.request.order'].search([('project_task', '=', self.id)]).id,
+#                 #'view_id': 'view_xml_id',#optional
+#                 'view_type': 'form',
+#                 'views': [[False,'form']],
+#                 };
 
         
             

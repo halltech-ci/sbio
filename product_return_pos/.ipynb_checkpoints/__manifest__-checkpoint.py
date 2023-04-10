@@ -46,9 +46,9 @@
             'product_return_pos/static/src/js/models.js',
             'product_return_pos/static/src/js/order_list_screen.js'
         ],
-        'web.assets_qweb': [
-            'product_return_pos/static/src/xml/pos_return.xml',
-        ],
+#         'web.assets_qweb': [
+#             'product_return_pos/static/src/xml/pos_return.xml',
+#         ],
     },
 }
 

@@ -24,14 +24,16 @@
             <field name="arch" type="xml">
                 <search string="Search expense">
                     <field name="name" string="Reference Commande"/>
-                    <field name="date_order" string="Date commande"/>
+                    <field name="create_date" string="Date commande"/>
                     <field name="partner_id" string="Client"/>
+                    <field name="customer_Phone" string="Numéro Client"/>
                     <field name="user_return" string="Gestionnaire stock"/>
                     <field name="pos_reference" string="Numero du reçu"/>
                     <field name="delivery_person" string="Livreur"/>
                     <filter name="state" string="Facturé" domain="[('state','=','invoiced')]"/>
                     <filter name="date_order" string="Date de la commande"/>
                     <group expand="1" string="Grouper par">
+                        
                         <filter name="session_id" string="Session" context="{'group_by':'session_id'}"/>
                         <filter name="delivery_person" string="Livreur" context="{'group_by':'delivery_person'}"/>
                         <filter name="user_id" string="Caissier" context="{'group_by':'user_id'}"/>
@@ -45,19 +47,38 @@
       <field name="model">pos.order</field>
       <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
       <field name="arch" type="xml">
-          <xpath expr="." position="inside">
+
+          <xpath expr="//tree" position="replace">
+            <tree string="POS Orders" create="0" sample="1" default_order="id desc" decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" decoration-warning="state == 'delivery'">
+                <field name="currency_id" invisible="1"/>
+                <field name="name" decoration-bf="1"/>
+                <field name="session_id" />
+                <field name="create_date" string="Date commande"/>
+                <field name="pos_reference"/>
+                <field name="partner_id"/>
+                 <field name="customer_Phone" string="Telephone Client"/>
+                <field name="delivery_person"/>
+<!--                 <field name="delivery_phone" string="Telephone Livreur"/> -->
+                <field string="Cashier" name="user_id" widget="many2one_avatar_user"/>
+                <field name="amount_total" sum="Amount total" widget="monetary" decoration-bf="1"/>
+                <field name="state" widget="badge" decoration-warning="state == 'delivery'" decoration-muted="state == 'return'"
+                    decoration-success="state == 'paid' or state == 'done' or state == 'invoiced'"/>
+                <field name="audit" widget="badge" decoration-warning="audit == 'draft'" decoration-danger="audit == 'no_valide'" decoration-success="audit == 'valide'"/>
+<!--                 <field name="date_audit" string="Date Audit" groups="account.group_account_manager"/> -->
+            </tree>
+          </xpath>
+                    <xpath expr="." position="inside">
             <header>
-                <button string="Assigner la commande" type="object" name="assign_command_wizard"/>
-              <button string="Passer au paiement" type="object" name="payment_wizard_order"/>
+                <button string="Assigner la commande" type="object" name="assign_command_wizard" />
+                <button string="Passer au paiement" type="object" name="payment_wizard_order" />
+<!--                 <button string="Facturé" type="object" name="invoice_order_"/> -->
+                <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="account.group_account_manager"/>
+                <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="account.group_account_manager"/>
+<!--                 <button string="AAAAAAAAAAAA" type="object" name="livraison_"/> -->
+
+<!--                 <button string="Retour" type="object" name="return_order_"/> -->
             </header>
           </xpath>
-          
-          
-          <field name="partner_id" position="after">
-<!--                 <field name="customer_Phone" string="Telephone Client"/> -->
-                <field name="delivery_person"/>
-                <field name="delivery_phone" string="Telephone Livreur"/>
-          </field>
       </field>
     </record> 
       
@@ -68,12 +89,44 @@
           <field name="delivery_person" position="after">
                 <field name="delivery_phone" string="Telephone Livreur"/>
           </field>
+          <field name="date_order" position="replace">
+                <field name="order_date" string="Date"/>
+          </field>
 <!--           <field name="partner_id" position="after">
                 <field name="customer_Phone" string="Telephone Client"/>
           </field> -->
       </field>
 
-    </record> 
+    </record>
+      
+    
+    <record id="pos_custom_popup_view_form" model="ir.ui.view">
+      <field name="name">pos.custom.popup.form</field>
+      <field name="model">pos.custom.popup</field>
+      <field name="arch" type="xml">
+        <form>
+          <group>
+            <field name="product_id"/>
+          </group>
+          <footer>
+            <button type="button" name="print_selected_product" string="Print" class="btn-primary"/>
+            <button type="button" name="cancel" string="Cancel" class="btn-secondary" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+    
+    <template id="assets_backend" name="Point of Sale assets" inherit_id="point_of_sale.assets_backend" priority="1000">
+      <xpath expr="//div[@class='control-buttons']/button[@name='customer_button']" position="after">
+        <button type="button" name="custom_button" class="btn btn-primary" string="Select Product"/>
+      </xpath>
+    </template>
 
+    
+<!--       <template id="assets_backend" name="Point of Sale assets" inherit_id="point_of_sale.assets_backend">
+      <xpath expr="//div[@class='control-buttons']/button[@name='customer_button']" position="after">
+        <button type="button" name="custom_button" class="btn btn-primary" string="Select Product"/>
+      </xpath>
+    </template> -->
   </data>
 </odoo>

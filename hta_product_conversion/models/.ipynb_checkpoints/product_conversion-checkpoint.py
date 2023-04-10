@@ -212,7 +212,7 @@ class ProductConversion(models.Model):
                 prefixe = line.dest_product_id.default_code or ""
                 quantity = str(int(line.qty_done))
                 lot = line.conversion_id.src_lot.name
-                new_lot = "{0}{1}{2}{3}{4}".format(prefixe, quantity, lot,str(int(line.conversion_ratio)), 'k')
+                new_lot = "{0}{1}{2}{3}{4}".format(prefixe, quantity, lot,str(int(line.conversion_ratio)), 'G')
                 dest_lot = self.env['stock.production.lot'].create({
                     'name': new_lot,
                     'product_id': line.dest_product_id.id,

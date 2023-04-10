@@ -90,7 +90,7 @@ class ExpenseRequest(models.Model):
         return True
     
     def button_to_cancel(self):        
-        return self.write({'state': 'to_cancel'})#Annuler
+({'state': 'to_cancel'})#Annuler
     
     def button_authorize(self):
         if self.state not in  ['approve']:

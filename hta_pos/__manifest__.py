@@ -36,15 +36,24 @@
         'views/pos_order_views.xml',
         'views/stock_picking.xml',
         'views/produit_views.xml',
-        'views/pos_views_pivot.xml',
+        'views/res_partner_views.xml',
+        # 'views/pos_views_pivot.xml',
         # WIZARD
+        'wizard/wizard_report_customer_sale_views.xml',
         'wizard/assign_commands.xml',
         'wizard/wizard_report_pos_views.xml',
+        
         # Report
         'report/report_customer_list_by_product_views.xml',
         'report/report_pos_print_order_delivery.xml',
+        'report/report_customer_sale_views.xml',
         
     ],
+    'assets': {
+        'web.assets_qweb': [
+            'hta_pos/static/src/xml/pos_refund.xml',
+        ],
+    },
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
