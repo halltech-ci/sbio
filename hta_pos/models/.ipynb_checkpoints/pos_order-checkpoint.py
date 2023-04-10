@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-import datetime
+from datetime import datetime
 class HtaPos(models.Model):
     _name = 'pos.order'
     _inherit = ['pos.order', 'mail.thread']
@@ -37,6 +37,7 @@ class HtaPos(models.Model):
         string="Gestionnaire stock",
     )
     audit = fields.Selection([ ('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft')
+    date_audit = fields.Datetime(string="Date d'audit", default=datetime.now(),readonly=True, audit={'draft': [('readonly', False)]})
     
     # @api.onchange('partner_id')
     # def _onchange_date_create(self):
@@ -130,7 +131,7 @@ class HtaPos(models.Model):
             order = self.env[self._context.get('active_model')].browse(record)
             order_lines = order.lines
             if order.state != 'draft' or order.state != 'return':
-                order.write({'audit':'valide'})
+                order.write({'audit':'valide','date_audit':datetime.now()})
                 
                 
     def audit_invalid(self):
@@ -138,8 +139,41 @@ class HtaPos(models.Model):
             order = self.env[self._context.get('active_model')].browse(record)
             order_lines = order.lines
             if order.state != 'draft' or order.state != 'return':
-                order.write({'audit':'no_valide'})
+                order.write({'audit':'no_valide','date_audit':datetime.now()})
     
+    
+    @api.model
+    def _get_available_products(self):
+        """Returns a list of all available products for selection."""
+        Product = self.env['product.product']
+        products = Product.search([('available_in_pos', '=', True)])
+        return [(product.id, product.name) for product in products]
+    
+    @api.model
+    def _print_selected_product(self, product_id):
+        """Prints the name of the selected product."""
+        Product = self.env['product.product']
+        product = Product.browse(product_id)
+        print(product.name)
+    
+    @api.model
+    def custom_button(self):
+        """Opens the popup to select a product."""
+        return {
+            'name': _('Select Product'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'pos.custom.popup',
+            'view_mode': 'form',
+            'target': 'new',
+        }
+class PosCustomPopup(models.TransientModel):
+    _name = 'pos.custom.popup'
+    
+    product_id = fields.Selection(selection='_get_available_products', string='Product', required=True)
+    
+    def print_selected_product(self):
+        """Prints the name of the selected product."""
+        PosOrder._print_selected_product(int(self.product_id))
 
 # class AssignPos(models.Model):
 #     _name = 'assign.commands'
