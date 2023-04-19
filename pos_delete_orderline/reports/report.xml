@@ -23,9 +23,9 @@
     <record id="report_ticket_print" model="ir.actions.report">
             <field name="name">Ticket Product</field>
             <field name="model">create.report.wizard</field>
-            <field name="report_type">qweb-html</field>
-            <field name="report_name">pos_delete_orderline.report_ticket</field>
-            <field name="report_file">pos_delete_orderline.report_ticket</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">pos_delete_orderline.report_ticket_products</field>
+            <field name="report_file">pos_delete_orderline.report_ticket_products</field>
     
             <field name="print_report_name">Ticket Product</field>
             <field name="binding_model_id" ref="model_create_report_wizard"/>

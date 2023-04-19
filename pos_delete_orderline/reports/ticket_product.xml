@@ -1,39 +1,42 @@
 <odoo>
-    <template id="report_ticket">
-
+    <template id="report_ticket_products">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
 			<div class="pos-receipt">
-<!-- 				<img class="pos-receipt-logo" t-att-src='env.pos.company_logo_base64' alt="Logo"/> -->
 				<br/>
 				<div class="pos-receipt-contact">
-                    <div class='cashier'>
-						<div>Client(e): <t t-esc='' /></div>
-                        <div>Phone: <t t-esc='' /></div>
+<!--                     <div class='cashier'>
+						<div>Client(e):</div>
+                        <div>Phone: </div>
                         
-					</div>
+					</div> -->
 					<br/>
 					
-					<t t-if=''>
-						<div class='cashier'>
+					
+<!-- 						<div>
 							<div>--------------------------------</div>
-							<div>Servi par <t t-esc='' /></div>
-						</div>
-					</t>
+							<div>Servi par</div>
+						</div> -->
+			
 				</div>
 				<br /><br />
 				<div class='orderlines'>
-					<t t-foreach='' t-as='line'>
-						<div>
-							<t t-esc=""/>
-                            <br/>
-							<t t-esc=""/>
-						</div>
-                        <div>--------------------------------</div>
-                        <br/>
-					</t>
-				</div>
+<!--                     <span t-esc="listproduit"/> -->
+                    <t t-foreach="listproduit" t-as="product">
+                        <div>
+                            <t t-esc="product['name']"/>
+                            <span t-esc="' - '"/>
+                            <t t-esc="product['price']"/>
+                        </div>
+                    </t>
+                    <div>--------------------------------</div>
+                    <br/>
+            </div>
 
 			</div>
 	
-
+            </t>
+            </t>
+            
 </template>
 </odoo>
