@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="report_notice_print" model="ir.actions.report">
+      <field name="name">Report Name</field>
+      <field name="model">rapport_notice.rapport_notice</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">rapport_notice.report_notice_send</field>
+      <field name="groups_id" eval="[(6,0,[ref('base.group_user')])]"/>
+<!--         <field name ="paperformat">custom</field>
+        <field name ="height">3cm</field>
+        <field name ="width">20cm</field> -->
+    </record>
+    
+<!--      <report
+        id="report_notice_print"
+        string="rapport notice"
+        model="rapport_notice.rapport_notice"
+        report_type="qweb-pdf"
+        name="rapport_notice.report_notice_send"
+        file="rapport_notice.report_notice_send"
+    /> -->
+<!--     <record id="report_notice_print" model="ir.actions.report">
+    <field name="name">Notice Print</field>
+    <field name="model">rapport_notice.rapport_notice</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">rapport_notice.report_notice_prints</field>
+    <field name="template_id" ref="rapport_notice.report_notice_template"/>
+    <field name="attachment" eval="False"/>
+    <field name="attachment_use">False</field>
+</record> -->
+    
+</odoo>

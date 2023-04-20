@@ -1,0 +1,51 @@
+<odoo>
+    <template id="report_notice_send">
+        <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <div class="page">
+                <!-- Entête du ticket -->
+                <div class="header">
+                    <div class="logo">
+                        
+                    </div>
+                    <div class="info">
+                        <h1>Ticket de caisse</h1>
+                        <p>
+                            <strong>Date :</strong> 
+                        </p>
+                        <p>
+                            <strong>Numéro de ticket :</strong> 
+                        </p>
+                    </div>
+                </div>
+                <!-- Corps du ticket -->
+                <div class="body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Article</th>
+                                <th>Quantité</th>
+                                <th>Prix</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr >
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pied de page du ticket -->
+                <div class="footer">
+                    <p>
+                        <strong>Total :</strong>
+                    </p>
+                </div>
+            </div>
+        </t>
+    </t>
+     
+    </template>
+</odoo>

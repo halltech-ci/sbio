@@ -32,14 +32,22 @@
     'category': 'Point of Sale',
     'version': '15.0.1.0.0',
     'depends': ['base', 'point_of_sale'],
+    'data':[
+        'security/ir.model.access.csv',
+        'wizards/viewReportWizard.xml',
+        'reports/report.xml',
+        'reports/ticket_product.xml'
+    ],
     'assets': {
         'web.assets_backend': [
             'pos_delete_orderline/static/src/js/clear_button.js',
             'pos_delete_orderline/static/src/js/clear_order_line.js',
+            'pos_delete_orderline/static/src/js/report_button.js'
         ],
         'web.assets_qweb': [
              'pos_delete_orderline/static/src/xml/clear_button.xml',
              'pos_delete_orderline/static/src/xml/clear_order_line.xml',
+             'pos_delete_orderline/static/src/xml/report_button.xml'
         ],
     },
     'images': ['static/description/banner.png'],
