@@ -1,34 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- <odoo>
-    <record        
-        id="report_tickets"
-        string="Ticket Product"
-        model="create.report.wizard"
-        report_type="qweb-pdf"
-        name="pos_delete_orderline.report_ticket"
-        file="pos_delete_orderline.report_ticket"
-    />
-</odoo> -->
 <odoo>
-<!--     <data> -->
-<!--         <record
-            id="my_custom_report"
-            model="ir.actions.report"
-            name="My Custom Report"
-            report_type="qweb-pdf"
-            file="pos_delete_orderline.report_ticket"
-            print_report_name="My Custom Report"
-        /> -->
-<!--     </data> -->
+    <record id="paperformat_ticketproduct" model="report.paperformat">
+        <field name="name">French Bank Check</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">80</field>
+        <field name="page_width">180</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">3</field>
+        <field name="dpi">110</field>
+    </record>
     <record id="report_ticket_print" model="ir.actions.report">
-            <field name="name">Ticket Product</field>
-            <field name="model">create.report.wizard</field>
-            <field name="report_type">qweb-pdf</field>
-            <field name="report_name">pos_delete_orderline.report_ticket_products</field>
-            <field name="report_file">pos_delete_orderline.report_ticket_products</field>
+        <field name="name">Ticket Product</field>
+        <field name="model">create.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pos_delete_orderline.report_ticket_products</field>
+        <field name="report_file">pos_delete_orderline.report_ticket_products</field>
     
-            <field name="print_report_name">Ticket Product</field>
-            <field name="binding_model_id" ref="model_create_report_wizard"/>
-            <field name="binding_type">report</field>
+        <field name="print_report_name">Ticket Product</field>
+        <field name="binding_model_id" ref="model_create_report_wizard"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="pos_delete_orderline.paperformat_ticketproduct" />
         </record>
 </odoo>

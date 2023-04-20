@@ -5,31 +5,26 @@
 			<div class="pos-receipt">
 				<br/>
 				<div class="pos-receipt-contact">
-<!--                     <div class='cashier'>
-						<div>Client(e):</div>
-                        <div>Phone: </div>
-                        
-					</div> -->
+
 					<br/>
 					
-					
-<!-- 						<div>
-							<div>--------------------------------</div>
-							<div>Servi par</div>
-						</div> -->
+
 			
 				</div>
 				<br /><br />
-				<div class='orderlines'>
+				<div class='orderlines' style="margin-top:100px">
 <!--                     <span t-esc="listproduit"/> -->
                     <t t-foreach="listproduit" t-as="product">
                         <div>
                             <t t-esc="product['name']"/>
-                            <span t-esc="' - '"/>
-                            <t t-esc="product['price']"/>
+                            <br/>
+<!--                             <span t-esc="' - '"/> -->
+                            <t t-esc="product['notice']"/>
+                            <br/>
+                    <div>--------------------------------</div>
+                            
                         </div>
                     </t>
-                    <div>--------------------------------</div>
                     <br/>
             </div>
 

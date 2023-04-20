@@ -21,6 +21,7 @@ class CreateWizardReport(models.TransientModel):
             liste_de_produit.append({
                 'name':item.partner_ref,
                 'price':item.lst_price,
+                'notice':item.notice_fields,
             })
         data["listproduit"] = liste_de_produit
         print("Data ==>>",data)
