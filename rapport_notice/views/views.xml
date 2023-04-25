@@ -1,0 +1,73 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="rapport_notice.list">
+      <field name="name">Rapport_notice list</field>
+      <field name="model">rapport_notice.rapport_notice</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="notice"/>
+<!--           <field name="product"/> -->
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="rapport_notice.list_form">
+      <field name="name">Rapport_notice list</field>
+      <field name="model">rapport_notice.rapport_notice</field>
+      <field name="arch" type="xml">
+        <form>
+            <group>
+                <field name="name"/>
+                <field name="notice"/>
+<!--               <field name="product"/> -->
+            </group>
+
+        </form>
+      </field>
+    </record>
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="rapport_notice.action_window">
+      <field name="name">Rapport_notice window</field>
+      <field name="res_model">rapport_notice.rapport_notice</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+    <record model="ir.actions.server" id="rapport_notice.action_server">
+      <field name="name">Rapport_notice server</field>
+      <field name="model_id" ref="model_rapport_notice_rapport_notice"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+
+
+    <!-- Top menu item -->
+
+    <menuitem name="Rapport_notice" id="rapport_notice.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Menu 1" id="rapport_notice.menu_1" parent="rapport_notice.menu_root"/>
+<!--     <menuitem name="Menu 2" id="rapport_notice.menu_2" parent="rapport_notice.menu_root"/> -->
+
+    <!-- actions -->
+
+    <menuitem name="List" id="rapport_notice.menu_1_list" parent="rapport_notice.menu_1"
+              action="rapport_notice.action_window"/>
+<!--     <menuitem name="Server to list" id="rapport_notice" parent="rapport_notice.menu_2"
+              action="rapport_notice.action_server"/> -->
+
+  </data>
+</odoo>

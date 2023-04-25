@@ -24,7 +24,7 @@
             <field name="arch" type="xml">
                 <search string="Search expense">
                     <field name="name" string="Reference Commande"/>
-                    <field name="order_date" string="Date commande"/>
+                    <field name="create_date" string="Date commande"/>
                     <field name="partner_id" string="Client"/>
                     <field name="customer_Phone" string="Numéro Client"/>
                     <field name="user_return" string="Gestionnaire stock"/>
@@ -53,7 +53,7 @@
                 <field name="currency_id" invisible="1"/>
                 <field name="name" decoration-bf="1"/>
                 <field name="session_id" />
-                <field name="date_order"/>
+                <field name="create_date" string="Date commande"/>
                 <field name="pos_reference"/>
                 <field name="partner_id"/>
                  <field name="customer_Phone" string="Telephone Client"/>
@@ -64,6 +64,7 @@
                 <field name="state" widget="badge" decoration-warning="state == 'delivery'" decoration-muted="state == 'return'"
                     decoration-success="state == 'paid' or state == 'done' or state == 'invoiced'"/>
                 <field name="audit" widget="badge" decoration-warning="audit == 'draft'" decoration-danger="audit == 'no_valide'" decoration-success="audit == 'valide'"/>
+<!--                 <field name="date_audit" string="Date Audit" groups="account.group_account_manager"/> -->
             </tree>
           </xpath>
                     <xpath expr="." position="inside">
@@ -99,7 +100,7 @@
     </record>
       
     
-    <record id="pos_custom_popup_view_form" model="ir.ui.view">
+<!--     <record id="pos_custom_popup_view_form" model="ir.ui.view">
       <field name="name">pos.custom.popup.form</field>
       <field name="model">pos.custom.popup</field>
       <field name="arch" type="xml">
@@ -113,13 +114,13 @@
           </footer>
         </form>
       </field>
-    </record>
+    </record> -->
     
-    <template id="assets_backend" name="Point of Sale assets" inherit_id="point_of_sale.assets_backend" priority="1000">
+<!--     <template id="assets_backend" name="Point of Sale assets" inherit_id="point_of_sale.assets_backend" priority="1000">
       <xpath expr="//div[@class='control-buttons']/button[@name='customer_button']" position="after">
         <button type="button" name="custom_button" class="btn btn-primary" string="Select Product"/>
       </xpath>
-    </template>
+    </template> -->
 
     
 <!--       <template id="assets_backend" name="Point of Sale assets" inherit_id="point_of_sale.assets_backend">

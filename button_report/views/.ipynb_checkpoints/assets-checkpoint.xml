@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id='pos_pay_assets' name='POS Summary Assets' inherit_id='point_of_sale.assets'>
+			<xpath expr='.' position='inside'>
+				<script type="text/javascript" src="/bi_pos_pay_later/static/src/js/post_custom.js"/>
+			</xpath>
+		</template>
+	
+	</data>
+</odoo>
+

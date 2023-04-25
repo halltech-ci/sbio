@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_list_products_form" model="ir.ui.view">
+        <field name="name">list_products_wizard</field>
+        <field name="model">create.report.wizard</field>
+        <field name="arch" type="xml">
+            <form style='width:100px'>
+                <group>
+                    <field name="listProduct" widget="many2many_tags" options='{"no_create": true}'/>
+                <footer style="display:flex;align-items: center; justify-content: center;">
+                    <button string="cancel" special="cancel" style="background-color:red;border:none;margin-top:50px;color:white;font-weight:bold"/>
+                    <button id="button_print_ticket"
+                            string="Imprimer"
+                            type="object"
+                            class="oe_highlight"
+                            name="action_print_report"
+                            style="background-color:green;margin-top:50px;margin-left:50px;color:white;border:none;font-weight:bold"
+                            />
+                </footer>
+                </group>
+                    
+            </form>
+        </field>
+    </record>
+
+    <record id="action_list_products" model="ir.actions.act_window">
+        <field name="name">List products</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">create.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_list_products_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -278,28 +278,13 @@
 				<img class="pos-receipt-logo" t-att-src='env.pos.company_logo_base64' alt="Logo"/>
 				<br/>
 				<div class="pos-receipt-contact">
-<!-- 					<t t-if='env.pos.company.contact_address'>
-						<div><t t-esc='env.pos.company.contact_address' /></div>
-					</t>
-					<t t-if='env.pos.company.phone'>
-						<div>Tel:<t t-esc='env.pos.company.phone' /></div>
-					</t>
-					<t t-if='env.pos.company.vat'>
-						<div>VAT:<t t-esc='env.pos.company.vat' /></div>
-					</t>
-					<t t-if='env.pos.company.email'>
-						<div><t t-esc='env.pos.company.email' /></div>
-					</t>
-					<t t-if='env.pos.company.website'>
-						<div><t t-esc='env.pos.company.website' /></div>
-					</t> -->
                     <div class='cashier'>
 						<div>Client(e): <t t-esc='props.partner_name' /></div>
                         <div>Phone: <t t-esc='props.partner_phone' /></div>
                         
 					</div>
 					<br/>
-					
+0					
 					<t t-if='props.user_name'>
 						<div class='cashier'>
 							<div>--------------------------------</div>
