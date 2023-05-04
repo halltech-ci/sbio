@@ -74,7 +74,7 @@
 <!--                 <button string="Facturé" type="object" name="invoice_order_"/> -->
                 <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="account.group_account_manager"/>
                 <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="account.group_account_manager"/>
-<!--                 <button string="AAAAAAAAAAAA" type="object" name="livraison_"/> -->
+                <button string="GET AUDIT API" type="object" name="api_pos_get"/>
 
 <!--                 <button string="Retour" type="object" name="return_order_"/> -->
             </header>
@@ -100,7 +100,7 @@
     </record>
       
     
-    <record id="pos_custom_popup_view_form" model="ir.ui.view">
+<!--     <record id="pos_custom_popup_view_form" model="ir.ui.view">
       <field name="name">pos.custom.popup.form</field>
       <field name="model">pos.custom.popup</field>
       <field name="arch" type="xml">
@@ -114,13 +114,13 @@
           </footer>
         </form>
       </field>
-    </record>
+    </record> -->
     
-    <template id="assets_backend" name="Point of Sale assets" inherit_id="point_of_sale.assets_backend" priority="1000">
+<!--     <template id="assets_backend" name="Point of Sale assets" inherit_id="point_of_sale.assets_backend" priority="1000">
       <xpath expr="//div[@class='control-buttons']/button[@name='customer_button']" position="after">
         <button type="button" name="custom_button" class="btn btn-primary" string="Select Product"/>
       </xpath>
-    </template>
+    </template> -->
 
     
 <!--       <template id="assets_backend" name="Point of Sale assets" inherit_id="point_of_sale.assets_backend">

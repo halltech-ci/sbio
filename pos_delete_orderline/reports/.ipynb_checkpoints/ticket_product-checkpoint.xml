@@ -1,0 +1,37 @@
+<odoo>
+    <template id="report_ticket_products">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+			<div class="pos-receipt">
+				<br/>
+				<div class="pos-receipt-contact">
+
+					<br/>
+					
+
+			
+				</div>
+				<br /><br />
+				<div class='orderlines' style="margin-top:100px">
+<!--                     <span t-esc="listproduit"/> -->
+                    <t t-foreach="listproduit" t-as="product">
+                        <div>
+                            <t t-esc="product['name']"/>
+                            <br/>
+<!--                             <span t-esc="' - '"/> -->
+                            <t t-esc="product['notice']"/>
+                            <br/>
+                    <div>--------------------------------</div>
+                            
+                        </div>
+                    </t>
+                    <br/>
+            </div>
+
+			</div>
+	
+            </t>
+            </t>
+            
+</template>
+</odoo>
