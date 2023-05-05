@@ -40,7 +40,7 @@ class HtaPos(models.Model):
         string="Gestionnaire stock",
     )
     audit = fields.Selection([ ('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft')
-    # date_audit = fields.Datetime(string="Date d'audit", default=datetime.now(),readonly=True, audit={'draft': [('readonly', False)]})
+    date_audit = fields.Datetime(string="Date d'audit", default=datetime.now(),readonly=True, audit={'draft': [('readonly', False)]})
     
     # @api.onchange('partner_id')
     # def _onchange_date_create(self):
@@ -134,7 +134,7 @@ class HtaPos(models.Model):
             order = self.env[self._context.get('active_model')].browse(record)
             order_lines = order.lines
             if order.state != 'draft' or order.state != 'return':
-                order.write({'audit':'valide',})
+                order.write({'audit':'valide','date_audit': datetime.now()})
                 
                 
     def audit_invalid(self):
@@ -142,7 +142,7 @@ class HtaPos(models.Model):
             order = self.env[self._context.get('active_model')].browse(record)
             order_lines = order.lines
             if order.state != 'draft' or order.state != 'return':
-                order.write({'audit':'no_valide',})
+                order.write({'audit':'no_valide', 'date_audit': datetime.now()})
     
     
     @api.model
