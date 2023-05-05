@@ -27,13 +27,13 @@
             <field name="binding_type">report</field>
         </record>
     
-<!--         <record id="pos_report_customer_sale_generate_xlsx_report" model="ir.actions.report">
+        <record id="pos_report_generate_xlsx_report_by_lot" model="ir.actions.report">
             <field name="name">Rapport Client</field>
             <field name="model">report.number.lot.wizard</field>
             <field name="report_type">xlsx</field>
-            <field name="report_name">hta_pos.customer_sale_report_xlsx_generate</field>
-            <field name="report_file">hta_pos.customer_sale_report_xlsx_generate</field>
-        </record> -->
+            <field name="report_name">crm_report_sale.customer_sale_number_lot_xlsx_generate</field>
+            <field name="report_file">crm_report_sale.customer_sale_number_lot_xlsx_generate</field>
+        </record>
 <!--     <report id="pos_report_customer_list_product"
         model="report.pos.report.wizard"
         string="Rapport list client par article"

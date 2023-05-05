@@ -49,7 +49,7 @@ class ReportPosReporttXlsxGenerate(models.AbstractModel):
         Abstract Model specially for report template.
         _name = Use prefix `report.` along with `module_name.report_name`
     """
-    _name = 'report.hta_pos.customer_sale_report_xlsx_generate'
+    _name = 'report.crm_report_sale.customer_sale_number_lot_xlsx_generate'
     _inherit = 'report.report_xlsx.abstract'
     
     _description = 'Report Account Cash XLM'
@@ -95,59 +95,42 @@ class ReportPosReporttXlsxGenerate(models.AbstractModel):
         
         date_start = data.get('date_start')
         date_end = data.get('date_end')
-        amount_min = data.get('amount_min')
-        amount = data.get('amount')
-        filtre = data.get('filter_by')
+        number_lot = data.get('number_lot')
         docs = []
-        res_partner = self.env['res.partner'].search([])
-        for res_p in res_partner:
-            id_partner = res_p.id
-            partner_name = res_p.name
-            partner_phone = res_p.phone
-            montant = 0
-            pos_list = self.env['pos.order'].search([('partner_id','=',id_partner),('date_order','>=',date_start),('date_order','<=',date_end)])
-            for line in pos_list:
-                montant = montant + line.amount_paid
+        search_lot = self.env['stock.production.lot']
+        pos_pack_lot = self.env['pos.pack.operation.lot']
+        if number_lot:
+            search_lot = self.env['stock.production.lot'].search([('id','in',number_lot)])
+            for res in search_lot:
+                for pack in pos_pack_lot.search([('lot_name','=',res.name),('create_date','>=',date_start),('create_date','<=',date_end)]):
+                    if pack.order_id.state in ['paid','done','invoiced']:
+                        docs.append({'nom_client':pack.order_id.partner_id.name,'contact':pack.order_id.partner_id.phone,
+                                     'article':pack.product_id.partner_ref,'lot':pack.lot_name,'date':pack.order_id.create_date})
             
-            if filtre == 'entre_deux':
-                if (amount_min > 0 and amount_min <= montant < amount):
-                    docs.append ({
-                                'type':"Montant compris entre ",
-                                'partner_name': partner_name,
-                                'partner_phone':partner_phone,
-                                'montant':montant,
-                        })
-            elif(filtre == 'un_montant'):
-                if(montant >= amount):
-                    docs.append ({
-                                'type': "Montant Superieur à",
-                                'partner_name': partner_name,
-                                'partner_phone':partner_phone,
-                                'montant':montant,
-                        })
-            else:
-                docs = []
+        else:
+            docs = []
             
-        sheet.set_column('A:A', 40)
+        sheet.set_column('A:A', 20)
         
         row = 2
         col = 0
         
-        sheet.merge_range(row, col, row+1, col+3, 'RAPPORT POINT DE VENTE', title)
+        sheet.merge_range(row, col, row+1, col+3, 'RAPPORT DE VENTE PAR NUMERO DE LOT', title)
             
         row += 5
         col = 0
-        sheet.set_column('B:B', 20)
-        sheet.set_column('C:C', 30)
-        sheet.set_column('D:D', 50)
-        sheet.set_column('E:E', 15)
+        sheet.set_column('B:B', 40)
+        sheet.set_column('C:C', 20)
+        sheet.set_column('D:D', 30)
+        sheet.set_column('E:E', 30)
         sheet.set_column('F:F', 30)
         
         
-        
-        sheet.merge_range(row, col, row+1, col, 'Client', table_header)
-        sheet.merge_range(row, col+1, row+1, col+1, 'Téléphone', table_header)
-        sheet.merge_range(row, col+2, row+1, col+2, 'Montant', table_header)
+        sheet.merge_range(row, col, row+1, col, 'Date', table_header)
+        sheet.merge_range(row, col+1, row+1, col+1, 'Client', table_header)
+        sheet.merge_range(row, col+2, row+1, col+2, 'Téléphone', table_header)
+        sheet.merge_range(row, col+3, row+1, col+3, 'Article', table_header)
+        sheet.merge_range(row, col+4, row+1, col+4, 'Numero de Lot', table_header)
         # Header row
         
         
@@ -155,7 +138,9 @@ class ReportPosReporttXlsxGenerate(models.AbstractModel):
         ligne = 10
         i = 0
         for line in docs:
-            sheet.write(ligne+i, col, line['partner_name'])
-            sheet.write(ligne+i, col+1, line['partner_phone'])
-            sheet.write(ligne+i, col+2, line['montant'])
+            sheet.write(ligne+i, col, line['date'])
+            sheet.write(ligne+i, col+1, line['nom_client'])
+            sheet.write(ligne+i, col+2, line['contact'])
+            sheet.write(ligne+i, col+3, line['article'])
+            sheet.write(ligne+i, col+4, line['lot'])
             i +=1
