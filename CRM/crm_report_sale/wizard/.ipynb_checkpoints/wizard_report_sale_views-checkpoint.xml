@@ -1,0 +1,52 @@
+<odoo>
+    <record id="sale_numberlot_report_wizard" model="ir.ui.view" >
+        <field name="name">Rapport Clients / artilces</field>
+        <field name="model">report.number.lot.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Rapport Par Numero de Lot">
+                <group>
+                    <group>
+                        <field name="number_lot" domain="[('product_id.available_in_pos', '=', True)]" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="date_start"/>
+                    </group>
+                    <group>
+                        <field name="date_end"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="get_report" string="Rapport PDF" type="object" class="oe_highlight"/>
+<!--                     <button name="get_generate_xlsx_report" string="Rapport Excel" type="object" class="oe_highlight"/> -->
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    
+        <record id="action_pos_sale_report_number_wizard" model="ir.actions.act_window">
+            <field name="name">vente par Numero de lot</field>
+            <field name="res_model">report.number.lot.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+    </record>
+
+<!--     <menuitem 
+        id="menu_pos_report_report_wizard"
+        action="action_pos_report_report_wizard"
+        name = "Client(e)s/Articles "
+        sequence="5"
+        parent="point_of_sale.menu_point_rep"
+              
+        /> -->
+
+    <menuitem 
+        id="menu_crm_sale_report_wizard"
+        action="action_pos_sale_report_number_wizard"
+        name = "Rapport Vent"
+        sequence="4"
+        parent="crm.crm_menu_report"
+        />
+</odoo>
