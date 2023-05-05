@@ -39,8 +39,8 @@ class HtaPos(models.Model):
         comodel_name="res.users",
         string="Gestionnaire stock",
     )
-    audit = fields.Selection([ ('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft')
-    date_audit = fields.Datetime(string="Date d'audit", default=datetime.now(),readonly=True, audit={'draft': [('readonly', False)]})
+    audit = fields.Selection([ ('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft', tracking=1)
+    date_audit = fields.Datetime(string="Date d'audit",readonly=True, audit={'draft': [('readonly', False)]}, tracking=1)
     
     # @api.onchange('partner_id')
     # def _onchange_date_create(self):
