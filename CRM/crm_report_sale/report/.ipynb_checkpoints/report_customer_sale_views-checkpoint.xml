@@ -1,0 +1,127 @@
+<odoo>
+    <record id="paperformat_lot_report_sale" model="report.paperformat">
+            <field name="name">POS</field>
+            <field name="default" eval="False"/>
+            <field name="format">custom</field>
+            <field name="page_height">210</field>
+            <field name="page_width">300</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">4</field>
+            <field name="margin_bottom">9</field>
+            <field name="margin_right">3</field>
+            <field name="margin_left">3</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+    </record>
+
+     <record id="report_pos_lot_sale_pdf" model="ir.actions.report">
+            <field name="name">Rapport Client</field>
+            <field name="model">report.number.lot.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">crm_report_sale.report_pos_custmer_sale_by_lot</field>
+            <field name="report_file">crm_report_sale.report_pos_custmer_sale_by_lot</field>
+    
+            <field name="print_report_name">Rapport Client</field>
+            <field name="binding_model_id" ref="model_report_number_lot_wizard"/>
+            <field name="binding_type">report</field>
+        </record>
+    
+<!--         <record id="pos_report_customer_sale_generate_xlsx_report" model="ir.actions.report">
+            <field name="name">Rapport Client</field>
+            <field name="model">report.number.lot.wizard</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">hta_pos.customer_sale_report_xlsx_generate</field>
+            <field name="report_file">hta_pos.customer_sale_report_xlsx_generate</field>
+        </record> -->
+<!--     <report id="pos_report_customer_list_product"
+        model="report.pos.report.wizard"
+        string="Rapport list client par article"
+        report_type="qweb-html"
+        paperformat='paperformat_custom_report_pos_list_customer'
+        name="hta_pos.report_pos_custmer_product"
+        menu="False"/> -->
+    
+<!--     <report id="cash_generate_xlsx_report"
+        model="account.cash.report.wizard"
+        string="Account Cash Report"
+        report_type="xlsx"
+        name="custom_report.account_cash_xlsx_generate"
+        file="custom_report.account_cash_xlsx_generate"
+        
+        /> 
+        <report id="cash_generate_xlsx_report"
+        model="account.cash.report.wizard"
+        string="Account Cash Report"
+        report_type="xlsx"
+        name="custom_report.account_cash_xlsx_generate"
+        file="custom_report.account_cash_xlsx_generate"
+        
+        />
+-->
+
+    <template id="report_pos_custmer_sale_by_lot">
+        <t t-call="web.html_container">
+                <div class="article mt0 o_report_layout_standard">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm" style="display: block;text-align:center;">
+                                <h3 class="text-center">RAPPORT LISTE CLIENT
+                                    <span style="font-size: 14px;"><strong>De</strong>: <t t-esc="date_start"/> <strong>A</strong>: <t t-esc="date_end"/></span>
+                                </h3>
+                                <br/>
+                           
+                            </div>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <table class="table table-sm table-condensed table-bordered" >
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class='text-center'>Date</th>
+                                <th class='text-center'>Client</th>
+                                <th class='text-center'>Téléphone</th>
+                                <th class='text-center'>Article</th>
+                                <th class='text-center'>Numero Lot</th>
+                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="lines"> 
+                                    <t t-if="lines">
+                                            <tr>
+                                                <td> <span t-esc="lines['date']" /> </td>
+                                                <td> <span t-esc="lines['nom_client']" /> </td>
+                                                <td><span t-esc="lines['contact']" /> </td>
+                                                <td><span t-esc="lines['article']" /> </td>
+                                                <td><span t-esc="lines['lot']" /> </td>
+                                                
+                                            </tr>   
+                                    
+                                        </t>     
+                            </t>
+
+                        </tbody>
+                    </table>
+                    <br/>
+            </div> 
+            <div class="footer o_standard_footer" style="border-top: 1px solid black;">
+                <div class="row text-center">
+                    <div class="col col-12 text-center">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">Page:</li>
+                            <li class="list-inline-item">
+                                <span class="page"/>
+                            </li>
+                            <li class="list-inline-item">/</li>
+                            <li class="list-inline-item">
+                                <span class="topage"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
