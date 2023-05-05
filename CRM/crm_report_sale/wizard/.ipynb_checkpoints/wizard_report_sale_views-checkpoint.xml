@@ -18,7 +18,7 @@
                 </group>
                 <footer>
                     <button name="get_report" string="Rapport PDF" type="object" class="oe_highlight"/>
-<!--                     <button name="get_generate_xlsx_report" string="Rapport Excel" type="object" class="oe_highlight"/> -->
+                    <button name="get_generate_xlsx_report" string="Rapport Excel" type="object" class="oe_highlight"/>
                     <button string="Cancel" special="cancel"/>
                 </footer>
             </form>
@@ -45,7 +45,7 @@
     <menuitem 
         id="menu_crm_sale_report_wizard"
         action="action_pos_sale_report_number_wizard"
-        name = "Rapport Vent"
+        name = "Rapport par lot"
         sequence="4"
         parent="crm.crm_menu_report"
         />

@@ -22,11 +22,11 @@ class SaleNumberLotReportWizard(models.TransientModel):
         return self.env.ref('crm_report_sale.report_pos_lot_sale_pdf').with_context(landscape=True).report_action(self, data=data)
 
     
-    # def get_generate_xlsx_report(self):
-    #     data = {
-    #         'date_start': self.date_start,
-    #         'date_end': self.date_end,
-    #         'number_lot': self.number_lot.ids,
-    #     }
-    #     # ref `module_name.report_id` as reference.
-    #     return self.env.ref('crm_report_sale.pos_report_generate_xlsx_report').report_action(self, data=data)
+    def get_generate_xlsx_report(self):
+        data = {
+            'date_start': self.date_start,
+            'date_end': self.date_end,
+            'number_lot': self.number_lot.ids,
+        }
+        # ref `module_name.report_id` as reference.
+        return self.env.ref('crm_report_sale.pos_report_generate_xlsx_report_by_lot').report_action(self, data=data)
