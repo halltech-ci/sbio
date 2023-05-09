@@ -143,20 +143,19 @@ class HtaPos(models.Model):
                             }
                         rs.write(line)
                     rs._onchange_amount_line_all()
-                # self.sudo().payment_wizard_order()
                 order._onchange_amount_all()
                 order.write({'audit':'valide','date_audit': datetime.now()})
                 
-            context = self._context.copy()
-#             return {
-#                 'name':'Passer au paiement',
-#                 'type':'ir.actions.act_window',
-#                 'view_mode': 'form',
-#                 #'view_type': 'form',
-#                 'res_model':'payment.after.delivery.wizard',
-#                 #'res_id':self.env.ref('stock.picking').id,
-#                 'target':'new',
-#             }
+            # context = self._context.copy()
+            # return {
+            #     'name':'Passer au paiement',
+            #     'type':'ir.actions.act_window',
+            #     'view_mode': 'form',
+            #     #'view_type': 'form',
+            #     'res_model':'payment.after.delivery.wizard',
+            #     #'res_id':self.env.ref('stock.picking').id,
+            #     'target':'new',
+            # }
             
                 
     def audit_invalid(self):
