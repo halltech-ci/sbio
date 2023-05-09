@@ -130,12 +130,34 @@ class HtaPos(models.Model):
                     
                     
     def audit_valid(self):
-    	for record in self._context.get('active_ids'):
+        for record in self._context.get('active_ids'):
             order = self.env[self._context.get('active_model')].browse(record)
             order_lines = order.lines
             if order.state != 'draft' or order.state != 'return':
+                for rs in order_lines:
+                    if 'ivraison' in str(rs.full_product_name):
+                        line = {
+                            "price_unit": 0,
+                            "price_subtotal": 0,
+                            'price_subtotal_incl': 0,
+                            }
+                        rs.write(line)
+                    rs._onchange_amount_line_all()
+                # self.sudo().payment_wizard_order()
+                order._onchange_amount_all()
                 order.write({'audit':'valide','date_audit': datetime.now()})
                 
+            context = self._context.copy()
+            return {
+                'name':'Passer au paiement',
+                'type':'ir.actions.act_window',
+                'view_mode': 'form',
+                #'view_type': 'form',
+                'res_model':'payment.after.delivery.wizard',
+                #'res_id':self.env.ref('stock.picking').id,
+                'target':'new',
+            }
+            
                 
     def audit_invalid(self):
     	for record in self._context.get('active_ids'):
