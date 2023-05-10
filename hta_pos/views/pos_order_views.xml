@@ -75,6 +75,8 @@
 <!--                 <button string="Facturé" type="object" name="invoice_order_"/> -->
                 <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="account.group_account_manager"/>
                 <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="account.group_account_manager"/>
+                
+                <button string="AUDIT AVEC DATE" type="object" name="audit_order_wizard" groups="account.group_account_manager"/>
 <!--                 <button string="GET AUDIT API" type="object" name="api_pos_get"/> -->
 
 <!--                 <button string="Retour" type="object" name="return_order_"/> -->

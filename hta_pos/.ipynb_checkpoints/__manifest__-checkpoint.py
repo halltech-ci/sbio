@@ -42,6 +42,7 @@
         'wizard/wizard_report_customer_sale_views.xml',
         'wizard/assign_commands.xml',
         'wizard/wizard_report_pos_views.xml',
+        'wizard/audit_validate.xml',
         
         # Report
         'report/report_customer_list_by_product_views.xml',
