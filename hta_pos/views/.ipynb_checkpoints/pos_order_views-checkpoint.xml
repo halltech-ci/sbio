@@ -79,7 +79,7 @@
                 <button string="AUDIT AVEC DATE" type="object" name="audit_order_wizard" groups="account.group_account_manager"/>
 <!--                 <button string="GET AUDIT API" type="object" name="api_pos_get"/> -->
 
-<!--                 <button string="Retour" type="object" name="return_order_"/> -->
+                <button string="Retour" type="object" name="return_order_" groups="account.group_account_manager"/>
             </header>
           </xpath>
       </field>

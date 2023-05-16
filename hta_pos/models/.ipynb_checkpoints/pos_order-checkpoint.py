@@ -118,6 +118,7 @@ class HtaPos(models.Model):
             order = self.env[self._context.get('active_model')].browse(record)
             if order.state == 'return':
                 for rs in order.lines:
+                    rs.price_unit = 0
                     rs.price_subtotal = 0
                     rs.price_subtotal_incl = 0
     
