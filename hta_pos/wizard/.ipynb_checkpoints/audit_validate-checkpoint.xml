@@ -1,0 +1,34 @@
+<odoo>
+    <record id="audit_command_wizard" model="ir.ui.view" >
+        <field name="name">Audit</field>
+        <field name="model">pos.audit.commands.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Assign Commands">
+                
+                <group>
+                    <group>
+                        <field name="commande"/>
+                    </group>
+                    <group>
+                        <field name="date_audit"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="validate_audit_orders" string="Valider" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="audit_cmmd_action" model="ir.actions.act_window">
+            <field name="name">Validation de l'audit</field>
+            <field name="res_model">pos.audit.commands.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="point_of_sale.model_pos_order"/>
+            <field name="binding_view_types">list</field>
+    </record>
+
+</odoo>

@@ -64,7 +64,8 @@
                 <field name="state" widget="badge" decoration-warning="state == 'delivery'" decoration-muted="state == 'return'"
                     decoration-success="state == 'paid' or state == 'done' or state == 'invoiced'"/>
                 <field name="audit" widget="badge" decoration-warning="audit == 'draft'" decoration-danger="audit == 'no_valide'" decoration-success="audit == 'valide'"/>
-<!--                 <field name="date_audit" string="Date Audit" groups="account.group_account_manager"/> -->
+                <field name="date_audit" string="Date Audit" groups="account.group_account_manager"/>
+
             </tree>
           </xpath>
                     <xpath expr="." position="inside">
@@ -74,9 +75,11 @@
 <!--                 <button string="Facturé" type="object" name="invoice_order_"/> -->
                 <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="account.group_account_manager"/>
                 <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="account.group_account_manager"/>
+                
+                <button string="AUDIT AVEC DATE" type="object" name="audit_order_wizard" groups="account.group_account_manager"/>
 <!--                 <button string="GET AUDIT API" type="object" name="api_pos_get"/> -->
 
-<!--                 <button string="Retour" type="object" name="return_order_"/> -->
+                <button string="Retour" type="object" name="return_order_" groups="account.group_account_manager"/>
             </header>
           </xpath>
       </field>

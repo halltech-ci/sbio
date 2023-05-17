@@ -39,8 +39,8 @@ class HtaPos(models.Model):
         comodel_name="res.users",
         string="Gestionnaire stock",
     )
-    audit = fields.Selection([ ('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft')
-    # date_audit = fields.Datetime(string="Date d'audit", default=datetime.now(),readonly=True, audit={'draft': [('readonly', False)]})
+    audit = fields.Selection([ ('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft', tracking=1)
+    date_audit = fields.Datetime(string="Date d'audit",readonly=True, audit={'draft': [('readonly', False)]}, tracking=1)
     
     # @api.onchange('partner_id')
     # def _onchange_date_create(self):
@@ -82,7 +82,17 @@ class HtaPos(models.Model):
             #'res_id':self.env.ref('stock.picking').id,
             'target':'new',
         }
-    
+    def audit_order_wizard(self):
+    	context = self._context.copy()
+    	return {
+            'name':' Validation audit',
+            'type':'ir.actions.act_window',
+            'view_mode': 'form',
+            #'view_type': 'form',
+            'res_model':'pos.audit.commands.wizard',
+
+            'target':'new',
+        }
     def invoice_order_(self):
     	#view_id = self.env.ref('point_of_sale.payment_command_wizard').id
     	for record in self._context.get('active_ids'):
@@ -108,6 +118,7 @@ class HtaPos(models.Model):
             order = self.env[self._context.get('active_model')].browse(record)
             if order.state == 'return':
                 for rs in order.lines:
+                    rs.price_unit = 0
                     rs.price_subtotal = 0
                     rs.price_subtotal_incl = 0
     
@@ -130,19 +141,42 @@ class HtaPos(models.Model):
                     
                     
     def audit_valid(self):
-    	for record in self._context.get('active_ids'):
+        for record in self._context.get('active_ids'):
             order = self.env[self._context.get('active_model')].browse(record)
             order_lines = order.lines
-            if order.state != 'draft' or order.state != 'return':
-                order.write({'audit':'valide',})
+            if order.state == 'return':
+                for rs in order_lines:
+                    line = {
+                            "price_unit": 0,
+                            "price_subtotal": 0,
+                            'price_subtotal_incl': 0,
+                            }
+                    rs.write(line)
+                    rs._onchange_amount_line_all()
+                order._onchange_amount_all()
+                order.write({'audit':'valide','date_audit': datetime.now()})
+            else:
+                for rs in order_lines:
+                    if 'ivraison' in str(rs.full_product_name):
+                        line = {
+                            "price_unit": 0,
+                            "price_subtotal": 0,
+                            'price_subtotal_incl': 0,
+                            }
+                        rs.write(line)
+                    rs._onchange_amount_line_all()
+                order._onchange_amount_all()
+                order.write({'audit':'valide','date_audit': datetime.now()})
                 
+                
+            
                 
     def audit_invalid(self):
     	for record in self._context.get('active_ids'):
             order = self.env[self._context.get('active_model')].browse(record)
             order_lines = order.lines
             if order.state != 'draft' or order.state != 'return':
-                order.write({'audit':'no_valide',})
+                order.write({'audit':'no_valide', 'date_audit': datetime.now()})
     
     
     @api.model
