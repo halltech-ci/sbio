@@ -1,0 +1,76 @@
+<odoo>
+
+     <record id="pos_report_list_product_sale" model="ir.actions.report">
+            <field name="name">Rapport par articles</field>
+            <field name="model">report.pos.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">hta_stock.report_pos_sale</field>
+            <field name="report_file">hta_stock.report_pos_sale</field>
+    
+<field name="print_report_name">Rapport Article</field>
+            <field name="binding_model_id" ref="model_report_pos_wizard"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
+    <template id="report_pos_sale">
+        <t t-call="web.html_container">
+                <div class="article mt0 o_report_layout_standard">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm" style="display: block;text-align:center;">
+                                <h3 class="text-center">RAPPORT DE VENTE PAR PRODUIT
+                                    <span style="font-size: 14px;"><strong>De</strong>: <t t-esc="date_start"/> <strong>A</strong>: <t t-esc="date_end"/></span>
+                                </h3>
+                                <br/>
+                                <h4> POINT DE VENTE : <t t-esc="filter_pdv"/></h4>
+                                <br/>
+                           
+                            </div>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <table class="table table-sm table-condensed table-bordered" >
+                        <thead class="thead-dark">
+                            <tr>
+                            
+                                <th class='text-center'>Produit</th>
+                                <th class='text-center'>Qté</th>
+                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="lines"> 
+                              <tr>
+                                  <th>
+                                    <span t-esc="lines['product_id']"/> 
+                                  </th>
+                                  <td class='text-center'><span t-esc="lines['total_quantity']" /> </td>
+                                              
+                                </tr>   
+                                </t>
+                       
+                        </tbody>
+                    </table>
+                    <br/>
+            </div> 
+            <div class="footer o_standard_footer" style="border-top: 1px solid black;">
+                <div class="row text-center">
+                    <div class="col col-12 text-center">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">Page:</li>
+                            <li class="list-inline-item">
+                                <span class="page"/>
+                            </li>
+                            <li class="list-inline-item">/</li>
+                            <li class="list-inline-item">
+                                <span class="topage"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
