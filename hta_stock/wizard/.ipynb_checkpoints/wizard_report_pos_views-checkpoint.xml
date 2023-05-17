@@ -10,7 +10,7 @@
                         <field name="filter_pdv"/>
                     </group>
                     <group>
-                        <field name="product_id" widget="many2many_tags"/>
+                        <field name="product_id" domain="[('sale_ok', '=', True)]" widget="many2many_tags"/>
                     </group>
                     <group>
                         <field name="date_start"/>
