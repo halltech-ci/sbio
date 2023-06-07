@@ -9,7 +9,7 @@
         </xpath>
           
           <field name="location_dest_id" position="after">
-                <field name="receipt_user" attrs="{'invisible': [('picking_type_code', '!=', 'internal')],'required': [('picking_type_code', '=', 'internal')], 'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="receipt_user" attrs="{'invisible': [('picking_type_code', '!=', 'internal')],'required': [('picking_type_code', '=', 'internal')], }"/>
           </field>
       
       </field>
