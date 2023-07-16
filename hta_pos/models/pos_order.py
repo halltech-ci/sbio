@@ -32,15 +32,19 @@ class HtaPos(models.Model):
 
     date_delivery = fields.Datetime()
     order_date = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_default_date_create')
-    customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True)
-    delivery_phone = fields.Char(related='delivery_person.phone', store=True)
-    date_order = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_compute_date_create',store=True)
+    customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True,tracking=1)
+    delivery_phone = fields.Char(related='delivery_person.phone', store=True,tracking=1)
+    date_order = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_compute_date_create',store=True,tracking=1)
     user_return = fields.Many2one(
         comodel_name="res.users",
-        string="Gestionnaire stock",
+        string="Gestionnaire stock",tracking=1
     )
     audit = fields.Selection([ ('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft', tracking=1)
     date_audit = fields.Datetime(string="Date d'audit",readonly=True, audit={'draft': [('readonly', False)]}, tracking=1)
+    audit_valideur = fields.Many2one(
+        comodel_name="res.users",
+        string="Valideur",tracking=1
+    )
     
     # @api.onchange('partner_id')
     # def _onchange_date_create(self):
@@ -154,7 +158,7 @@ class HtaPos(models.Model):
                     rs.write(line)
                     rs._onchange_amount_line_all()
                 order._onchange_amount_all()
-                order.write({'audit':'valide','date_audit': datetime.now()})
+                order.write({'audit':'valide','date_audit': datetime.now(),'audit_valideur':self.env.user})
             else:
                 for rs in order_lines:
                     if 'ivraison' in str(rs.full_product_name):
@@ -166,7 +170,7 @@ class HtaPos(models.Model):
                         rs.write(line)
                     rs._onchange_amount_line_all()
                 order._onchange_amount_all()
-                order.write({'audit':'valide','date_audit': datetime.now()})
+                order.write({'audit':'valide','date_audit': datetime.now(),'audit_valideur':self.env.user})
                 
                 
             
@@ -176,7 +180,7 @@ class HtaPos(models.Model):
             order = self.env[self._context.get('active_model')].browse(record)
             order_lines = order.lines
             if order.state != 'draft' or order.state != 'return':
-                order.write({'audit':'no_valide', 'date_audit': datetime.now()})
+                order.write({'audit':'no_valide', 'date_audit': datetime.now(),'audit_valideur':self.env.user})
     
     
     @api.model

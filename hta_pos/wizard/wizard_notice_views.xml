@@ -1,0 +1,40 @@
+<odoo>
+    <record id="notice_wizard" model="ir.ui.view" >
+        <field name="name">Ticket Notice</field>
+        <field name="model">report.notice.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Notice">
+                <!-- <script type="text/javascript" src="/hta_pos/static/src/js/widget_print.js"/> -->
+                <group>
+                    <group>
+                        <field name="product_id" domain="[('sale_ok','=',True)]" widget="many2many_tags" />
+                    </group>
+                    
+                </group>
+                <footer>
+                    <button name="get_report" string="Print" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    
+        <record id="action_notice_report_wizard" model="ir.actions.act_window">
+            <field name="name">Notice</field>
+            <field name="res_model">report.notice.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+    </record>
+
+
+
+    <menuitem 
+        id="menu_notice_wizard"
+        action="action_notice_report_wizard"
+        name = "Imprimer Notice"
+        sequence="80"
+        parent="point_of_sale.menu_point_of_sale"
+        />
+</odoo>
