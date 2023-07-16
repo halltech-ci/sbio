@@ -43,14 +43,19 @@
         'wizard/assign_commands.xml',
         'wizard/wizard_report_pos_views.xml',
         'wizard/audit_validate.xml',
+        'wizard/wizard_notice_views.xml',
         
         # Report
         'report/report_customer_list_by_product_views.xml',
         'report/report_pos_print_order_delivery.xml',
         'report/report_customer_sale_views.xml',
+        'report/report_notice_views.xml',
         
     ],
     'assets': {
+        'web.assets_backend': [
+            'hta_pos/static/src/js/widget_print.js',
+        ],
         'web.assets_qweb': [
             'hta_pos/static/src/xml/pos_refund.xml',
         ],

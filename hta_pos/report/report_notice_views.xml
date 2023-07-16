@@ -1,0 +1,63 @@
+<odoo>
+    <record id="paperformat_ticket_notice" model="report.paperformat">
+        <field name="name">French Bank Check</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">80</field>
+        <field name="page_width">180</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">3</field>
+        <field name="dpi">110</field>
+    </record>
+    <record id="report_ticket_notice" model="ir.actions.report">
+        <field name="name">Ticket Notice</field>
+        <field name="model">report.notice.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hta_pos.report_pos_notice_product</field>
+        <field name="report_file">hta_pos.report_pos_notice_product</field>
+    
+        <field name="print_report_name">Ticket Notice</field>
+        <field name="binding_model_id" ref="model_report_notice_wizard"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="hta_pos.paperformat_ticket_notice" />
+    </record>
+
+    <template id="report_pos_notice_product">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+			<div class="pos-receipt">
+				<br/>
+				<div class="pos-receipt-contact">
+
+					<br/>
+			
+				</div>
+				<br /><br />
+				<div class='orderlines' style="margin-top:100px">
+<!--                     <span t-esc="listproduit"/> -->
+                    <t t-foreach="listproduit" t-as="product">
+                        <div>
+                            <t t-esc="product['name']"/>
+                            <br/>
+<!--                             <span t-esc="' - '"/> -->
+                            <t t-esc="product['notice']"/>
+                            <br/>
+                    <div>--------------------------------</div>
+                            
+                        </div>
+                    </t>
+                    <br/>
+            </div>
+
+			</div>
+	
+            </t>
+            </t>
+    </template>
+
+</odoo>
