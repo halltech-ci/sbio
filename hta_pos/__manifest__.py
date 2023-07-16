@@ -54,7 +54,7 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'hta_pos/static/src/js/widget_print.js',
+            # 'hta_pos/static/src/js/widget_print.js',
         ],
         'web.assets_qweb': [
             'hta_pos/static/src/xml/pos_refund.xml',

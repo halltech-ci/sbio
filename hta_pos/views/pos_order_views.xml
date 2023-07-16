@@ -23,10 +23,11 @@
             <field name="priority" eval="15"/>
             <field name="arch" type="xml">
                 <search string="Search expense">
+                    <field name="customer_Phone" string="Numéro Client"/>
+                    <field name="partner_id" string="Client"/>
                     <field name="name" string="Reference Commande"/>
                     <field name="create_date" string="Date commande"/>
-                    <field name="partner_id" string="Client"/>
-                    <field name="customer_Phone" string="Numéro Client"/>
+             
                     <field name="user_return" string="Gestionnaire stock"/>
                     <field name="pos_reference" string="Numero du reçu"/>
                     <field name="delivery_person" string="Livreur"/>
@@ -65,6 +66,7 @@
                     decoration-success="state == 'paid' or state == 'done' or state == 'invoiced'"/>
                 <field name="audit" widget="badge" decoration-warning="audit == 'draft'" decoration-danger="audit == 'no_valide'" decoration-success="audit == 'valide'"/>
                 <field name="date_audit" string="Date Audit" groups="account.group_account_manager"/>
+                <field name="audit_valideur" string="Valideur" groups="account.group_account_manager"/>
 
             </tree>
           </xpath>
@@ -77,6 +79,7 @@
                 <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="account.group_account_manager"/>
                 
                 <button string="AUDIT AVEC DATE" type="object" name="audit_order_wizard" groups="account.group_account_manager"/>
+                
 <!--                 <button string="GET AUDIT API" type="object" name="api_pos_get"/> -->
 
                 <button string="Retour" type="object" name="return_order_" groups="account.group_account_manager"/>
