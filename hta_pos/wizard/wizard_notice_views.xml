@@ -8,7 +8,7 @@
                 <!-- <script type="text/javascript" src="/hta_pos/static/src/js/widget_print.js"/> -->
                 <group>
                     <group>
-                        <field name="product_id" domain="[('sale_ok','=',True)]" widget="many2many_tags" />
+                        <field name="product_id" widget="many2many_tags" />
                     </group>
                     
                 </group>

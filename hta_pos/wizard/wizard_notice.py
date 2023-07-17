@@ -6,7 +6,7 @@ class AccountAnalyticReportWizard(models.TransientModel):
     _name = 'report.notice.wizard'
     _description = "Notice"
     
-    product_id = fields.Many2many('product.product', string="Article")
+    product_id = fields.Many2many('product.notice', string="Article")
     
 
     def get_report(self):
@@ -15,13 +15,13 @@ class AccountAnalyticReportWizard(models.TransientModel):
             'form': self.read()[0]
         }
         selectproduct = data['form']['product_id']
-        listproduit = self.env['product.product'].search([('id','in',selectproduct)])
+        listproduit = self.env['product.notice'].search([('id','in',selectproduct)])
         liste_de_produit = []
         for item in listproduit:
             liste_de_produit.append({
-                'name':item.partner_ref,
-                'price':item.lst_price,
-                'notice':item.notice_fields,
+                'name':item.name,
+                'price':item.price,
+                'notice':item.notice,
             })
         data["listproduit"] = liste_de_produit
         print("Data ==>>",data)
