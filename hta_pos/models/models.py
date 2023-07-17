@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
 
-# from odoo import models, fields, api
+from odoo import models, fields, api
 
 
-# class hta_pos(models.Model):
-#     _name = 'hta_pos.hta_pos'
-#     _description = 'hta_pos.hta_pos'
+class Notice(models.Model):
+    _name = 'product.notice'
+    _inherit = "mail.thread"
+    _description = 'Notice'
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+    name = fields.Char(required=True, tracking=True,string="Produit")
+    description = fields.Html("Description", help="Mettre les produits du kit",tracking=True)
+    price = fields.Float(tracking=True,string="Prix")
+    notice = fields.Text(required=True, tracking=True,string="Notice")
+
+
