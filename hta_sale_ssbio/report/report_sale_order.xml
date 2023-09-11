@@ -22,6 +22,10 @@
         <xpath expr="//p[@t-if='not is_html_empty(doc.payment_term_id.note)']" position="replace">
             <p t-if="not is_html_empty(doc.payment_term_id.note)">
                 <span>Condition de paiement:  </span>
+<!--                 <p>
+                    Avance 300.000 FCFA <br />
+                    Reste à payer 420.000 FCFA
+                </p> -->
                 <span t-field="doc.payment_term_id.name"/>
             </p>
         </xpath>
