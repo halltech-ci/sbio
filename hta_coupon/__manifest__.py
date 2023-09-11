@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['point_of_sale'],
+    'depends': ['point_of_sale', "coupon",],
 
     # always loaded
     'data': [
@@ -33,4 +33,5 @@
     'demo': [
         'demo/demo.xml',
     ],
+    "license": "LGPL-3",
 }
