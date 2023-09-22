@@ -6,3 +6,4 @@ access_report_pos_report_customer_sale,access_report_pos_report_wizard_sale_cust
 access_audit_wizard,wizard_audit.date,model_pos_audit_commands_wizard,base.group_user,1,1,1,1
 acces_wizard_notice,notice_wizard,model_report_notice_wizard,base.group_user,1,1,1,0
 access_notice,product_notice,model_product_notice,base.group_user,1,1,1,0
+access_product_free_wizard,product_free_wizard,model_report_product_free,base.group_user,1,1,1,0
