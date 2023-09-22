@@ -6,3 +6,4 @@ from . import wizard_report_pos
 from . import wizard_report_customer_sale
 from . import audit_validate
 from . import wizard_notice
+from . import wizard_product_free

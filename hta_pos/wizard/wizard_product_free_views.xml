@@ -1,0 +1,43 @@
+<odoo>
+    <record id="product_free" model="ir.ui.view" >
+        <field name="name">Produit offert</field>
+        <field name="model">report.product.free</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Produit gratuit">
+                <!-- <script type="text/javascript" src="/hta_pos/static/src/js/widget_print.js"/> -->
+                <group>
+                    <group>
+                        <field name="date_start"/>
+                    </group>
+                    <group>
+                        <field name="date_end"/>
+                    </group>
+                    
+                </group>
+                <footer>
+                    <button name="get_report" string="Excel" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    
+        <record id="action_product_free_wizard" model="ir.actions.act_window">
+            <field name="name">Produit</field>
+            <field name="res_model">report.product.free</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+    </record>
+
+
+
+    <menuitem 
+        id="menu_notice_wizard"
+        action="action_product_free_wizard"
+        name = "Produit offert"
+        sequence="80"
+        parent="point_of_sale.menu_point_config_product"
+        />
+</odoo>

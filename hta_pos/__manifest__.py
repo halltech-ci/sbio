@@ -45,12 +45,14 @@
         'wizard/wizard_report_pos_views.xml',
         'wizard/audit_validate.xml',
         'wizard/wizard_notice_views.xml',
+        'wizard/wizard_product_free_views.xml',
         
         # Report
         'report/report_customer_list_by_product_views.xml',
         'report/report_pos_print_order_delivery.xml',
         'report/report_customer_sale_views.xml',
         'report/report_notice_views.xml',
+        'report/report_product_free_views.xml',
         
     ],
     'assets': {
