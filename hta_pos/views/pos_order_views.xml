@@ -74,7 +74,7 @@
             <header>
                 <button string="Assigner la commande" type="object" name="assign_command_wizard" />
                 <button string="Passer au paiement" type="object" name="payment_wizard_order" />
-<!--                 <button string="Facturé" type="object" name="invoice_order_"/> -->
+                <button string="Actualisé" type="object" name="order_actualise"/>
                 <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="account.group_account_manager"/>
                 <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="account.group_account_manager"/>
                 
