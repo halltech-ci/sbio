@@ -25,6 +25,17 @@ class AccountAnalyticReportWizard(models.TransientModel):
             listproduit = self.env['pos.order.line'].search([('order_id.state','!=','return'),('create_date','>=',date_start),('create_date','<=',date_end),('full_product_name','not ilike','ivraison'),('price_subtotal','=',0.0),('full_product_name','not ilike','remise')])
         else:
             listproduit = self.env['pos.order.line'].search([('order_id.state','!=','return'),('full_product_name','not ilike','ivraison'),('price_subtotal','=',0.0),('full_product_name','not ilike','remise')])
+        
+        for item in listproduit:
+            liste_de_produit.append({
+                'name':item.full_product_name,
+                'quantite':item.qty,
+                'partner':item.order_id.partner_id.name,
+                'phone':item.order_id.partner_id.phone,
+                'commercial':item.order_id.user_id.name,
+                'date':item.order_id.order_date,
+            })
+        listproduit = self.env['pos.order.line'].search([('order_id.state','!=','return'),('full_product_name','not ilike','ivraison'),('order_id.amount_total','=',0.0),('full_product_name','not ilike','remise'),('create_date','>=',date_start),('create_date','<=',date_end)])
         for item in listproduit:
             liste_de_produit.append({
                 'name':item.full_product_name,
