@@ -34,7 +34,7 @@
 
 
     <menuitem 
-        id="menu_notice_wizard"
+        id="menu_product_free_wizard"
         action="action_product_free_wizard"
         name = "Produit offert"
         sequence="80"
