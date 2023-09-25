@@ -33,11 +33,11 @@ class PosOrderReturn(models.Model):
         if lines:
             for line in lines:
                 new_vals = {
-                        'price_unit':0,
-                        'price_subtotal':0,
+                        'price_unit':line.price_subtotal_incl/line.qty,
+                        'price_subtotal':line.price_subtotal_incl,
                 }
                 line.write(new_vals)
-        self.write({'amount_total':0,})
+        
         return True
     
 
@@ -120,9 +120,12 @@ class PosOrderReturn(models.Model):
     def buton_retunr_order(self):
         retour_stock = self.retunr_stock_picking()
         if retour_stock:
-            self.order_lines_writting()
-            self.state = "return"
+            # self.order_lines_writting()
+            self.action_pos_order_cancel()
         return retour_stock
+        
+    def buton_retunr_facture(self):
+            self.state = "return"
         
     def buuton_state_new(self):
         lines = self.env['pos.order.line'].search([('order_id', '=', self.id)])
