@@ -40,7 +40,6 @@ class PosOrderReturn(models.Model):
         
         return True
     
-
     def display_form_return_stock(self, picking_id):  
         view = self.env.ref('stock.act_stock_return_picking',False).id
         wiz = self.env['stock.return.picking'].create({'picking_id':picking_id.id})
