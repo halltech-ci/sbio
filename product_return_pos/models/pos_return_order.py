@@ -118,12 +118,12 @@ class PosOrderReturn(models.Model):
 
     
     def buton_retunr_order(self):
-        retour_stock = self.retunr_stock_picking()
-        if retour_stock:
-            
-            self.order_lines_writting()
-            self.state = "return"
-        return retour_stock
+        for res in self:
+            retour = res.retunr_stock_picking()
+            if retour: 
+                res.order_lines_writting()
+                res.state = "return"
+        return retour
         
     def buuton_state_new(self):
         lines = self.env['pos.order.line'].search([('order_id', '=', self.id)])
