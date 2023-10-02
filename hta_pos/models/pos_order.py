@@ -198,8 +198,9 @@ class HtaPos(models.Model):
         init_data = self.read()[0]
         for record in self._context.get('active_ids'):
             order = self.env[self._context.get('active_model')].browse(record)
+            order.retunr_stock_picking()
             order_lines = order.lines
-            if order.state in ['return','cancel']:
+            if order.state in ['draft','delivery','return','cancel']:
                 for rs in order_lines:
                     line = {
                             "price_unit": 0,
@@ -216,7 +217,9 @@ class HtaPos(models.Model):
                     })
                 order.write({
                         'is_partial' : False,
+                        'state':'return'
                         })
+                
         return True
     
     @api.model
