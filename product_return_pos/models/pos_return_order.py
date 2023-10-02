@@ -33,6 +33,7 @@ class PosOrderReturn(models.Model):
         if lines:
             for line in lines:
                 new_vals = {
+                    
                         'price_unit':0,
                         'price_subtotal':0,
                 }
