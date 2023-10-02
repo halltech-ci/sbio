@@ -193,7 +193,31 @@ class HtaPos(models.Model):
             order_lines = order.lines
             if order.state != 'draft' or order.state != 'return':
                 order.write({'audit':'no_valide', 'date_audit': datetime.now(),'audit_valideur':self.env.user})
-    
+
+    def return_order_pos(self):
+        init_data = self.read()[0]
+        for record in self._context.get('active_ids'):
+            order = self.env[self._context.get('active_model')].browse(record)
+            order_lines = order.lines
+            if order.state in ['return','cancel']:
+                for rs in order_lines:
+                    line = {
+                            "price_unit": 0,
+                            "price_subtotal": 0,
+                            'price_subtotal_incl': 0,
+                            }
+                    rs.write(line)
+                    rs._onchange_amount_line_all()
+                order._onchange_amount_all()
+                order.add_payment({
+                    'pos_order_id': order.id,
+                    'amount': order._get_rounded_amount(order.amount_total),
+                    'payment_method_id': order.session_id.config_id.payment_method_ids[0].id,
+                    })
+                order.write({
+                        'is_partial' : False,
+                        })
+        return True
     
     @api.model
     def _get_available_products(self):

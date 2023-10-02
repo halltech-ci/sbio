@@ -82,7 +82,7 @@
                 
 <!--                 <button string="GET AUDIT API" type="object" name="api_pos_get"/> -->
 
-                <button string="Retour" type="object" name="return_order_" groups="account.group_account_manager"/>
+                <button string="Retour" type="object" name="return_order_pos" groups="account.group_account_manager"/>
             </header>
           </xpath>
       </field>
