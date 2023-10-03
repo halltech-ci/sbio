@@ -23,11 +23,10 @@
             <field name="priority" eval="15"/>
             <field name="arch" type="xml">
                 <search string="Search expense">
-                    <field name="name" string="Nom"/>
+                    <field name="customer_Phone" string="Numero Client"/>
                     <field name="partner_id" string="Client"/>
                     <field name="name" string="Reference Commande"/>
                     <field name="create_date" string="Date commande"/>
-             
                     <field name="user_return" string="Gestionnaire stock"/>
                     <field name="pos_reference" string="Numero du reçu"/>
                     <field name="delivery_person" string="Livreur"/>
