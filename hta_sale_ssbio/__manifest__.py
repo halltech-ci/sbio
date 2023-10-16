@@ -29,7 +29,7 @@
         #'security/stock_security.xml',
         'views/views.xml',
         'views/templates.xml',
-        "views/pos_order_views.xml",
+        #"views/pos_order_views.xml",
         'report/report_sale_order.xml',
         
         #views
