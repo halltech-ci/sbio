@@ -7,6 +7,7 @@
           <field name="arch" type="xml">
               <field name="state" position="after">
                   <field name="payment_status" string="Payement" optional="show"/>
+                  <field name="amount_discount" string="Remise" optional="show"/>
                   <field name="amount_due" string="Créance" optional="show"/>
               </field>
           </field>
