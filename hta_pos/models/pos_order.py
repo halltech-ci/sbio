@@ -10,10 +10,7 @@ class HtaPos(models.Model):
     _inherit = ['pos.order', 'mail.thread']
     _order = "order_date desc, id desc,name desc"
     
-#     def _default_date_create(self):
-#         for order in self:
-#             order.date_order = order.create_date
-    
+
     def _default_date_create(self):
         for order in self:
             if order.create_date:
@@ -23,34 +20,32 @@ class HtaPos(models.Model):
             else:
                 order.order_date = datetime.now()
                 
-        
-
-    delivery_person = fields.Many2one(
-        comodel_name="res.partner",
-        string="Livreur",
-    )
-
+    delivery_person = fields.Many2one(comodel_name="res.partner", string="Livreur",)
     date_delivery = fields.Datetime()
     order_date = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_default_date_create')
     customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True,tracking=1)
     delivery_phone = fields.Char(related='delivery_person.phone', store=True,tracking=1)
     date_order = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_compute_date_create',store=True,tracking=1)
-    user_return = fields.Many2one(
-        comodel_name="res.users",
-        string="Gestionnaire stock",tracking=1
-    )
-    audit = fields.Selection([ ('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft', tracking=1)
+    user_return = fields.Many2one("res.users", string="Gestionnaire stock",tracking=1)
+    audit = fields.Selection([('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft', tracking=1)
     date_audit = fields.Datetime(string="Date d'audit",readonly=True, audit={'draft': [('readonly', False)]}, tracking=1)
-    audit_valideur = fields.Many2one(
-        comodel_name="res.users",
-        string="Valideur",tracking=1
-    )
-    
-    # @api.onchange('partner_id')
-    # def _onchange_date_create(self):
-    #     now = datetime.now()
-    #     self.date_order = now
-    
+    audit_valideur = fields.Many2one("res.users", string="Valideur",tracking=1)
+    payment_status = fields.Selection(selection=[("paid", "Payé"), ("none", "Non payé"), ("partial", "Partiel")], string="Status payement", compute="_compute_payment_status",)
+    amount_due = fields.Float(compute="_compute_amount_due", string="Créance")
+
+    @api.depends("amount_paid", "amount_total")
+    def _compute_payment_status(self):
+        for rec in self:
+            rec.payment_status = "none"
+            if rec.amount_paid == rec.amount_total:
+                rec.payment_status = "paid"
+            if rec.amount_paid > 0 and rec.amount_paid < rec.amount_total:
+                rec.payment_status = "partial" 
+
+    @api.depends("amount_paid", "amount_total")
+    def _compute_amount_due(self):
+        for rec in self:
+            rec.amount_due = rec.amount_total - rec.amount_paid
 
     def _compute_date_create(self):
         for order in self:
