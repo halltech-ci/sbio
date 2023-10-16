@@ -38,7 +38,7 @@ class PosOrderReturn(models.Model):
                         'price_subtotal':0,
                 }
                 line.write(new_vals)
-        self.write({'amount_total':0,})
+        
         return True
     
     def display_form_return_stock(self, picking_id):  
@@ -124,6 +124,9 @@ class PosOrderReturn(models.Model):
                 res.order_lines_writting()
                 res.state = "return"
         return retour
+        
+    def buton_retunr_facture(self):
+            self.state = "return"
         
     def buuton_state_new(self):
         lines = self.env['pos.order.line'].search([('order_id', '=', self.id)])

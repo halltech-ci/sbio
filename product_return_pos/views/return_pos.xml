@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
             <field name="arch" type="xml">
                 <field name="state" position="replace">
-                    <field name="state" widget="statusbar" statusbar_visible="draft,delivery,return,paid,done,cancel" readonly="1"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,delivery,paid,done,cancel,return" readonly="1"/>
                 </field>
                 <button name="refund" position="replace">
                     <button name="refund" string="Return Products" type="object" attrs="{'invisible':['|', ('state','in',['draft','return','delivery']), ('has_refundable_lines', '=', False)]}" />
@@ -18,6 +18,13 @@
                     class="oe_highlight"
                     attrs="{'invisible': [('state','not in',['draft','delivery'])]}"
                     />
+                    <!-- <button name="action_pos_order_cancel"
+                    string="Annuler"
+                    type="object"
+                    groups="account.group_account_manager"      
+                    class="oe_highlight"
+                    attrs="{'invisible': [('state','not in',['invoiced','return'])]}"
+                    /> -->
                     <button name="buuton_state_new"
                     string="Nouveau"
                     type="object"
