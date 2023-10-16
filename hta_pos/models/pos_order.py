@@ -10,10 +10,7 @@ class HtaPos(models.Model):
     _inherit = ['pos.order', 'mail.thread']
     _order = "order_date desc, id desc,name desc"
     
-#     def _default_date_create(self):
-#         for order in self:
-#             order.date_order = order.create_date
-    
+
     def _default_date_create(self):
         for order in self:
             if order.create_date:
@@ -23,34 +20,42 @@ class HtaPos(models.Model):
             else:
                 order.order_date = datetime.now()
                 
-        
-
-    delivery_person = fields.Many2one(
-        comodel_name="res.partner",
-        string="Livreur",
-    )
-
+    delivery_person = fields.Many2one(comodel_name="res.partner", string="Livreur",)
     date_delivery = fields.Datetime()
     order_date = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_default_date_create')
     customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True,tracking=1)
     delivery_phone = fields.Char(related='delivery_person.phone', store=True,tracking=1)
     date_order = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_compute_date_create',store=True,tracking=1)
-    user_return = fields.Many2one(
-        comodel_name="res.users",
-        string="Gestionnaire stock",tracking=1
-    )
-    audit = fields.Selection([ ('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft', tracking=1)
+    user_return = fields.Many2one("res.users", string="Gestionnaire stock",tracking=1)
+    audit = fields.Selection([('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft', tracking=1)
     date_audit = fields.Datetime(string="Date d'audit",readonly=True, audit={'draft': [('readonly', False)]}, tracking=1)
-    audit_valideur = fields.Many2one(
-        comodel_name="res.users",
-        string="Valideur",tracking=1
-    )
+    audit_valideur = fields.Many2one("res.users", string="Valideur",tracking=1)
+    payment_status = fields.Selection(selection=[("paid", "Payé"), ("none", "Non payé"), ("partial", "Partiel")], string="Status payement", compute="_compute_payment_status",)
+    amount_due = fields.Float(compute="_compute_amount_due", string="Créance")
+    amount_discount = fields.Float(string="Remise", compute="_compute_amount_discount")
+    state = fields.Selection([('draft', 'A livrer'), ('cancel', 'Cancelled'), ('paid', 'Paid'), ('done', 'Posted'), ('invoiced', 'Invoiced')], 'Status', readonly=True, copy=False, default='draft', index=True)
+
+    @api.depends("lines.discount")
+    def _compute_amount_discount(self):
+        for rec in self:
+            rec.amount_discount = sum([line.discount for line in rec.lines])
     
-    # @api.onchange('partner_id')
-    # def _onchange_date_create(self):
-    #     now = datetime.now()
-    #     self.date_order = now
-    
+
+    @api.depends("amount_paid", "amount_total")
+    def _compute_payment_status(self):
+        for rec in self:
+            rec.payment_status = "none"
+            if rec.amount_paid == rec.amount_total:
+                rec.payment_status = "paid"
+            if rec.amount_paid > 0 and rec.amount_paid < rec.amount_total:
+                rec.payment_status = "partial" 
+            if all([int(line.discount) == 100 for line in rec.lines]):
+                rec.payment_status = "gift"
+
+    @api.depends("amount_paid", "amount_total")
+    def _compute_amount_due(self):
+        for rec in self:
+            rec.amount_due = rec.amount_total - rec.amount_paid
 
     def _compute_date_create(self):
         for order in self:
@@ -236,11 +241,7 @@ class HtaPos(models.Model):
             id_pos = order.id
             info_pos = self.sync_pos(id_pos)
             if info_pos:
-                order.write({'audit':info_pos['audit']})
-                
-            # if order.state != 'draft' or order.state != 'return':
-            #     order.write({'audit':'no_valide'})
-    
+                order.write({'audit':info_pos['audit']})  
     
     
     def sync_pos(self,id_partner_guintan):
@@ -249,46 +250,7 @@ class HtaPos(models.Model):
         url = 'https://ssbio-erp-stage15-7237299.dev.odoo.com/api/v1/odoo-get-pos/'+url_id_partner
         response = requests.get(url, headers={
                         'x-api-key': 'NfeEIKnpARl3MMgEenwO1gIWCdR4ITDKIAQF9YzErMKSOH1OKDXf2A'})
-        
         data = response.json()
         
         return data
         
-    # @api.model
-    # def custom_button(self):
-    #     """Opens the popup to select a product."""
-    #     return {
-    #         'name': _('Select Product'),
-    #         'type': 'ir.actions.act_window',
-    #         'res_model': 'pos.custom.popup',
-    #         'view_mode': 'form',
-    #         'target': 'new',
-    #     }
-# class PosCustomPopup(models.TransientModel):
-#     _name = 'pos.custom.popup'
-    
-#     product_id = fields.Selection(selection='_get_available_products', string='Product', required=True)
-    
-#     def print_selected_product(self):
-#         """Prints the name of the selected product."""
-#         PosOrder._print_selected_product(int(self.product_id))
-
-# class AssignPos(models.Model):
-#     _name = 'assign.commands'
-#     _description = "Assign Commande to Delivery Person"
-#     _inherit = ["mail.thread", "mail.activity.mixin"]
-#     _order = "id desc"
-
-#     delivery_person = fields.Many2one(
-#         comodel_name="res.partner",
-#         string="Delivery Person",
-#     )
-#     purchase_lines = fields.Many2many(
-#         comodel_name="pos.order",
-#         string="Commands",
-#         readonly=True,
-#         copy=False,
-#     )
-#     date_delivery = fields.Datetime()
-
-
