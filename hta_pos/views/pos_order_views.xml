@@ -103,9 +103,9 @@
           <field name="delivery_person" position="after">
                 <field name="delivery_phone" string="Telephone Livreur"/>
           </field>
-          <field name="date_order" position="replace">
+          <!--<field name="date_order" position="replace">
                 <field name="order_date" string="Date"/>
-          </field>
+          </field>-->
       </field>
     </record>
   </data>

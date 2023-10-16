@@ -8,21 +8,12 @@ import json
 class HtaPos(models.Model):
     _name = 'pos.order'
     _inherit = ['pos.order', 'mail.thread']
-    _order = "order_date desc, id desc,name desc"
+    _order = "date_order desc, id desc,name desc"
     
-
-    def _default_date_create(self):
-        for order in self:
-            if order.create_date:
-                order.order_date = order.create_date
-            elif order.date_order:
-                order.order_date = order.date_order
-            else:
-                order.order_date = datetime.now()
-                
+            
     delivery_person = fields.Many2one(comodel_name="res.partner", string="Livreur",)
     date_delivery = fields.Datetime()
-    order_date = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_default_date_create')
+    #order_date = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_default_date_create')
     customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True,tracking=1)
     delivery_phone = fields.Char(related='delivery_person.phone', store=True,tracking=1)
     date_order = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_compute_date_create',store=True,tracking=1)
@@ -57,15 +48,7 @@ class HtaPos(models.Model):
         for rec in self:
             rec.amount_due = rec.amount_total - rec.amount_paid
 
-    def _compute_date_create(self):
-        for order in self:
-            if order.create_date:
-                order.date_order = order.create_date
-            elif order.order_date:
-                order.date_order = order.order_date
-            else:
-                order.date_order = datetime.now()
-            
+        
     def assign_command_wizard(self):
     	#view_id = self.env.ref('point_of_sale.assign_command_wizard').id
     	context = self._context.copy()
