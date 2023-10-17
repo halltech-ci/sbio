@@ -13,7 +13,7 @@ class HtaPos(models.Model):
             
     delivery_person = fields.Many2one(comodel_name="res.partner", string="Livreur",)
     date_delivery = fields.Datetime()
-    #order_date = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_default_date_create')
+    order_date = fields.Datetime(string="Date commande",readonly=True, index=True,)
     customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True,tracking=1)
     delivery_phone = fields.Char(related='delivery_person.phone', store=True,tracking=1)
     date_order = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_compute_date_create',store=True,tracking=1)
