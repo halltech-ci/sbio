@@ -12,7 +12,7 @@
           </field>-->
       <!--</field>
     </record>-->
-    <record model="ir.ui.view" id="pos_order_inherit_pos">
+    <record model="ir.ui.view" id="pos_order_inherit_pos_1">
       <field name="model">pos.order</field>
       <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
       <field name="arch" type="xml">
@@ -58,7 +58,7 @@
                     <field name="pos_reference" string="Numero du reçu"/>
                     <field name="delivery_person" string="Livreur"/>
                     <filter name="state" string="Facturé" domain="[('state','=','invoiced')]"/>
-                    <filter name="order_date" string="Date de la commande"/>
+                    <filter name="date_order" string="Date de la commande"/>
                     <group expand="1" string="Grouper par">
                         
                         <filter name="session_id" string="Session" context="{'group_by':'session_id'}"/>
