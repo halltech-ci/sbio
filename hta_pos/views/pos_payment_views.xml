@@ -1,0 +1,15 @@
+<odoo>
+    <record id="pos_payment_inherit_tree" model="ir.ui.view" >
+        <field name="name">Pos_payment_inherit_tree</field>
+        <field name="model">pos.payment</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_payment_tree"/>
+        <field name="arch" type="xml">
+            <field name="payment_date" position="replace">
+                <field name="pos_order_id" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="pos_reference" optional="show"/>
+                <field name="payment_date" optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>

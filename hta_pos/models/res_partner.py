@@ -8,7 +8,7 @@ class HtaPartner(models.Model):
     _inherit = 'res.partner'
 
     total_amount_pos = fields.Float(store=True,compute='_compute_total_pos', string="Montant Total")
-    phone = fields.Char(unique=True)
+    phone = fields.Char(string="Numéro de téléphone")
     
     @api.constrains('phone')
     def _check_phone_unique(self):
@@ -22,7 +22,6 @@ class HtaPartner(models.Model):
             if record.pos_order_ids:
                 for rs in record.pos_order_ids:
                     record.total_amount_pos = record.total_amount_pos + rs.amount_paid
-    
     
     
     

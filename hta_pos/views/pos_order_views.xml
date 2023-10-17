@@ -1,5 +1,6 @@
 <odoo>
   <data>
+      
     <record model="ir.ui.view" id="pos_order_inherit_pos">
       <field name="model">pos.order</field>
       <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
@@ -9,10 +10,10 @@
             <field name="date_delivery" readonly="True"/>  
           </xpath>
           <xpath expr="//sheet" position="after">
-                   <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers" />
-                    <field name="message_ids" widget="mail_thread" />
-                </div>
+               <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" />
+                <field name="message_ids" widget="mail_thread" />
+               </div>
           </xpath>
       </field>
     </record>
@@ -59,7 +60,6 @@
       <field name="model">pos.order</field>
       <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
       <field name="arch" type="xml">
-
           <xpath expr="//tree" position="replace">
             <tree string="POS Orders" create="0" sample="1" default_order="id desc" decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" decoration-warning="state == 'delivery'">
                 <field name="currency_id" invisible="1"/>
@@ -70,7 +70,6 @@
                 <field name="partner_id"/>
                  <field name="customer_Phone" string="Telephone Client"/>
                 <field name="delivery_person"/>
-<!--                 <field name="delivery_phone" string="Telephone Livreur"/> -->
                 <field string="Cashier" name="user_id" widget="many2one_avatar_user"/>
                 <field name="amount_total" sum="Amount total" widget="monetary" decoration-bf="1"/>
                 <field name="state" widget="badge" decoration-warning="state == 'delivery'" decoration-muted="state == 'return'"
@@ -78,10 +77,9 @@
                 <field name="audit" widget="badge" decoration-warning="audit == 'draft'" decoration-danger="audit == 'no_valide'" decoration-success="audit == 'valide'"/>
                 <field name="date_audit" string="Date Audit" groups="account.group_account_manager"/>
                 <field name="audit_valideur" string="Valideur" groups="account.group_account_manager"/>
-
             </tree>
           </xpath>
-                    <xpath expr="." position="inside">
+          <xpath expr="." position="inside">
             <header>
                 <button string="Assigner la commande" type="object" name="assign_command_wizard" />
                 <button string="Passer au paiement" type="object" name="payment_wizard_order" />
@@ -95,17 +93,16 @@
           </xpath>
       </field>
     </record> 
-      
-   <record model="ir.ui.view" id="pos_order_inherit_pos_stock_form">
+    <record model="ir.ui.view" id="pos_order_inherit_pos_stock_form">
       <field name="model">pos.order</field>
       <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
       <field name="arch" type="xml">  
           <field name="delivery_person" position="after">
                 <field name="delivery_phone" string="Telephone Livreur"/>
           </field>
-          <field name="date_order" position="replace">
+          <!--<field name="date_order" position="replace">
                 <field name="order_date" string="Date"/>
-          </field>
+          </field>-->
       </field>
     </record>
   </data>
