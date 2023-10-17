@@ -58,7 +58,7 @@
                     <field name="pos_reference" string="Numero du reçu"/>
                     <field name="delivery_person" string="Livreur"/>
                     <filter name="state" string="Facturé" domain="[('state','=','invoiced')]"/>
-                    <filter name="date_order" string="Date de la commande"/>
+                    <filter name="order_date" string="Date de la commande"/>
                     <group expand="1" string="Grouper par">
                         
                         <filter name="session_id" string="Session" context="{'group_by':'session_id'}"/>
