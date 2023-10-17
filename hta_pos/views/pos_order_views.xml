@@ -1,6 +1,17 @@
 <odoo>
   <data>
-      
+    <!--<record model="ir.ui.view" id="pos_order_inherit_pos_stock_form">
+      <field name="model">pos.order</field>
+      <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+      <field name="arch" type="xml">  
+          <field name="delivery_person" position="after">
+                <field name="delivery_phone" string="Telephone Livreur"/>
+          </field>-->
+          <!--<field name="date_order" position="replace">
+                <field name="order_date" string="Date"/>
+          </field>-->
+      <!--</field>
+    </record>-->
     <record model="ir.ui.view" id="pos_order_inherit_pos">
       <field name="model">pos.order</field>
       <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
@@ -9,6 +20,9 @@
             <field name="delivery_person" readonly="True"/>
             <field name="date_delivery" readonly="True"/>  
           </xpath>
+          <field name="delivery_person" position="after">
+                <field name="delivery_phone" string="Telephone Livreur"/>
+          </field>
           <xpath expr="//sheet" position="after">
                <div class="oe_chatter">
                 <field name="message_follower_ids" widget="mail_followers" />
@@ -93,17 +107,6 @@
           </xpath>
       </field>
     </record> 
-    <record model="ir.ui.view" id="pos_order_inherit_pos_stock_form">
-      <field name="model">pos.order</field>
-      <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
-      <field name="arch" type="xml">  
-          <field name="delivery_person" position="after">
-                <field name="delivery_phone" string="Telephone Livreur"/>
-          </field>
-          <!--<field name="date_order" position="replace">
-                <field name="order_date" string="Date"/>
-          </field>-->
-      </field>
-    </record>
+    
   </data>
 </odoo>
