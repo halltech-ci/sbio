@@ -8,29 +8,20 @@ import json
 class HtaPos(models.Model):
     _name = 'pos.order'
     _inherit = ['pos.order', 'mail.thread']
-    _order = "order_date desc, id desc,name desc"
+    _order = "date_order desc, id desc,name desc"
     
-
-    def _default_date_create(self):
-        for order in self:
-            if order.create_date:
-                order.order_date = order.create_date
-            elif order.date_order:
-                order.order_date = order.date_order
-            else:
-                order.order_date = datetime.now()
-                
+            
     delivery_person = fields.Many2one(comodel_name="res.partner", string="Livreur",)
     date_delivery = fields.Datetime()
-    order_date = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_default_date_create')
+    #order_date = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_default_date_create')
     customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True,tracking=1)
     delivery_phone = fields.Char(related='delivery_person.phone', store=True,tracking=1)
     date_order = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_compute_date_create',store=True,tracking=1)
     user_return = fields.Many2one("res.users", string="Gestionnaire stock",tracking=1)
     audit = fields.Selection([('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft', tracking=1)
-    date_audit = fields.Datetime(string="Date d'audit",readonly=True, audit={'draft': [('readonly', False)]}, tracking=1)
+    date_audit = fields.Datetime(string="Date d'audit",readonly=True, states={'draft': [('readonly', False)]}, tracking=1)
     audit_valideur = fields.Many2one("res.users", string="Valideur",tracking=1)
-    payment_status = fields.Selection(selection=[("paid", "Payé"), ("none", "Non payé"), ("partial", "Partiel")], string="Status payement", compute="_compute_payment_status",)
+    payment_status = fields.Selection(selection=[("paid", "Payé"), ("none", "Non payé"), ("partial", "Partiel"), ("gift", "Gratuit")], string="Status payement", compute="_compute_payment_status",)
     amount_due = fields.Float(compute="_compute_amount_due", string="Créance")
     amount_discount = fields.Float(string="Remise", compute="_compute_amount_discount")
     state = fields.Selection([('draft', 'A livrer'), ('cancel', 'Cancelled'), ('paid', 'Paid'), ('done', 'Posted'), ('invoiced', 'Invoiced')], 'Status', readonly=True, copy=False, default='draft', index=True)
@@ -57,15 +48,7 @@ class HtaPos(models.Model):
         for rec in self:
             rec.amount_due = rec.amount_total - rec.amount_paid
 
-    def _compute_date_create(self):
-        for order in self:
-            if order.create_date:
-                order.date_order = order.create_date
-            elif order.order_date:
-                order.date_order = order.order_date
-            else:
-                order.date_order = datetime.now()
-            
+        
     def assign_command_wizard(self):
     	#view_id = self.env.ref('point_of_sale.assign_command_wizard').id
     	context = self._context.copy()

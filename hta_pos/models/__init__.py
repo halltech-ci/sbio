@@ -6,3 +6,4 @@ from . import pos_order
 from . import stock_picking
 from . import produit
 from . import res_partner
+from . import pos_payment

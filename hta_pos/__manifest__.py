@@ -38,6 +38,7 @@
         'views/produit_views.xml',
         'views/res_partner_views.xml',
         'views/product_notice.xml',
+        "views/pos_payment_views.xml",
         # 'views/pos_views_pivot.xml',
         # WIZARD
         'wizard/wizard_report_customer_sale_views.xml',
