@@ -25,6 +25,7 @@ class HtaPos(models.Model):
     amount_due = fields.Float(compute="_compute_amount_due", string="Créance")
     amount_discount = fields.Float(string="Remise", compute="_compute_amount_discount")
     state = fields.Selection([('draft', 'A livrer'), ('cancel', 'Cancelled'), ('paid', 'Paid'), ('done', 'Posted'), ('invoiced', 'Invoiced')], 'Status', readonly=True, copy=False, default='draft', index=True)
+    delivery_status = fields.Selection([('draft', 'A livrer'), ('cancel', 'Cancelled'), ('paid', 'Paid'), ('invoiced', 'Payé livré')], 'Delivery Status', readonly=True, copy=False, default='draft', index=True)
 
     @api.depends("lines.discount")
     def _compute_amount_discount(self):
@@ -36,7 +37,7 @@ class HtaPos(models.Model):
     def _compute_payment_status(self):
         for rec in self:
             rec.payment_status = "none"
-            if rec.amount_paid == rec.amount_total:
+            if rec.amount_total != 0 and rec.amount_paid == rec.amount_total:
                 rec.payment_status = "paid"
             if rec.amount_paid > 0 and rec.amount_paid < rec.amount_total:
                 rec.payment_status = "partial" 
