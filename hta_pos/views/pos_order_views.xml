@@ -1,17 +1,5 @@
 <odoo>
   <data>
-    <!--<record model="ir.ui.view" id="pos_order_inherit_pos_stock_form">
-      <field name="model">pos.order</field>
-      <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
-      <field name="arch" type="xml">  
-          <field name="delivery_person" position="after">
-                <field name="delivery_phone" string="Telephone Livreur"/>
-          </field>-->
-          <!--<field name="date_order" position="replace">
-                <field name="order_date" string="Date"/>
-          </field>-->
-      <!--</field>
-    </record>-->
     <record model="ir.ui.view" id="pos_order_inherit_pos_1">
       <field name="model">pos.order</field>
       <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
@@ -82,7 +70,7 @@
                 <field name="create_date" string="Date commande"/>
                 <field name="pos_reference"/>
                 <field name="partner_id"/>
-                 <field name="customer_Phone" string="Telephone Client"/>
+                <field name="customer_Phone" string="Telephone Client"/>
                 <field name="delivery_person"/>
                 <field string="Cashier" name="user_id" widget="many2one_avatar_user"/>
                 <field name="amount_total" sum="Amount total" widget="monetary" decoration-bf="1"/>
@@ -95,12 +83,11 @@
           </xpath>
           <xpath expr="." position="inside">
             <header>
-                <button string="Assigner la commande" type="object" name="assign_command_wizard" />
-                <button string="Passer au paiement" type="object" name="payment_wizard_order" />
+                <button string="Assigner la commande" type="object" name="assign_command_wizard"/>
+                <button string="Passer au paiement" type="object" name="payment_wizard_order"/>
                 <!--<button string="Actualisé" type="object" name="order_actualise"/>-->
                 <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="account.group_account_manager"/>
                 <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="account.group_account_manager"/>
-                
                 <button string="AUDIT AVEC DATE" type="object" name="audit_order_wizard" groups="account.group_account_manager"/>
                 <button string="Retour" type="object" name="return_order_pos" groups="account.group_account_manager"/>
             </header>

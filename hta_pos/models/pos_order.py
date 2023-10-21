@@ -22,11 +22,12 @@ class HtaPos(models.Model):
     date_audit = fields.Datetime(string="Date d'audit",readonly=True, states={'draft': [('readonly', False)]}, tracking=1)
     audit_valideur = fields.Many2one("res.users", string="Valideur",tracking=1)
     payment_status = fields.Selection(selection=[("paid", "Payé"), ("none", "Non payé"), ("partial", "Partiel"), ("gift", "Gratuit")], string="Status payement", compute="_compute_payment_status",)
-    amount_due = fields.Float(compute="_compute_amount_due", string="Créance")
+    #amount_due = fields.Float(compute="_compute_amount_due", string="Créance")
     amount_discount = fields.Float(string="Remise", compute="_compute_amount_discount")
-    state = fields.Selection([('draft', 'A livrer'), ('cancel', 'Cancelled'), ('paid', 'Paid'), ('done', 'Posted'), ('invoiced', 'Invoiced')], 'Status', readonly=True, copy=False, default='draft', index=True)
+    state = fields.Selection([('draft', 'Brouillon'), ('cancel', 'Cancelled'), ('paid', 'Paid'), ('done', 'Posted'), ('invoiced', 'Invoiced')], 'Status', readonly=True, copy=False, default='draft', index=True)
     delivery_status = fields.Selection([('draft', 'A livrer'), ('cancel', 'Cancelled'), ('paid', 'Paid'), ('invoiced', 'Payé livré')], 'Delivery Status', readonly=True, copy=False, default='draft', index=True)
-
+    
+    
     @api.depends("lines.discount")
     def _compute_amount_discount(self):
         for rec in self:
@@ -43,11 +44,6 @@ class HtaPos(models.Model):
                 rec.payment_status = "partial" 
             if all([int(line.discount) == 100 for line in rec.lines]):
                 rec.payment_status = "gift"
-
-    @api.depends("amount_paid", "amount_total")
-    def _compute_amount_due(self):
-        for rec in self:
-            rec.amount_due = rec.amount_total - rec.amount_paid
 
         
     def assign_command_wizard(self):
