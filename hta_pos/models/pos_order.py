@@ -24,10 +24,26 @@ class HtaPos(models.Model):
     payment_status = fields.Selection(selection=[("paid", "Payé"), ("none", "Non payé"), ("partial", "Partiel"), ("gift", "Gratuit")], string="Status payement", compute="_compute_payment_status",)
     #amount_due = fields.Float(compute="_compute_amount_due", string="Créance")
     amount_discount = fields.Float(string="Remise", compute="_compute_amount_discount")
-    state = fields.Selection([('draft', 'Brouillon'), ('cancel', 'Cancelled'), ('paid', 'Paid'), ('done', 'Posted'), ('invoiced', 'Invoiced')], 'Status', readonly=True, copy=False, default='draft', index=True)
-    delivery_status = fields.Selection([('draft', 'A livrer'), ('cancel', 'Cancelled'), ('paid', 'Paid'), ('invoiced', 'Payé livré')], 'Delivery Status', readonly=True, copy=False, default='draft', index=True)
+    #state = fields.Selection(selection_add=[('delivered', 'Livré')])
+    delivery_status = fields.Selection([('draft', 'A livrer'), ('cancel', 'Cancelled'), ('delivery', 'En livraison'), ('invoiced', 'Payé livré'), ('direct', 'Direct')], 'Delivery Status', compute="_compute_delivery_status", readonly=True, copy=False, default='draft', index=True)
     
-    
+
+    @api.depends("state", "delivery_person")
+    def _compute_delivery_status(self):
+        for rec in self:
+            rec.delivery_status = "draft"
+            if rec.delivery_person and rec.state in ["paid", "invoiced", "post"]:
+                rec.delivery_status = "invoiced"
+            if rec.delivery_person and rec.state == "delivery":
+                rec.delivery_status = "delivery"
+            if not rec.delivery_person and rec.state in ["paid", "invoiced", "done"]:
+                rec.delivery_status = "direct"
+                
+
+    def _update_delivery_status(self):
+        if self.state == "paid":
+            pass
+
     @api.depends("lines.discount")
     def _compute_amount_discount(self):
         for rec in self:
@@ -38,13 +54,18 @@ class HtaPos(models.Model):
     def _compute_payment_status(self):
         for rec in self:
             rec.payment_status = "none"
-            if rec.amount_total != 0 and rec.amount_paid == rec.amount_total:
+            if rec.amount_total and rec.amount_paid == rec.amount_total:
                 rec.payment_status = "paid"
             if rec.amount_paid > 0 and rec.amount_paid < rec.amount_total:
                 rec.payment_status = "partial" 
             if all([int(line.discount) == 100 for line in rec.lines]):
                 rec.payment_status = "gift"
 
+    '''@api.depends("amount_paid", "amount_total")
+    def _compute_amount_due(self):
+        for rec in self:
+            rec.amount_due = rec.amount_total - rec.amount_paid
+    '''
         
     def assign_command_wizard(self):
     	#view_id = self.env.ref('point_of_sale.assign_command_wizard').id
