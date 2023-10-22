@@ -99,7 +99,7 @@ class PosSessionInherit(models.Model):
 		# E.g. `combine_receivables_bank` is derived from pos.payment records
 		# in the self.order_ids with group key of the `payment_method_id`
 		# field of the pos.payment record.
-		amounts = lambda: {'amount': 0.0, 'amount_converted': 0.0}
+		amounts = lambda: {'amount': 0.0, 'amount_converted': 0.0, "tax_amounts": 0.0,}
 		tax_amounts = lambda: {'amount': 0.0, 'amount_converted': 0.0, 'base_amount': 0.0, 'base_amount_converted': 0.0}
 		split_receivables_bank = defaultdict(amounts)
 		split_receivables_cash = defaultdict(amounts)
