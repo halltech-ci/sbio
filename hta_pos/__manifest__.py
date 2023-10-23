@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['bi_pos_pay_later', "product_return_pos"
+    'depends': ['bi_pos_pay_later', "product_return_pos",
                 'stock',
                 'report_xlsx',
                 'crm',
