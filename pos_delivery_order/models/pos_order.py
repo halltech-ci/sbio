@@ -28,7 +28,7 @@ class PosOrder(models.Model):
     def action_pos_order_paid(self):
         self.ensure_one()
         if not self.is_partial:
-            return super(PosOrderInherit, self).action_pos_order_paid()
+            return super(PosOrder, self).action_pos_order_paid()
         if self.is_partial:
             if self._is_pos_order_paid():
                 self.write({'state': 'paid'})
