@@ -81,14 +81,15 @@ class HtaPos(models.Model):
         }
     
     def payment_wizard_order(self):
-    	#view_id = self.env.ref('point_of_sale.payment_command_wizard').id
+    	view_id = self.env.ref('point_of_sale.view_pos_payment').id
     	context = self._context.copy()
     	return {
             'name':'Passer au paiement',
             'type':'ir.actions.act_window',
             'view_mode': 'form',
+            'view_id': view_id,
             #'view_type': 'form',
-            'res_model':'payment.after.delivery.wizard',
+            'res_model':'pos.make.payment',
             #'res_id':self.env.ref('stock.picking').id,
             'target':'new',
         }
