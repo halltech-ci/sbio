@@ -24,7 +24,7 @@ class HtaPos(models.Model):
     payment_status = fields.Selection(selection=[("paid", "Payé"), ("none", "Non payé"), ("partial", "Partiel"), ("gift", "Gratuit")], string="Status payement", compute="_compute_payment_status",)
     #amount_due = fields.Float(compute="_compute_amount_due", string="Créance")
     amount_discount = fields.Float(string="Remise", compute="_compute_amount_discount")
-    #state = fields.Selection(selection_add=[('delivered', 'Livré')])
+    state = fields.Selection(selection_add=[('delivery', 'Livré')])
     delivery_status = fields.Selection([('draft', 'A livrer'), ('cancel', 'Cancelled'), ('delivery', 'En livraison'), ('invoiced', 'Payé livré'), ('direct', 'Direct')], 'Delivery Status', compute="_compute_delivery_status", readonly=True, copy=False, default='draft', index=True)
     
 

@@ -29,7 +29,7 @@
     'maintainer': 'Cybrosys Techno Solutions',
     'images': ['static/description/banner.png'],
     'website': 'https://www.cybrosys.com',
-    'depends': ['point_of_sale','stock'],
+    'depends': ['hta_pos','stock'],
     'data': [
              #'views/return.xml',
             'views/return_pos.xml',
