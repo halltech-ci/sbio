@@ -63,7 +63,11 @@
                 <field string="Cashier" name="user_id" widget="many2one_avatar_user"/>
                 <field name="amount_total" sum="Amount total" widget="monetary" decoration-bf="1"/>
                 <field name="state" widget="badge" decoration-warning="state == 'delivery'" decoration-muted="state == 'return'"
-                    decoration-success="state == 'paid' or state == 'done' or state == 'invoiced'"/>
+                    decoration-success="state == 'paid' or state == 'done' or state == 'invoiced'" invisible="1"/>
+                <field name="delivery_status" widget="badge" decoration-warning="state == 'draft'" decoration-muted="state == 'cancel'" decoration-success="state == 'invoiced' or state == 'direct'"/>
+                <field name="payment_status" string="Payement" optional="show"/>
+                <field name="amount_discount" string="Remise" optional="show"/>
+                <field name="amount_due" string="Créance" optional="show"/>
                 <field name="audit" widget="badge" decoration-warning="audit == 'draft'" decoration-danger="audit == 'no_valide'" decoration-success="audit == 'valide'"/>
                 <field name="date_audit" string="Date Audit" groups="account.group_account_manager"/>
                 <field name="audit_valideur" string="Valideur" groups="account.group_account_manager"/>
@@ -82,17 +86,5 @@
           </xpath>
       </field>
     </record> 
-    <record id="pos_order_views_inherit_1" model="ir.ui.view">
-          <field name="name">pos order view</field>
-          <field name="model">pos.order</field>
-          <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
-          <field name="arch" type="xml">
-              <field name="state" position="after">
-                  <field name="payment_status" string="Payement" optional="show"/>
-                  <field name="amount_discount" string="Remise" optional="show"/>
-                  <field name="amount_due" string="Créance" optional="show"/>
-              </field>
-          </field>
-      </record>
   </data>
 </odoo>
