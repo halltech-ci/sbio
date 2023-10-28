@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="group_pos_audit_user" model="res.groups">
+            <field name="name">Audit des ventes</field>
+            <field name="comment">Auditer les ventes</field>
+        </record>
+        <record id="group_pos_delivery_manager" model="res.groups">
+            <field name="name">Gerer les livraisons</field>
+            <field name="comment">Gérer les livraisons</field>
+        </record>
+    </data>
+</odoo>
