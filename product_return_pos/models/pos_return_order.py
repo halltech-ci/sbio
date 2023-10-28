@@ -122,11 +122,11 @@ class PosOrderReturn(models.Model):
             retour = res.retunr_stock_picking()
             if retour: 
                 res.order_lines_writting()
-                res.state = "return"
+                res.delivery_status = "return"
         return retour
         
     def buton_retunr_facture(self):
-            self.state = "return"
+            self.delivery_status = "return"
         
     def buuton_state_new(self):
         lines = self.env['pos.order.line'].search([('order_id', '=', self.id)])
@@ -135,38 +135,5 @@ class PosOrderReturn(models.Model):
                 line._onchange_amount_line_all()
 
         self._onchange_amount_all()
-        self.state = "draft"
+        self.delivery_status = "draft"
     
-#     def _order_fields(self, ui_order):
-#         order = super(PosOrderReturn, self)._order_fields(ui_order)
-#         if 'return_ref' in ui_order.keys() and ui_order['return_ref']:
-#             order['return_ref'] = ui_order['return_ref']
-#             parent_order = self.search([('pos_reference', '=', ui_order['return_ref'])], limit=1)
-
-#             updated_lines = ui_order['lines']
-#             ret = 0
-#             qty = 0
-#             for uptd in updated_lines:
-#                 line = self.env['pos.order.line'].search([('order_id', '=', parent_order.id),
-#                                                            ('id', '=', uptd[2]['line_id'])], limit=1)
-#                 if line:
-#                     line.returned_qty += -(uptd[2]['qty'])
-#             for line in parent_order.lines:
-#                 qty += line.qty
-#                 ret += line.returned_qty
-#             if qty-ret == 0:
-#                 if parent_order:
-#                     parent_order.return_status = 'fully_return'
-#                     print(parent_order.return_status)
-#             elif ret:
-#                 if qty > ret:
-#                     if parent_order:
-#                         parent_order.return_status = 'partialy_return'
-
-#         return order
-
-
-# class PosOrderLineReturn(models.Model):
-#     _inherit = 'pos.order.line'
-
-#     returned_qty = fields.Integer(string='Returned Qty', readonly=True)
