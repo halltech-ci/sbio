@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['point_of_sale',
+    'depends': ['bi_pos_pay_later',
                 'stock',
                 'report_xlsx',
                 'crm',
@@ -30,6 +30,7 @@
 
     # always loaded
     'data': [
+        "security/pos_security.xml",
         'security/ir.model.access.csv',
         'views/payment_order.xml',
         'views/assign_commands_views.xml',

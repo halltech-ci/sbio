@@ -1,17 +1,5 @@
 <odoo>
   <data>
-    <!--<record model="ir.ui.view" id="pos_order_inherit_pos_stock_form">
-      <field name="model">pos.order</field>
-      <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
-      <field name="arch" type="xml">  
-          <field name="delivery_person" position="after">
-                <field name="delivery_phone" string="Telephone Livreur"/>
-          </field>-->
-          <!--<field name="date_order" position="replace">
-                <field name="order_date" string="Date"/>
-          </field>-->
-      <!--</field>
-    </record>-->
     <record model="ir.ui.view" id="pos_order_inherit_pos_1">
       <field name="model">pos.order</field>
       <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
@@ -31,18 +19,6 @@
           </xpath>
       </field>
     </record>
-      <record id="pos_order_views_inherit_1" model="ir.ui.view">
-          <field name="name">pos order view</field>
-          <field name="model">pos.order</field>
-          <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
-          <field name="arch" type="xml">
-              <field name="state" position="after">
-                  <field name="payment_status" string="Payement" optional="show"/>
-                  <field name="amount_discount" string="Remise" optional="show"/>
-                  <field name="amount_due" string="Créance" optional="show"/>
-              </field>
-          </field>
-      </record>
       
       <record id="view_pos_hta_filter" model="ir.ui.view">
             <field name="name">hta.pos.filter</field>
@@ -82,12 +58,16 @@
                 <field name="create_date" string="Date commande"/>
                 <field name="pos_reference"/>
                 <field name="partner_id"/>
-                 <field name="customer_Phone" string="Telephone Client"/>
+                <field name="customer_Phone" string="Telephone Client"/>
                 <field name="delivery_person"/>
                 <field string="Cashier" name="user_id" widget="many2one_avatar_user"/>
                 <field name="amount_total" sum="Amount total" widget="monetary" decoration-bf="1"/>
                 <field name="state" widget="badge" decoration-warning="state == 'delivery'" decoration-muted="state == 'return'"
-                    decoration-success="state == 'paid' or state == 'done' or state == 'invoiced'"/>
+                    decoration-success="state == 'paid' or state == 'done' or state == 'invoiced'" invisible="1"/>
+                <field name="delivery_status" widget="badge" decoration-warning="state == 'draft'" decoration-muted="state == 'cancel'" decoration-success="state == 'invoiced' or state == 'direct'"/>
+                <field name="payment_status" string="Payement" optional="show"/>
+                <field name="amount_discount" string="Remise" optional="show"/>
+                <field name="amount_due" string="Créance" optional="show"/>
                 <field name="audit" widget="badge" decoration-warning="audit == 'draft'" decoration-danger="audit == 'no_valide'" decoration-success="audit == 'valide'"/>
                 <field name="date_audit" string="Date Audit" groups="account.group_account_manager"/>
                 <field name="audit_valideur" string="Valideur" groups="account.group_account_manager"/>
@@ -95,18 +75,16 @@
           </xpath>
           <xpath expr="." position="inside">
             <header>
-                <button string="Assigner la commande" type="object" name="assign_command_wizard" />
-                <button string="Passer au paiement" type="object" name="payment_wizard_order" />
+                <button string="Assigner la commande" type="object" name="assign_command_wizard" groups="hta_pos.group_pos_delivery_manager"/>
+                <button string="Passer au paiement" type="object" name="payment_wizard_order" groups="hta_pos.group_pos_delivery_manager"/>
                 <!--<button string="Actualisé" type="object" name="order_actualise"/>-->
-                <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="account.group_account_manager"/>
-                <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="account.group_account_manager"/>
-                
-                <button string="AUDIT AVEC DATE" type="object" name="audit_order_wizard" groups="account.group_account_manager"/>
+                <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="hta_pos.group_pos_audit_user"/>
+                <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="hta_pos.group_pos_audit_user"/>
+                <button string="AUDIT AVEC DATE" type="object" name="audit_order_wizard" groups="hta_pos.group_pos_audit_user"/>
                 <button string="Retour" type="object" name="return_order_pos" groups="account.group_account_manager"/>
             </header>
           </xpath>
       </field>
     </record> 
-    
   </data>
 </odoo>
