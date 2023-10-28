@@ -75,12 +75,12 @@
           </xpath>
           <xpath expr="." position="inside">
             <header>
-                <button string="Assigner la commande" type="object" name="assign_command_wizard"/>
-                <button string="Passer au paiement" type="object" name="payment_wizard_order"/>
+                <button string="Assigner la commande" type="object" name="assign_command_wizard" groups="hta_pos.group_pos_delivery_manager"/>
+                <button string="Passer au paiement" type="object" name="payment_wizard_order" groups="hta_pos.group_pos_delivery_manager"/>
                 <!--<button string="Actualisé" type="object" name="order_actualise"/>-->
-                <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="account.group_account_manager"/>
-                <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="account.group_account_manager"/>
-                <button string="AUDIT AVEC DATE" type="object" name="audit_order_wizard" groups="account.group_account_manager"/>
+                <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="hta_pos.group_pos_audit_user"/>
+                <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="hta_pos.group_pos_audit_user"/>
+                <button string="AUDIT AVEC DATE" type="object" name="audit_order_wizard" groups="hta_pos.group_pos_audit_user"/>
                 <button string="Retour" type="object" name="return_order_pos" groups="account.group_account_manager"/>
             </header>
           </xpath>
