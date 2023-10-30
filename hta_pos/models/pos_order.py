@@ -192,7 +192,7 @@ class HtaPos(models.Model):
     	for record in self._context.get('active_ids'):
             order = self.env[self._context.get('active_model')].browse(record)
             order_lines = order.lines
-            if order.state != 'draft' or order.state != 'return':
+            if order.state != 'draft':
                 order.write({'audit':'no_valide', 'date_audit': datetime.now(),'audit_valideur':self.env.user})
 
     def return_order_pos(self):
@@ -201,7 +201,7 @@ class HtaPos(models.Model):
             order = self.env[self._context.get('active_model')].browse(record)
             order.retunr_stock_picking()
             order_lines = order.lines
-            if order.state in ['draft','delivery','return','cancel']:
+            if order.state in ['draft','cancel']:
                 for rs in order_lines:
                     line = {
                             "price_unit": 0,
@@ -218,7 +218,7 @@ class HtaPos(models.Model):
                     })
                 order.write({
                         'is_partial' : False,
-                        'state':'return'
+                        'delivery_status':'return'
                         })
                 
         return True
