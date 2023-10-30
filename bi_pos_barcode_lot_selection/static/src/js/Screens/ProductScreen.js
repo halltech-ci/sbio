@@ -156,14 +156,14 @@ odoo.define('bi_pos_barcode_lot_selection.productScreen', function(require) {
 				let has_valid_product_lot = _.every(lines, function(line){
 					return line.has_valid_product_lot();
 				});
-				if(!has_valid_product_lot){
-					call_super = false;  
-					self.showPopup('ErrorPopup', {
-						title: self.env._t('Empty Serial/Lot Number'),
-						body: self.env._t('One or more product(s) required serial/lot number..'),
-					});
-					return
-				}
+				// if(!has_valid_product_lot){
+				// 	call_super = false;  
+				// 	self.showPopup('ErrorPopup', {
+				// 		title: self.env._t('Empty Serial/Lot Number'),
+				// 		body: self.env._t('One or more product(s) required serial/lot number..'),
+				// 	});
+				// 	return
+				// }
 
 				let lot_qty = {};
 				$.each(lines, function( i, line ){
