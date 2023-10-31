@@ -1,0 +1,55 @@
+<odoo>
+    <record id="analytic_report_wizard" model="ir.ui.view" >
+        <field name="name">Rapport Clients / artilces</field>
+        <field name="model">report.pos.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Rapport Client/Articles">
+                <group>
+                    <group>
+                        <field name="filter_pdv"/>
+                    </group>
+                    <group>
+                        <field name="product_id" domain="[('sale_ok', '=', True)]" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="date_start"/>
+                    </group>
+                    <group>
+                        <field name="date_end"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="get_report" string="Rapport PDF" type="object" class="oe_highlight"/>
+                    
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    
+        <record id="action_pos_report_article_wizard" model="ir.actions.act_window">
+            <field name="name">Client/Articles</field>
+            <field name="res_model">report.pos.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+    </record>
+
+<!--     <menuitem 
+        id="menu_pos_report_report_wizard"
+        action="action_pos_report_report_wizard"
+        name = "Client(e)s/Articles "
+        sequence="5"
+        parent="point_of_sale.menu_point_rep"
+              
+        /> -->
+
+    <menuitem 
+        id="menu_stock_report_sale_by_product"
+        action="action_pos_report_article_wizard"
+        name = "Rapport/Articles Vendu"
+        sequence="140"
+        parent="stock.menu_warehouse_report"
+        />
+</odoo>
