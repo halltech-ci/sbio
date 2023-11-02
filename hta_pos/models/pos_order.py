@@ -44,10 +44,12 @@ class HtaPos(models.Model):
         if self.state == "paid":
             pass
 
-    @api.depends("lines.discount")
+    @api.depends("lines.discount", "lines.price_subtotal")
     def _compute_amount_discount(self):
         for rec in self:
-            rec.amount_discount = sum([line.discount for line in rec.lines])
+            amount_discount = sum([line.discount for line in rec.lines])
+            line_discount = sum([line.price_subtotal for line in rec.lines.filtered(lambda l: "Remise" in l.full_product_name)])
+            rec.amount_discount = amount_discount + line_discount
     
 
     @api.depends("amount_paid", "amount_total")
@@ -200,6 +202,7 @@ class HtaPos(models.Model):
         for record in self._context.get('active_ids'):
             order = self.env[self._context.get('active_model')].browse(record)
             order.retunr_stock_picking()
+            #order.write({"delivery_status": "return"})
             order_lines = order.lines
             if order.state in ['draft','cancel']:
                 for rs in order_lines:
