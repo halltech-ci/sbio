@@ -34,8 +34,6 @@ class HtaPos(models.Model):
             rec.delivery_status = "draft"
             if rec.delivery_person and rec.state in ["paid", "invoiced", "post"]:
                 rec.delivery_status = "invoiced"
-            if rec.delivery_person and rec.state == "delivery":
-                rec.delivery_status = "delivery"
             if not rec.delivery_person and rec.state in ["paid", "invoiced", "done"]:
                 rec.delivery_status = "direct"
                 
@@ -48,7 +46,8 @@ class HtaPos(models.Model):
     def _compute_amount_discount(self):
         for rec in self:
             amount_discount = sum([line.discount for line in rec.lines])
-            line_discount = sum([line.price_subtotal for line in rec.lines.filtered(lambda l: "Remise" in l.full_product_name)])
+            lines = rec.mapped("lines").filtered(lambda l: l.product_id.name == "Remise")
+            line_discount = sum([line.price_subtotal for line in lines]) if lines else 0
             rec.amount_discount = amount_discount + line_discount
     
 
