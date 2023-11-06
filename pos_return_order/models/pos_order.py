@@ -7,13 +7,28 @@ from odoo.exceptions import AccessError, UserError, ValidationError
 class PoOrder(models.Model):
     _inherit = "pos.order"
 
+    is_return = fields.Boolean(default=False)
+
+    @api.depends("state", "delivery_person", "is_return")
+    def _compute_delivery_status(self):
+        for rec in self:
+            rec.delivery_status = "draft"
+            if rec.is_return:
+                rec.delivery_status = "return"
+            if rec.delivery_person and rec.state in ["paid", "invoiced", "post"]:
+                rec.delivery_status = "invoiced"
+            if not rec.delivery_person and rec.state in ["paid", "invoiced", "done"]:
+                rec.delivery_status = "direct"
+
 
     def pos_orders_return(self):
         for order in self:
-            if order.state not in ("draft") or has_refundable_lines:
+            if order.payment_ids:
                 order.pos_order_refund()
+                order.write({"is_return": True})
             else:
                 order.action_return_without_refund()
+                order.write({"is_return": True})
 
     def pos_order_refund(self):
         refund_orders = self.env['pos.order']
@@ -50,7 +65,7 @@ class PoOrder(models.Model):
             picking = self.env["stock.picking"].browse(picking_id)
             picking.action_set_quantities_to_reservation()
             picking.button_validate()
-            self.update({"delivery_status": "return"})
+            #self.update({"delivery_status": "return"})
             return picking
         else:
             raise UserError(_("Vous ne pouvez pas traiter plusieurs livraisons."))
