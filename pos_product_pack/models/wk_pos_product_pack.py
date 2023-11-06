@@ -10,6 +10,7 @@ from odoo import api, fields, models, _
 from itertools import groupby
 import logging
 _logger = logging.getLogger(__name__)
+from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
 class PosPackOrderLine(models.Model):
     _name = "pos.pack.order.line"
