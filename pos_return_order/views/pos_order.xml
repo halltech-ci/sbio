@@ -5,7 +5,7 @@
           <field name="inherit_id" ref="hta_pos.pos_order_inherit_pos_tree"/>
           <field name="arch" type="xml">
               <xpath expr="//header/button[@name='audit_order_wizard']" position="after">
-                  <button string="Retourner" type="object" name="pos_orders_return" groups="account.group_account_manager"/>
+                  <button string="Retourner" type="object" name="pos_orders_return" groups="hta_pos.group_pos_delivery_manager"/>
               </xpath>
           </field>
       </record>

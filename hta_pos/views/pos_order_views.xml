@@ -81,7 +81,7 @@
                 <button string="AUDIT VALIDÉE" type="object" name="audit_valid" groups="hta_pos.group_pos_audit_user"/>
                 <button string="AUDIT INVALIDÉE" type="object" name="audit_invalid" groups="hta_pos.group_pos_audit_user"/>
                 <button string="AUDIT AVEC DATE" type="object" name="audit_order_wizard" groups="hta_pos.group_pos_audit_user"/>
-                <button string="Retour" type="object" name="return_order_pos" groups="account.group_account_manager"/>
+                <!--<button string="Retour" type="object" name="return_order_pos" groups="account.group_account_manager"/>-->
             </header>
           </xpath>
       </field>
