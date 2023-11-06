@@ -66,8 +66,8 @@
                     decoration-success="state == 'paid' or state == 'done' or state == 'invoiced'" invisible="1"/>
                 <field name="delivery_status" widget="badge" decoration-warning="state == 'draft'" decoration-muted="state == 'cancel'" decoration-success="state == 'invoiced' or state == 'direct'"/>
                 <field name="payment_status" string="Payement" optional="show"/>
-                <field name="amount_discount" string="Remise" optional="show"/>
-                <field name="amount_due" string="Créance" optional="show"/>
+                <field name="amount_discount" string="Remise" optional="show" sum="total_discount"/>
+                <field name="amount_due" string="Créance" optional="show" sum="total_due"/>
                 <field name="audit" widget="badge" decoration-warning="audit == 'draft'" decoration-danger="audit == 'no_valide'" decoration-success="audit == 'valide'"/>
                 <field name="date_audit" string="Date Audit" groups="account.group_account_manager"/>
                 <field name="audit_valideur" string="Valideur" groups="account.group_account_manager"/>
