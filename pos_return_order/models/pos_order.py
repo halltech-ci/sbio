@@ -7,13 +7,39 @@ from odoo.exceptions import AccessError, UserError, ValidationError
 class PoOrder(models.Model):
     _inherit = "pos.order"
 
+    is_return = fields.Boolean(default=False)
+
+    @api.depends("is_partial", "is_return", "delivery_person", "refunded_order_ids", "payment_ids")
+    def _compute_delivery_status(self):
+        for rec in self:
+            #rec.delivery_status = "draft"
+            if rec.is_partial:
+                rec.delivery_status = "draft"
+                if rec.is_return:
+                    rec.delivery_status = "return"
+                if rec.delivery_person and rec.is_return:
+                    rec.delivery_status = "return"
+                if rec.delivery_person and rec.payment_ids and not rec.is_return:
+                    rec.delivery_status = "invoiced"
+                if rec.delivery_person and not rec.payment_ids and not rec.is_return:
+                    rec.delivery_status = "delivery"
+            if not rec.is_partial :
+                rec.delivery_status = "direct"
+                if rec.is_return:
+                    rec.delivery_status = "return"
+                if rec.refunded_order_ids:
+                    rec.delivery_status = "refunded"
+            
+
 
     def pos_orders_return(self):
         for order in self:
-            if order.state not in ("draft") or has_refundable_lines:
+            if order.payment_ids:
                 order.pos_order_refund()
+                order.write({"is_return": True})
             else:
                 order.action_return_without_refund()
+                order.write({"is_return": True})
 
     def pos_order_refund(self):
         refund_orders = self.env['pos.order']
@@ -42,15 +68,15 @@ class PoOrder(models.Model):
         
 
     def action_return_without_refund(self):
-        pickings = self.env['stock.picking'].search([('pos_order_id', '=', self.id), ("state", "=", "assigned")])
+        pickings = self.env['stock.picking'].search([('pos_order_id', '=', self.id), ("state", "=", "done")])
         if len(pickings) == 1:
-            stock_return = self.env['stock.return.picking'].create({'picking_id':picking_id.id})
+            stock_return = self.env['stock.return.picking'].create({'picking_id':pickings.id})
             stock_return._onchange_picking_id()
             picking_id = stock_return.create_returns().get("res_id")
             picking = self.env["stock.picking"].browse(picking_id)
             picking.action_set_quantities_to_reservation()
             picking.button_validate()
-            self.update({"delivery_status": "return"})
+            #self.update({"delivery_status": "return"})
             return picking
         else:
             raise UserError(_("Vous ne pouvez pas traiter plusieurs livraisons."))

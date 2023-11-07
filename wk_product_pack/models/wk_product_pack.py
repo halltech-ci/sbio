@@ -8,7 +8,7 @@ import logging
 _logger = logging.getLogger(__name__)
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, UserError
-from odoo.tools.float_utils import float_compare
+from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
 
 class ProductTemplate(models.Model):
@@ -107,7 +107,6 @@ class SaleOrderLine(models.Model):
 			qty = line._get_qty_procurement(previous_product_uom_qty)
 			if float_compare(qty, line.product_uom_qty, precision_digits=precision) >= 0:
 				continue
-			
 			group_id = line.order_id.procurement_group_id
 			if not group_id:
 				group_id = self.env['procurement.group'].create(line._prepare_procurement_group_vals())
