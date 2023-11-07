@@ -9,16 +9,27 @@ class PoOrder(models.Model):
 
     is_return = fields.Boolean(default=False)
 
-    @api.depends("state", "delivery_person", "is_return")
+    @api.depends("is_partial", "is_return", "delivery_person", "refunded_order_ids", "payment_ids")
     def _compute_delivery_status(self):
         for rec in self:
-            rec.delivery_status = "draft"
-            if rec.is_return:
-                rec.delivery_status = "return"
-            if rec.delivery_person and rec.state in ["paid", "invoiced", "post"]:
-                rec.delivery_status = "invoiced"
-            if not rec.delivery_person and rec.state in ["paid", "invoiced", "done"]:
+            #rec.delivery_status = "draft"
+            if rec.is_partial:
+                rec.delivery_status = "draft"
+                if rec.is_return:
+                    rec.delivery_status = "return"
+                if rec.delivery_person and rec.is_return:
+                    rec.delivery_status = "return"
+                if rec.delivery_person and rec.payment_ids and not rec.is_return:
+                    rec.delivery_status = "invoiced"
+                if rec.delivery_person and not rec.payment_ids and not rec.is_return:
+                    rec.delivery_status = "delivery"
+            if not rec.is_partial :
                 rec.delivery_status = "direct"
+                if rec.is_return:
+                    rec.delivery_status = "return"
+                if rec.refunded_order_ids:
+                    rec.delivery_status = "refunded"
+            
 
 
     def pos_orders_return(self):
@@ -57,9 +68,9 @@ class PoOrder(models.Model):
         
 
     def action_return_without_refund(self):
-        pickings = self.env['stock.picking'].search([('pos_order_id', '=', self.id), ("state", "=", "assigned")])
+        pickings = self.env['stock.picking'].search([('pos_order_id', '=', self.id), ("state", "=", "done")])
         if len(pickings) == 1:
-            stock_return = self.env['stock.return.picking'].create({'picking_id':picking_id.id})
+            stock_return = self.env['stock.return.picking'].create({'picking_id':pickings.id})
             stock_return._onchange_picking_id()
             picking_id = stock_return.create_returns().get("res_id")
             picking = self.env["stock.picking"].browse(picking_id)
