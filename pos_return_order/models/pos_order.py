@@ -33,7 +33,7 @@ class PoOrder(models.Model):
                     rec.delivery_status = "return"
                 if rec.delivery_person and rec.payment_ids and not rec.is_return:
                     rec.delivery_status = "invoiced"
-                if rec.refunded_order_ids:
+                if rec.refund_orders_count:
                     rec.delivery_status = "refunded"
             
     def order_lines_writting(self):
