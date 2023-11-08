@@ -2,6 +2,9 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import AccessError, UserError, ValidationError
+from datetime import datetime, timedelta
+import requests
+import json
 
 
 class PoOrder(models.Model):
