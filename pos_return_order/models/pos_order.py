@@ -31,14 +31,18 @@ class PoOrder(models.Model):
                     rec.delivery_status = "refunded"
             
     def order_lines_writting(self):
+        #pos_order=self.env['pos.order'].search([('id', '=', self.id)])
         lines = self.env['pos.order.line'].search([('order_id', '=', self.id)])
         if lines:
             for line in lines:
                 new_vals = {
+                    
                         'price_unit':0,
                         'price_subtotal':0,
-                    }
+                }
                 line.write(new_vals)
+        
+        return True    
 
     def pos_orders_return(self):
         for order in self:
