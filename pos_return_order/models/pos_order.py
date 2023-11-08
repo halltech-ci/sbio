@@ -10,7 +10,7 @@ import json
 class PoOrder(models.Model):
     _inherit = "pos.order"
 
-    is_return = fields.Boolean(default=False)
+    is_return = fields.Boolean(default=False, tracking=True, string="Est un retour")
 
     @api.depends("is_partial", "is_return", "delivery_person", "refunded_order_ids", "payment_ids")
     def _compute_delivery_status(self):
@@ -34,17 +34,15 @@ class PoOrder(models.Model):
                     rec.delivery_status = "refunded"
             
     def order_lines_writting(self):
-        #pos_order=self.env['pos.order'].search([('id', '=', self.id)])
         lines = self.env['pos.order.line'].search([('order_id', '=', self.id)])
         if lines:
             for line in lines:
                 new_vals = {
-                    
                         'price_unit':0,
                         'price_subtotal':0,
-                }
+                    }
                 line.write(new_vals)
-        
+            self. order._onchange_amount_all()
         return True    
 
     def pos_orders_return(self):
@@ -62,8 +60,9 @@ class PoOrder(models.Model):
                                 'price_subtotal':0,
                             }
                         line.update(new_vals)
+                        line._onchange_amount_line_all()
                 order._onchange_amount_all()
-                order.write({"is_return": True})
+                order.write({"is_return": True, "state": "cancel"})
 
     def pos_order_refund(self):
         refund_orders = self.env['pos.order']
