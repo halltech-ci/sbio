@@ -2,6 +2,7 @@
 
 from . import models
 from . import delivery_company
+from . import delivery_agent
 from . import pos_order
 from . import stock_picking
 from . import produit
