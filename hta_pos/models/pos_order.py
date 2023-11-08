@@ -59,6 +59,8 @@ class HtaPos(models.Model):
                 rec.payment_status = "paid"
             if rec.amount_paid > 0 and rec.amount_paid < rec.amount_total:
                 rec.payment_status = "partial" 
+            if rec.amount_paid > 0 and rec.amount_paid > rec.amount_total:
+                rec.payment_status = "paid"
             if all([int(line.discount) == 100 for line in rec.lines]):
                 rec.payment_status = "gift"
             if rec.amount_total == 0:
@@ -77,7 +79,8 @@ class HtaPos(models.Model):
             #'res_id':self.env.ref('stock.picking').id,
             'target':'new',
         }
-    
+
+        
     def payment_wizard_order(self):
     	view_id = self.env.ref('point_of_sale.view_pos_payment').id
     	context = self._context.copy()
