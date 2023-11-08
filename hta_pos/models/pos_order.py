@@ -61,7 +61,7 @@ class HtaPos(models.Model):
                 rec.payment_status = "partial" 
             if all([int(line.discount) == 100 for line in rec.lines]):
                 rec.payment_status = "gift"
-            if amount_total == 0:
+            if rec.amount_total == 0:
                 rec.payment_status = "none"
 
         

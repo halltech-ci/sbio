@@ -51,7 +51,15 @@ class PoOrder(models.Model):
                 order.write({"is_return": True})
             else:
                 order.action_return_without_refund()
-                order.order_lines_writting()
+                lines = self.env['pos.order.line'].search([('order_id', '=', order.id)])
+                if lines:
+                    for line in lines:
+                        new_vals = {
+                                'price_unit':0,
+                                'price_subtotal':0,
+                            }
+                        line.update(new_vals)
+                order._onchange_amount_all()
                 order.write({"is_return": True})
 
     def pos_order_refund(self):
