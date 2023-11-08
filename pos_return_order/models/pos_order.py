@@ -30,7 +30,19 @@ class PoOrder(models.Model):
                 if rec.refunded_order_ids:
                     rec.delivery_status = "refunded"
             
-
+    def order_lines_writting(self):
+        #pos_order=self.env['pos.order'].search([('id', '=', self.id)])
+        lines = self.env['pos.order.line'].search([('order_id', '=', self.id)])
+        if lines:
+            for line in lines:
+                new_vals = {
+                    
+                        'price_unit':0,
+                        'price_subtotal':0,
+                }
+                line.write(new_vals)
+        
+        return True    
 
     def pos_orders_return(self):
         for order in self:
@@ -39,6 +51,15 @@ class PoOrder(models.Model):
                 order.write({"is_return": True})
             else:
                 order.action_return_without_refund()
+                lines = self.env['pos.order.line'].search([('order_id', '=', order.id)])
+                if lines:
+                    for line in lines:
+                        new_vals = {
+                                'price_unit':0,
+                                'price_subtotal':0,
+                            }
+                        line.update(new_vals)
+                order._onchange_amount_all()
                 order.write({"is_return": True})
 
     def pos_order_refund(self):
@@ -82,4 +103,32 @@ class PoOrder(models.Model):
             raise UserError(_("Vous ne pouvez pas traiter plusieurs livraisons."))
             
     
-    
+    def audit_valid(self):
+        for record in self._context.get('active_ids'):
+            order = self.env[self._context.get('active_model')].browse(record)
+            order_lines = order.lines
+            if order.is_reurn :
+                for rs in order_lines:
+                    line = {
+                            "price_unit": 0,
+                            "price_subtotal": 0,
+                            'price_subtotal_incl': 0,
+                            }
+                    rs.write(line)
+                    rs._onchange_amount_line_all()
+                order._onchange_amount_all()
+                order.write({'audit':'valide','date_audit': datetime.now(),'audit_valideur':self.env.user})
+            else:
+                for rs in order_lines:
+                    if 'ivraison' in str(rs.full_product_name):
+                        line = {
+                            "price_unit": 0,
+                            "price_subtotal": 0,
+                            'price_subtotal_incl': 0,
+                            
+                            }
+                        rs.write(line)
+                    rs._onchange_amount_line_all()
+                order._onchange_amount_all()
+                order.write({'audit':'valide','date_audit': datetime.now(),'audit_valideur':self.env.user})
+                

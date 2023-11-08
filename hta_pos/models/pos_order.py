@@ -61,12 +61,9 @@ class HtaPos(models.Model):
                 rec.payment_status = "partial" 
             if all([int(line.discount) == 100 for line in rec.lines]):
                 rec.payment_status = "gift"
+            if rec.amount_total == 0:
+                rec.payment_status = "none"
 
-    '''@api.depends("amount_paid", "amount_total")
-    def _compute_amount_due(self):
-        for rec in self:
-            rec.amount_due = rec.amount_total - rec.amount_paid
-    '''
         
     def assign_command_wizard(self):
     	#view_id = self.env.ref('point_of_sale.assign_command_wizard').id
@@ -201,7 +198,6 @@ class HtaPos(models.Model):
         for record in self._context.get('active_ids'):
             order = self.env[self._context.get('active_model')].browse(record)
             order.retunr_stock_picking()
-            #order.write({"delivery_status": "return"})
             order_lines = order.lines
             if order.state in ['draft','cancel']:
                 for rs in order_lines:
