@@ -107,7 +107,7 @@ class PoOrder(models.Model):
         for record in self._context.get('active_ids'):
             order = self.env[self._context.get('active_model')].browse(record)
             order_lines = order.lines
-            if order.is_reurn :
+            if order.is_return :
                 for rs in order_lines:
                     line = {
                             "price_unit": 0,
