@@ -13,3 +13,8 @@ class DeliveryAgent(models.Model):
     partner_id = fields.Many2one("res.partner")
 
 
+    @api.model
+    def create(self, vals):
+        return super(DeliveryAgent, self).create(vals)
+
+

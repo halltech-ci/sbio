@@ -11,31 +11,27 @@ class HtaPos(models.Model):
     _order = "date_order desc, id desc,name desc"
     
             
-    delivery_person = fields.Many2one("delivery.agent", string="Livreur", tracking=True)
+    delivery_agent = fields.Many2one("delivery.agent", string="Livreur", tracking=True)
+    delivery_person = fields.Many2one("res.partner", string="Livreur")
     date_delivery = fields.Datetime()
     order_date = fields.Datetime(string="Date commande",readonly=True, index=True,)
     customer_Phone = fields.Char("Telephone",related='partner_id.phone', store=True,tracking=1)
-    delivery_phone = fields.Char(related='delivery_person.phone_number', store=True,tracking=1)
+    delivery_phone = fields.Char(related='delivery_agent.phone_number', store=True,tracking=1)
     date_order = fields.Datetime(string="Date commande",readonly=True, index=True,compute='_compute_date_create',store=True,tracking=1)
     user_return = fields.Many2one("res.users", string="Gestionnaire stock",tracking=1)
     audit = fields.Selection([('draft', 'Brouillon'),('valide', 'Valider'), ('no_valide', 'Invalide')],'Audit', default='draft', tracking=1)
     date_audit = fields.Datetime(string="Date d'audit",readonly=True, states={'draft': [('readonly', False)]}, tracking=1)
     audit_valideur = fields.Many2one("res.users", string="Valideur",tracking=1)
-    payment_status = fields.Selection(selection=[("paid", "Payé"), ("none", "Non payé"), ("partial", "Partiel"), ("gift", "Gratuit")], string="Status payement", compute="_compute_payment_status",)
+    payment_status = fields.Selection(selection=[("paid", "Payé"), ("none", "Non payé"), ("partial", "Partiel"), ("gift", "Gratuit")], string="Status payement", compute="_compute_payment_status", tracking=True)
     #amount_due = fields.Float(compute="_compute_amount_due", string="Créance")
     amount_discount = fields.Float(string="Remise", compute="_compute_amount_discount")
     #state = fields.Selection(selection_add=[('delivery', 'Livré')])
     delivery_status = fields.Selection([('draft', 'A livrer'), ('cancel', 'Annuler'), ('delivery', 'En livraison'), ('invoiced', 'Livré'), ('direct', 'Direct'), ('return', 'Retour'), ('refunded', 'Remboursé')], 'Delivery Status', readonly=True, copy=False, default='draft', index=True, tracking=True)
     
 
-    @api.depends("state", "delivery_person")
+    @api.depends("state", "delivery_agent")
     def _compute_delivery_status(self):
-        for rec in self:
-            rec.delivery_status = "draft"
-            if rec.delivery_person and rec.state in ["paid", "invoiced", "post"]:
-                rec.delivery_status = "invoiced"
-            if not rec.delivery_person and rec.state in ["paid", "invoiced", "done"]:
-                rec.delivery_status = "direct"
+        pass
                 
 
     def _update_delivery_status(self):
