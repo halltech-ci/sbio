@@ -13,7 +13,7 @@ class PoOrder(models.Model):
     is_return = fields.Boolean(default=False, tracking=True, string="Est un retour")
     #is_delivered = fields.Boolean(default=False)
 
-    @api.depends("is_partial", "is_return", "delivery_person", "refunded_order_ids", "payment_ids")
+    @api.depends("is_partial", "is_return", "delivery_person", "refund_order_count", "payment_ids")
     def _compute_delivery_status(self):
         for rec in self:
             #rec.delivery_status = "draft"
@@ -21,21 +21,19 @@ class PoOrder(models.Model):
                 rec.delivery_status = "draft"
                 if rec.is_return:
                     rec.delivery_status = "return"
-                if rec.delivery_person and rec.is_return:
+                if rec.delivery_person or rec.delivery_agent and rec.is_return:
                     rec.delivery_status = "return"
-                if rec.delivery_person and rec.payment_ids and not rec.is_return:
+                if rec.delivery_person or rec.delivery_agent and rec.payment_ids and not rec.is_return:
                     rec.delivery_status = "invoiced"
-                if rec.delivery_person and not rec.payment_ids and not rec.is_return:
+                if rec.delivery_person or rec.delivery_agent and not rec.payment_ids and not rec.is_return:
                     rec.delivery_status = "delivery"
             if not rec.is_partial :
                 rec.delivery_status = "direct"
                 if rec.is_return:
                     rec.delivery_status = "return"
-                if rec.delivery_person and rec.payment_ids and not rec.is_return:
-                    rec.delivery_status = "invoiced"
-                if rec.refund_orders_count:
-                    rec.delivery_status = "refunded"
-            
+                if rec.refund_order_count:
+                    rec.delivery_status = "refunded"    
+                    
     def order_lines_writting(self):
         #pos_order=self.env['pos.order'].search([('id', '=', self.id)])
         lines = self.env['pos.order.line'].search([('order_id', '=', self.id)])
