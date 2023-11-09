@@ -9,10 +9,9 @@ class PosAssignCommands(models.TransientModel):
     _description = "Assign Commands Pos"
 
     delivery_person = fields.Many2one(
-        comodel_name="res.partner",
+        comodel_name="delivery.agent",
         string="Delivery Person",
         required=True,
-        domain=[("person_delivery", "=", True)],
     )
     date_delivery = fields.Date(string='Date Livraison', required=True, default=fields.Date.today)
     
@@ -59,13 +58,13 @@ class PosAssignCommands(models.TransientModel):
                 'amount_total': pos_order.amount_total,
                 'line_docs':line_docs,
             })
-            if pos_order.delivery_person:
+            if pos_order.delivery_agent:
                 raise UserError(_("LES COMMANDES SONT DEJA ASSIGNER"))
             else:
                 
-                pos_order.delivery_person = self.delivery_person
+                pos_order.delivery_agent = self.delivery_person
                 pos_order.date_delivery = self.date_delivery
-                pos_order.state = 'delivery'
+                pos_order.delivery_status = 'delivery'
                 
         data = {
                     'model':'pos.assign.commands.wizard',

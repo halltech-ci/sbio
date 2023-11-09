@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+    <record id="paperformat_barcode_custom" model="report.paperformat">
+        <field name="name">French Bank Check</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">50</field>
+        <field name="page_width">30</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">3</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">3</field>
+        <field name="dpi">110</field>
+    </record>
         <record id="barcode_printer_number" model="ir.actions.report">
             <field name="name">Code Barre</field>
             <field name="model">barcode.printer.wizard</field>
@@ -12,6 +27,7 @@
             
             <field name="binding_model_id" ref="model_barcode_printer_wizard"/>
             <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="barcode_product.paperformat_barcode_custom" />
         </record>
     		<template id="report_barcode_by_number_wizard">
                         <table class="table table-condensed" style="border-bottom: 7px solid white !important;width: 3in;border-left: 4px solid white !important;">
@@ -67,8 +83,6 @@
                     </div>
 				</div>
 			</t>
-		</template>
-        
-        
+		</template>    
     </data>
 </odoo>
