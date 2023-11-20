@@ -5,10 +5,10 @@
       <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
       <field name="arch" type="xml">
           <xpath expr="//sheet//group[@name='order_fields']/field[@name='user_id']" position="after">
-            <field name="delivery_person" readonly="True"/>
+            <field name="delivery_agent" readonly="True"/>
             <field name="date_delivery" readonly="True"/>  
           </xpath>
-          <field name="delivery_person" position="after">
+          <field name="delivery_agent" position="after">
                 <field name="delivery_phone" string="Telephone Livreur"/>
           </field>
           <xpath expr="//sheet" position="after">
@@ -32,13 +32,13 @@
                     <field name="create_date" string="Date commande"/>
                     <field name="user_return" string="Gestionnaire stock"/>
                     <field name="pos_reference" string="Numero du reçu"/>
-                    <field name="delivery_person" string="Livreur"/>
+                    <field name="delivery_agent" string="Livreur"/>
                     <filter name="state" string="Facturé" domain="[('state','=','invoiced')]"/>
                     <filter name="date_order" string="Date de la commande"/>
                     <group expand="1" string="Grouper par">
                         
                         <filter name="session_id" string="Session" context="{'group_by':'session_id'}"/>
-                        <filter name="delivery_person" string="Livreur" context="{'group_by':'delivery_person'}"/>
+                        <filter name="delivery_agent" string="Livreur" context="{'group_by':'delivery_agent'}"/>
                         <filter name="user_id" string="Caissier" context="{'group_by':'user_id'}"/>
                         <filter name="partner_id" string="Client" context="{'group_by':'partner_id'}"/>
                     </group>
@@ -59,7 +59,7 @@
                 <field name="pos_reference"/>
                 <field name="partner_id"/>
                 <field name="customer_Phone" string="Telephone Client"/>
-                <field name="delivery_person"/>
+                <field name="delivery_agent"/>
                 <field string="Cashier" name="user_id" widget="many2one_avatar_user"/>
                 <field name="amount_total" sum="Amount total" widget="monetary" decoration-bf="1"/>
                 <field name="state" widget="badge" decoration-warning="state == 'delivery'" decoration-muted="state == 'return'"
