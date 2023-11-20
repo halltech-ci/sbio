@@ -46,6 +46,18 @@ class PosAssignCommands(models.TransientModel):
         for record in self._context.get('active_ids'):
             pos_order = self.env[self._context.get('active_model')].browse(record)
             line_docs = []
+            pickings = self.env["pos.order"].browse(record).picking_ids
+            if len(pickings) == 1:
+                picking = pickings
+            if picking.state == "confirmed":
+                picking.action_assign()
+                picking.action_set_quantities_to_reservation()
+                picking.button_validate()
+                picking._action_done()
+            if picking.state == "assign":
+                picking.action_set_quantities_to_reservation()
+                picking.button_validate()
+                picking._action_done()
             for rs in pos_order.lines:
                 line_docs.append({
                     'full_product_name':rs.full_product_name,
@@ -62,7 +74,7 @@ class PosAssignCommands(models.TransientModel):
                 raise UserError(_("LES COMMANDES SONT DEJA ASSIGNER"))
             else:
                 
-                pos_order.delivery_agent = self.delivery_person
+                pos_order.delivery_agent = self.delivery_agent
                 pos_order.date_delivery = self.date_delivery
                 pos_order.delivery_status = 'delivery'
                 
