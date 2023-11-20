@@ -11,9 +11,10 @@ class PoOrder(models.Model):
     _inherit = "pos.order"
 
     is_return = fields.Boolean(default=False, tracking=True, string="Est un retour")
+    delivery_status = fields.Selection(compute="_compute_delivery_status")
     #is_delivered = fields.Boolean(default=False)
 
-    @api.depends("is_partial", "is_return", "delivery_person", "refund_order_count", "payment_ids")
+    @api.depends("is_partial", "is_return", "delivery_person", "refund_orders_count", "payment_ids")
     def _compute_delivery_status(self):
         for rec in self:
             #rec.delivery_status = "draft"
@@ -31,7 +32,7 @@ class PoOrder(models.Model):
                 rec.delivery_status = "direct"
                 if rec.is_return:
                     rec.delivery_status = "return"
-                if rec.refund_order_count:
+                if rec.refund_orders_count:
                     rec.delivery_status = "refunded"    
                     
     def order_lines_writting(self):
