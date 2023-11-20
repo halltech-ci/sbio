@@ -10,7 +10,7 @@
                 </p>
                 <group>
                     <group>
-                        <field name="delivery_person"/>
+                        <field name="delivery_agent"/>
                     </group>
                     <group>
                         <field name="date_delivery"/>
