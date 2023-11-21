@@ -8,11 +8,12 @@ class PosAssignCommands(models.TransientModel):
     _name = "pos.assign.commands.wizard"
     _description = "Assign Commands Pos"
 
-    delivery_person = fields.Many2one(
+    delivery_agent = fields.Many2one(
         comodel_name="delivery.agent",
         string="Delivery Person",
-        required=True,
+        #required=True,
     )
+    delivery_person = fields.Many2one("res.partner")
     date_delivery = fields.Date(string='Date Livraison', required=True, default=fields.Date.today)
     
 #     state = fields.Selection(selection_add=[('')])
