@@ -75,7 +75,7 @@
                             </div>
                             <div class="col-6" >
                                 <p>LIVREUR</p>
-                                <p><t t-esc="delivery_person[1]"/></p>
+                                <p><t t-esc="delivery_agent"/></p>
                             </div>
                         </div>
                     </div>
