@@ -71,13 +71,13 @@ class PosAssignCommands(models.TransientModel):
                 'amount_total': pos_order.amount_total,
                 'line_docs':line_docs,
             })
-            if pos_order.delivery_agent:
+            '''if pos_order.delivery_agent:
                 raise UserError(_("LES COMMANDES SONT DEJA ASSIGNER"))
             else:
-                
-                pos_order.delivery_agent = self.delivery_agent
-                pos_order.date_delivery = self.date_delivery
-                pos_order.delivery_status = 'delivery'
+            '''    
+            pos_order.delivery_agent = self.delivery_agent
+            pos_order.date_delivery = self.date_delivery
+            pos_order.delivery_status = 'delivery'
                 
         data = {
                     'model':'pos.assign.commands.wizard',
