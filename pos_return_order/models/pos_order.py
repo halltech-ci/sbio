@@ -14,26 +14,24 @@ class PoOrder(models.Model):
     delivery_status = fields.Selection(compute="_compute_delivery_status")
     #is_delivered = fields.Boolean(default=False)
 
-    @api.depends("is_partial", "is_return", "delivery_person", "refund_orders_count", "payment_ids")
+    @api.depends("is_partial", "is_return", "delivery_person", "delivery_agent", "refunded_orders_count", "refunded_order_ids")
     def _compute_delivery_status(self):
         for rec in self:
-            #rec.delivery_status = "draft"
-            if rec.is_partial:
-                rec.delivery_status = "draft"
-                if rec.is_return:
-                    rec.delivery_status = "return"
-                if rec.delivery_person or rec.delivery_agent and rec.is_return:
-                    rec.delivery_status = "return"
-                if rec.delivery_person or rec.delivery_agent and rec.payment_ids and not rec.is_return:
-                    rec.delivery_status = "invoiced"
-                if rec.delivery_person or rec.delivery_agent and not rec.payment_ids and not rec.is_return:
-                    rec.delivery_status = "delivery"
-            if not rec.is_partial :
-                rec.delivery_status = "direct"
-                if rec.is_return:
-                    rec.delivery_status = "return"
-                if rec.refund_orders_count:
-                    rec.delivery_status = "refunded"    
+            rec.delivery_status = "direct"
+            if rec.is_return:
+                rec.delivery_status = "return"
+            else:
+                if rec.is_partial:
+                    rec.delivery_status = "draft"
+                    if rec.delivery_person or rec.delivery_agent:
+                        rec.delivery_status = "delivery"
+                else:
+                    if rec.delivery_person or rec.delivery_agent:
+                        rec.delivery_status = "invoiced"
+                    if rec.refunded_orders_count and rec.refunded_order_ids:
+                        rec.delivery_status = "refunded"
+                    else:
+                        rec.delivery_status = "direct"
                     
     def order_lines_writting(self):
         #pos_order=self.env['pos.order'].search([('id', '=', self.id)])

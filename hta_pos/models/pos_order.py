@@ -26,12 +26,7 @@ class HtaPos(models.Model):
     #amount_due = fields.Float(compute="_compute_amount_due", string="Créance")
     amount_discount = fields.Float(string="Remise", compute="_compute_amount_discount")
     #state = fields.Selection(selection_add=[('delivery', 'Livré')])
-    delivery_status = fields.Selection([('draft', 'A livrer'), ('cancel', 'Annuler'), ('delivery', 'En livraison'), ('invoiced', 'Livré'), ('direct', 'Direct'), ('return', 'Retour'), ('refunded', 'Remboursé')], 'Delivery Status', readonly=True, copy=False, default='draft', index=True, tracking=True)
-    
-
-    @api.depends("state", "delivery_agent")
-    def _compute_delivery_status(self):
-        pass
+    delivery_status = fields.Selection([('draft', 'A livrer'), ('cancel', 'Annuler'), ('delivery', 'En livraison'), ('invoiced', 'Livré'), ('direct', 'Direct'), ('return', 'Retour'), ('refunded', 'Remboursé')], 'Delivery Status', readonly=True, copy=False, index=True, tracking=True)
                 
 
     def _update_delivery_status(self):
