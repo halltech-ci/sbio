@@ -30,6 +30,7 @@
         'report/stock_lot_label.xml',
         'wizard/wizard_barcode.xml',
         'report/stock_lot_label_wizard.xml',
+        #'report/stock_lot_label_wizard-Copy1.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
