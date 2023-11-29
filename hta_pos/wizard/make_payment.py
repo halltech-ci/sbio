@@ -7,8 +7,12 @@ class PosMakePayment(models.TransientModel):
 
     def check(self):
         res = super(PosMakePayment, self).check()
+        
         order = self.env['pos.order'].browse(self.env.context.get('active_id', False))
-        lines = order.lines
+        order.write({
+            "payment_date": self.payment_date.date()
+        })
+        '''lines = order.lines
         if order.state == "draft":
             livraison = lines.filtered(lambda l: "ivraison" in l.full_product_name)
             if livraison:
@@ -19,4 +23,4 @@ class PosMakePayment(models.TransientModel):
                 })
                 livraison._onchange_amount_line()
             order._onchange_amount_all()
-            
+        '''    
