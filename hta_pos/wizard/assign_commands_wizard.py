@@ -64,20 +64,25 @@ class PosAssignCommands(models.TransientModel):
                     'full_product_name':rs.full_product_name,
                     'qty':rs.qty,
                 })
+            livraison = pos_order.lines.filtered(lambda l: "ivraison" in l.full_product_name)
+            if livraison:
+                livraison.write({
+                    "price_unit": 0,
+                    "price_subtotal": 0,
+                    "price_subtotal_incl": 0
+                })
+                livraison._onchange_amount_line_all()
+            pos_order._onchange_amount_all()
             docs.append ({
                 'pos_order': pos_order,
                 'pos_reference':pos_order.pos_reference,
                 'pos_order_date':self.date_delivery,
                 'amount_total': pos_order.amount_total,
                 'line_docs':line_docs,
-            })
-            if pos_order.delivery_agent:
-                raise UserError(_("LES COMMANDES SONT DEJA ASSIGNER"))
-            else:
-                
-                pos_order.delivery_agent = self.delivery_agent
-                pos_order.date_delivery = self.date_delivery
-                pos_order.delivery_status = 'delivery'
+            })    
+            pos_order.delivery_agent = self.delivery_agent
+            pos_order.date_delivery = self.date_delivery
+            pos_order.delivery_status = 'delivery'
                 
         data = {
                     'model':'pos.assign.commands.wizard',

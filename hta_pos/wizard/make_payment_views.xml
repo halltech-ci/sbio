@@ -1,0 +1,12 @@
+<odoo>
+    <record id="pos_make_payment_date" model="ir.ui.view" >
+        <field name="name">make_payment_date</field>
+        <field name="model">pos.make.payment</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_payment"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/group/field[@name='payment_method_id']" position="after">
+                <field name="payment_date"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

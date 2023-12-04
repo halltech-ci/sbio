@@ -54,8 +54,9 @@
             <tree string="POS Orders" create="0" sample="1" default_order="id desc" decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" decoration-warning="state == 'delivery'">
                 <field name="currency_id" invisible="1"/>
                 <field name="name" decoration-bf="1"/>
-                <field name="session_id" />
+                <field name="session_id" optional="hide"/>
                 <field name="create_date" string="Date commande"/>
+                <field name="payment_date" string="Date de payment"/>
                 <field name="pos_reference"/>
                 <field name="partner_id"/>
                 <field name="customer_Phone" string="Telephone Client"/>
