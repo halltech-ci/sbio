@@ -12,7 +12,16 @@ class PoOrder(models.Model):
 
     is_return = fields.Boolean(default=False, tracking=True, string="Est un retour")
     delivery_status = fields.Selection(compute="_compute_delivery_status")
-    #is_delivered = fields.Boolean(default=False)
+    montant_ca = fields.Monetary(compute="_compute_montant_ca")
+
+    @api.depends("payment_ids", "amount_total")
+    def _compute_montant_ca(self):
+        for rec in self:
+            rec.montant_ca = rec.amount_total 
+            if not rec.payment_ids:
+                rec.montant_ca = 0
+            
+    
 
     @api.depends("is_partial", "is_return", "delivery_person", "delivery_agent", "refunded_orders_count", "refunded_order_ids")
     def _compute_delivery_status(self):
