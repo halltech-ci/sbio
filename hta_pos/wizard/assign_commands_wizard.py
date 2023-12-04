@@ -60,17 +60,18 @@ class PosAssignCommands(models.TransientModel):
                 picking.button_validate()
                 picking._action_done()
             for rs in pos_order.lines:
-                if "ivraison" in  rs.full_product_name:
-                    rs.write({
-                        "price_unit": 0,
-                        "price_subtotal": 0,
-                        "price_subtotal_incl": 0
-                    })
-                    rs._onchange_amount_line()
                 line_docs.append({
                     'full_product_name':rs.full_product_name,
                     'qty':rs.qty,
                 })
+            livraison = pos_order.lines.filtered(lambda l: "ivraison" in l.full_product_name)
+            if livraison:
+                livraison.write({
+                    "price_unit": 0,
+                    "price_subtotal": 0,
+                    "price_subtotal_incl": 0
+                })
+                livraison._onchange_amount_line_all()
             pos_order._onchange_amount_all()
             docs.append ({
                 'pos_order': pos_order,
