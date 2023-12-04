@@ -60,21 +60,25 @@ class PosAssignCommands(models.TransientModel):
                 picking.button_validate()
                 picking._action_done()
             for rs in pos_order.lines:
+                if "ivraison" in  rs.full_product_name:
+                    rs.write({
+                        "price_unit": 0,
+                        "price_subtotal": 0,
+                        "price_subtotal_incl": 0
+                    })
+                    rs._onchange_amount_line()
                 line_docs.append({
                     'full_product_name':rs.full_product_name,
                     'qty':rs.qty,
                 })
+            pos_order._onchange_amount_all()
             docs.append ({
                 'pos_order': pos_order,
                 'pos_reference':pos_order.pos_reference,
                 'pos_order_date':self.date_delivery,
                 'amount_total': pos_order.amount_total,
                 'line_docs':line_docs,
-            })
-            '''if pos_order.delivery_agent:
-                raise UserError(_("LES COMMANDES SONT DEJA ASSIGNER"))
-            else:
-            '''    
+            })    
             pos_order.delivery_agent = self.delivery_agent
             pos_order.date_delivery = self.date_delivery
             pos_order.delivery_status = 'delivery'

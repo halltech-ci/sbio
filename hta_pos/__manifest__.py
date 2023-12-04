@@ -48,6 +48,7 @@
         'wizard/audit_validate.xml',
         'wizard/wizard_notice_views.xml',
         'wizard/wizard_product_free_views.xml',
+        "wizard/make_payment_views.xml",
         
         # Report
         'report/report_customer_list_by_product_views.xml',
