@@ -35,12 +35,11 @@ class PoOrder(models.Model):
                     if rec.delivery_person or rec.delivery_agent:
                         rec.delivery_status = "delivery"
                 else:
-                    if rec.delivery_person or rec.delivery_agent:
-                        if rec.payment_ids:
-                            rec.delivery_status = "invoiced"
+                    if rec.delivery_person or rec.delivery_agent :
+                        rec.delivery_status = "invoiced"
                     if rec.refunded_orders_count and rec.refunded_order_ids:
                         rec.delivery_status = "refunded"
-                    else:
+                    if not rec.delivery_person and not rec.delivery_agent:
                         rec.delivery_status = "direct"
                     
     def order_lines_writting(self):
