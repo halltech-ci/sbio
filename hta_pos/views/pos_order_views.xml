@@ -55,7 +55,8 @@
                 <field name="currency_id" invisible="1"/>
                 <field name="name" decoration-bf="1"/>
                 <field name="session_id" optional="hide"/>
-                <field name="create_date" string="Date commande"/>
+                <field name="create_date" string="Date commande" optional="hide"/>
+                <field name="date_delivery" string="Date de livraison"/>
                 <field name="payment_date" string="Date de payment"/>
                 <field name="pos_reference"/>
                 <field name="partner_id"/>
