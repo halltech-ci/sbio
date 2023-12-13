@@ -3,6 +3,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import AccessError, UserError, ValidationError
 from datetime import datetime, timedelta
+from odoo.tools import float_is_zero
 import requests
 import json
 
@@ -35,12 +36,16 @@ class PoOrder(models.Model):
                     if rec.delivery_person or rec.delivery_agent:
                         rec.delivery_status = "delivery"
                 else:
-                    if rec.delivery_person or rec.delivery_agent :
-                        rec.delivery_status = "invoiced"
-                    if rec.refunded_orders_count and rec.refunded_order_ids:
-                        rec.delivery_status = "refunded"
-                    if not rec.delivery_person and not rec.delivery_agent:
-                        rec.delivery_status = "direct"
+                    if rec.delivery_person or rec.delivery_agent:
+                        if rec.refunded_order_ids:
+                            rec.delivery_status = "refunded"
+                        else:
+                            rec.delivery_status = "invoiced"
+                    else:
+                        if rec.refunded_order_ids:
+                            rec.delivery_status = "refunded"
+                        else:
+                            rec.delivery_status = "direct"
                     
     def order_lines_writting(self):
         #pos_order=self.env['pos.order'].search([('id', '=', self.id)])
@@ -121,6 +126,23 @@ class PoOrder(models.Model):
         for record in self._context.get('active_ids'):
             orders = self.env[self._context.get('active_model')].browse(record)
             #order_lines = order.lines
-            for order in orders:
+            for order in orders: 
+                if order.delivery_status == "refunded":
+                    if not order.payment_ids:
+                        amount = self._get_rounded_amount(order.amount_total)
+                        currency = order.currency_id
+                        if not float_is_zero(amount, precision_rounding=currency.rounding):
+                            data = {
+                                'pos_order_id': order.id,
+                                'amount': order._get_rounded_amount(order.amount_total),
+                                'name':  _('return'),
+                                "payment_date": fields.Datetime.now(),
+                                'payment_method_id': order.refunded_order_ids[0].payment_ids[0].payment_method_id.id,
+                            }
+                        order.add_payment(data)
+                    if order._is_pos_order_paid():
+                        order.action_pos_order_paid()
+                        order._compute_total_cost_in_real_time()
+                        #order.
                 order.write({'audit':'valide','date_audit': datetime.now(),'audit_valideur':self.env.user})
             
