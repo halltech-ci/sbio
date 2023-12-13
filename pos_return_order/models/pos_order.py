@@ -119,30 +119,8 @@ class PoOrder(models.Model):
     
     def audit_valid(self):
         for record in self._context.get('active_ids'):
-            order = self.env[self._context.get('active_model')].browse(record)
-            order_lines = order.lines
-            if order.is_return :
-                for rs in order_lines:
-                    line = {
-                            "price_unit": 0,
-                            "price_subtotal": 0,
-                            'price_subtotal_incl': 0,
-                            }
-                    rs.write(line)
-                    rs._onchange_amount_line_all()
-                order._onchange_amount_all()
+            orders = self.env[self._context.get('active_model')].browse(record)
+            #order_lines = order.lines
+            for order in orders:
                 order.write({'audit':'valide','date_audit': datetime.now(),'audit_valideur':self.env.user})
-            else:
-                for rs in order_lines:
-                    if 'ivraison' in str(rs.full_product_name):
-                        line = {
-                            "price_unit": 0,
-                            "price_subtotal": 0,
-                            'price_subtotal_incl': 0,
-                            
-                            }
-                        rs.write(line)
-                    rs._onchange_amount_line_all()
-                order._onchange_amount_all()
-                order.write({'audit':'valide','date_audit': datetime.now(),'audit_valideur':self.env.user})
-                
+            
