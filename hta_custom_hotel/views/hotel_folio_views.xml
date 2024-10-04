@@ -1,0 +1,14 @@
+<odoo>
+  <data>
+      <record id="hotel_folio_room_tree" model="ir.ui.view">
+          <field name="name">hotel_folio_room_tree</field>
+          <field name="model">hotel.folio</field>
+          <field name="inherit_id" ref="hotel.view_hotel_folio_tree"/>
+          <field name="arch" type="xml">
+              <field name="date_order" position="after">
+                  <field name="product_ids" widget="many2many_tags" string="Chambres"/>
+              </field>
+          </field>
+      </record>
+  </data>
+</odoo>

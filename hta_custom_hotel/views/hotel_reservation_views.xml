@@ -1,0 +1,78 @@
+<odoo>
+  <data>
+      <record id="hotel_reservation_payment_wiz" model="ir.ui.view">
+          <field name="name">reservation_payment_wizard</field>
+          <field name="model">hotel.reservation</field>
+          <field name="inherit_id" ref="hotel_reservation.view_hotel_reservation_form"/>
+          <field name="arch" type="xml">
+              <xpath expr="//form/header" position="inside">
+                  <button name="register_payment" type="object" string="Enregistrer un acompte" attrs="{'invisible':[('state', 'in', ('cancel', 'done'))]}"/>
+              </xpath>
+              <xpath expr="//sheet" position="after">
+                  <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                 </div>
+              </xpath>
+          </field>
+      </record>
+      <record id="view_hotel_reservation_inherit_tree" model="ir.ui.view">
+          <field name="name">view_hotel_reservation_inherit_tree</field>
+          <field name="model">hotel.reservation</field>
+          <field name="inherit_id" ref="hotel_reservation.view_hotel_reservation_tree"/>
+          <field name="arch" type="xml">
+              <tree position="inside">
+                  <button name="update_reservation_state" string="ACTUALISER" type="object"/>
+              </tree>
+              <field name="checkout" position="after">
+                  <field name="room_ids" string="Chambres" widget="many2many_tags"/>
+              </field>
+          </field>
+      </record>
+      
+      <record id="hotel_busy_room_tree_" model="ir.ui.view">
+          <field name="name">hotel_busy_room_tree</field>
+          <field name="model">hotel.reservation</field>
+          <field name="arch" type="xml">
+              <tree edit="0" create='0'>
+                <field name="reservation_no" />
+                <field name="partner_id" />
+                <field name="checkin" />
+                <field name="checkout" />
+                <field name="room_ids" string="Chambre" widget="many2many_tags"/>
+                <!--<field name="state" />-->
+            </tree>
+          </field>
+      </record>
+      <!-- Menu for checl out room-->
+      <record id="hotel_busy_room_action_" model="ir.actions.act_window">
+          <field name="name">En chambre</field>
+          <field name="res_model">hotel.reservation</field>
+          <field name="type">ir.actions.act_window</field>
+          <field name="view_id" ref="hotel_busy_room_tree_"/>
+          <field name="domain">[('folio_state', "=", "sale")]</field>
+      </record>
+      <!-- Menu for busy room-->
+      <record id="hotel_checkout_room_action_" model="ir.actions.act_window">
+          <field name="name">En Depart</field>
+          <field name="res_model">hotel.reservation</field>
+          <field name="type">ir.actions.act_window</field>
+          <field name="view_id" ref="hotel_busy_room_tree_"/>
+          <field name="domain">[('folio_state', "=", "done")]</field>
+      </record>
+      
+      <menuitem 
+          name="En chambre" 
+          id="hotel_busy_romms" 
+          parent="hotel_reservation.menu_hotel_reservation"
+          action="hta_custom_hotel.hotel_busy_room_action_" 
+          sequence="3"/>
+      <menuitem 
+          name="En Départs" 
+          id="hotel_free_romms" 
+          parent="hotel_reservation.menu_hotel_reservation"
+          action="hta_custom_hotel.hotel_checkout_room_action_"
+          sequence="4"/>
+  </data>
+</odoo>
